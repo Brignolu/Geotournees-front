@@ -1,12 +1,13 @@
-.map-wrapper {
-}
-
 body{
 }
 
 #map-wrapper{
     margin: 0;
     padding: 0;
+}
+
+.container-fluid {
+    height: 100vh;
 }
 
 #map {
@@ -29,4 +30,7 @@ nav {
     height: 7%;
     width: 7%;
     margin-left: 10px;
+}
+b-container{
+    height: 100%;
 }

@@ -2,6 +2,11 @@
 <template>
   <b-container fluid>
     <b-row>
+      <b-col cols="12">
+        <Login v-if="!UtilisateurCourant"></Login>
+      </b-col>
+    </b-row>
+    <b-row v-if="UtilisateurCourant">
       <b-col cols="7">
         <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
       </b-col>
@@ -9,6 +14,7 @@
         <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
       </b-col>
     </b-row>
+
   </b-container>
 </template>
 
@@ -16,16 +22,18 @@
 /* Import des Composants */
 import SubMaps from "@/components/SubMaps";
 import SubList from "@/components/SubList";
+import Login from "@/components/Login";
 import axios from "axios"
 
 export default {
-  components: {SubList, SubMaps},
+  components: { SubList, SubMaps, Login },
   props: {
     SubDataList: Array,
     MapCenter: Array,
     Popup: Object,
     SelectDataRow: Object,
-
+    LoggedIn: Boolean,
+    UtilisateurCourant: Object,
   },
   methods: {
     data() {
@@ -118,10 +126,16 @@ export default {
       console.log(item.id)
       this.SelectDataRow = item.id;
     })
+    this.$root.$on('login-utilisateur', (utilisateur) => {
+      console.log('on => login-utilisateur')
+      console.log(utilisateur)
+      this.UtilisateurCourant = utilisateur;
+    })
   },
   beforeMount() {
     //this.mockSubData();
     this.MapCenter = [46, 6.129384];
+    this.LoggedIn = false;
     this.fetchData();
   },
 
