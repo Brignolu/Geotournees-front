@@ -1,0 +1,32 @@
+.map-wrapper {
+}
+
+body{
+}
+
+#map-wrapper{
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: 80vh;
+    width: 100%;
+}
+nav {
+    padding-top: 1rem;
+    width: 100%;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#logo{
+    height: 7%;
+    width: 7%;
+    margin-left: 10px;
+}
