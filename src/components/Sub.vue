@@ -2,12 +2,7 @@
 <template>
   <div>
     <Header v-if="UtilisateurCourant" v-bind:UtilisateurCourant="UtilisateurCourant"></Header>
-    <b-container-fluid>
-    <b-row>
-      <b-col cols="12">
-        <Login v-if="!UtilisateurCourant"></Login>
-      </b-col>
-    </b-row>
+    <b-container fluid>
     <b-row v-if="UtilisateurCourant">
       <b-col cols="7">
         <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
@@ -16,26 +11,25 @@
         <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
       </b-col>
     </b-row>
-    </b-container-fluid>
+    </b-container>
   </div>
 </template>
 
 <script>
+
 /* Import des Composants */
 import SubMaps from "@/components/SubMaps";
 import SubList from "@/components/SubList";
-import Login from "@/components/Login";
 import Header from "@/components/Header";
 import axios from "axios"
 
 export default {
-  components: {SubList, SubMaps, Login, Header},
+  components: { SubList, SubMaps, Header },
   props: {
     SubDataList: Array,
     MapCenter: Array,
     Popup: Object,
     SelectDataRow: Object,
-    LoggedIn: Boolean,
     UtilisateurCourant: Object,
   },
   methods: {
@@ -129,19 +123,21 @@ export default {
       console.log(item.id)
       this.SelectDataRow = item.id;
     })
-    this.$root.$on('login-utilisateur', (utilisateur) => {
-      console.log('on => login-utilisateur')
-      console.log(utilisateur)
-      this.UtilisateurCourant = utilisateur;
-    })
   },
   beforeMount() {
+
+    /*
+    // Servait anciennement à simuler les données
     //this.mockSubData();
+    */
+
     this.MapCenter = [46, 6.129384];
-    this.LoggedIn = false;
+    this.UtilisateurCourant = this.$route.params;
     this.fetchData();
   },
 
 
 }
+
 </script>
+<!--TODO: sortir le header de sub pour utiliser les router-link, le mettre dans App.Vue-->

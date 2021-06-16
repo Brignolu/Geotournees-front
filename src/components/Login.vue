@@ -46,8 +46,10 @@ export default {
             return value.data;
           }).then(data => {
             this.utilisateur = data;
-            if (data.ok)
-            this.$root.$emit('login-utilisateur', data);
+            if (data.ok) {
+              this.$root.$emit('login-utilisateur', data);
+              this.$router.push({name: 'visualisation', params: data});
+            }
             else {
               this.utilisateur = data.etat;
             }

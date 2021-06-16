@@ -14,15 +14,15 @@
             <em>Bonjour {{ UtilisateurCourant.nom_utilisateur }}</em>
           </template>
 
-          <b-dropdown-item @click="logout">
+          <b-dropdown-item @click="deconnexion">
             Deconnexion
           </b-dropdown-item>
 
-          <b-dropdown-item v-if="UtilisateurCourant.roleId==3 || UtilisateurCourant.roleId==2" @click="logout">
+          <b-dropdown-item v-if="UtilisateurCourant.roleId==3 || UtilisateurCourant.roleId==2" @click="intervention">
             Ajouter une intervention
           </b-dropdown-item>
 
-          <b-dropdown-item v-if="UtilisateurCourant.roleId==3" @click="logout">
+          <b-dropdown-item v-if="UtilisateurCourant.roleId==3" @click="administration">
             Panneau d'administration
           </b-dropdown-item>
 
@@ -37,8 +37,17 @@ export default {
   name: 'Header',
   props: ['UtilisateurCourant'],
   methods: {
-    logout: function () {
+    deconnexion: function () {
       console.log("deconnexion");
+      this.$router.push('/')
+    },
+    intervention: function(){
+      console.log("intervention");
+      // this.$router.push('/')
+    },
+    administration:function (){
+      console.log("administration");
+      // this.$router.push('/')
     }
   }
 }
