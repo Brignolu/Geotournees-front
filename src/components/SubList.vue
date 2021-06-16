@@ -57,14 +57,28 @@
       <template #row-details="data">
         <b-card>
           <b-row class="mb-2">
-            <b-col sm="3" class="text-sm-right"><b>Intervention:</b></b-col>
-            <b-col>{{ data.item["type.type"] }} {{ data.item["motif.motif"] }}</b-col>
-            <b-col sm="3" class="text-sm-right"><b>Heure:</b></b-col>
-            <b-col>{{ data.item.date.split('T')[1].substr(0, 5) }}</b-col>
+            <b-col sm="3" class="text-sm-right">
+              <b>Intervention:</b>
+            </b-col>
+            <b-col>
+              {{ data.item["type.type"] }} {{ data.item["motif.motif"] }}
+            </b-col>
+            <b-col sm="3" class="text-sm-right">
+              <b>Heure:</b>
+            </b-col>
+            <b-col>
+              {{ data.item.date.split('T')[1].substr(0, 5) }}
+            </b-col>
           </b-row>
           <b-row>
-            <b-col sm="3" class="text-sm-right"><b>n°Téléphone:</b></b-col>
-            <b-col>{{ data.item["abonne.personne.numtel"] }}</b-col>
+            <b-col sm="3" class="text-sm-right">
+              <b>
+                n°Téléphone:
+              </b>
+            </b-col>
+            <b-col>
+              {{ data.item["abonne.personne.numtel"] }}
+            </b-col>
           </b-row>
         </b-card>
       </template>
@@ -134,8 +148,8 @@ export default {
     }
 
   },
-  watch:{
-    SelectRow: function(rowindex) {
+  watch: {
+    SelectRow: function (rowindex) {
       console.log("Watch => SelectRow " + rowindex)
       this.$refs.selectableTable.selectRow(rowindex)
     }

@@ -1,17 +1,20 @@
 <!-- Composant Parent -->
+
 <template>
   <div>
-    <Header v-if="UtilisateurCourant" v-bind:UtilisateurCourant="UtilisateurCourant"></Header>
-    <b-container fluid>
-    <b-row v-if="UtilisateurCourant">
-      <b-col cols="7">
-        <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
-      </b-col>
-      <b-col cols="5">
-        <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
-      </b-col>
-    </b-row>
-    </b-container>
+    <b-container-fluid>
+      <b-row>
+        <Header v-if="UtilisateurCourant" v-bind:UtilisateurCourant="UtilisateurCourant"></Header>
+      </b-row>
+      <b-row v-if="UtilisateurCourant">
+        <b-col cols="7">
+          <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
+        </b-col>
+        <b-col cols="5">
+          <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
+        </b-col>
+      </b-row>
+    </b-container-fluid>
   </div>
 </template>
 
@@ -21,10 +24,11 @@
 import SubMaps from "@/components/SubMaps";
 import SubList from "@/components/SubList";
 import Header from "@/components/Header";
-import axios from "axios"
+import axios from "axios";
+
 
 export default {
-  components: { SubList, SubMaps, Header },
+  components: {SubList, SubMaps, Header},
   props: {
     SubDataList: Array,
     MapCenter: Array,
@@ -128,7 +132,7 @@ export default {
 
     /*
     // Servait anciennement à simuler les données
-    //this.mockSubData();
+    // this.mockSubData();
     */
 
     this.MapCenter = [46, 6.129384];

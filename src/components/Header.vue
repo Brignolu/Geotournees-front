@@ -2,10 +2,9 @@
   <header>
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <b-navbar-brand class="mr-auto">
-        <img id="logo" alt="Conseil Départemental de Haute-Savoie" src="@/assets/Logo_Haute_Savoie.png"> Visualisation
-        des tournées
+        <img id="logo" alt="Conseil Départemental de Haute-Savoie" src="@/assets/Logo_Haute_Savoie.png">
+        Visualisation des tournées
       </b-navbar-brand>
-
 
       <b-navbar-nav style="margin-left: auto" class="ml-auto">
         <b-nav-item-dropdown>
@@ -18,11 +17,11 @@
             Deconnexion
           </b-dropdown-item>
 
-          <b-dropdown-item v-if="UtilisateurCourant.roleId==3 || UtilisateurCourant.roleId==2" @click="intervention">
+          <b-dropdown-item v-if="UtilisateurCourant.roleId===3 || UtilisateurCourant.roleId===2" @click="intervention">
             Ajouter une intervention
           </b-dropdown-item>
 
-          <b-dropdown-item v-if="UtilisateurCourant.roleId==3" @click="administration">
+          <b-dropdown-item v-if="UtilisateurCourant.roleId===3" @click="administration">
             Panneau d'administration
           </b-dropdown-item>
 
@@ -39,15 +38,15 @@ export default {
   methods: {
     deconnexion: function () {
       console.log("deconnexion");
-      this.$router.push('/')
+      this.$router.push('/');
     },
-    intervention: function(){
+    intervention: function () {
       console.log("intervention");
-      // this.$router.push('/')
+      this.$router.push('/intervention');
     },
-    administration:function (){
+    administration: function () {
       console.log("administration");
-      // this.$router.push('/')
+      this.$router.push('/administration');
     }
   }
 }

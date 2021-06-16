@@ -5,10 +5,8 @@
 <template>
 
   <html lang="fr">
-  <div>
-    <router-view />
-  </div>
 
+    <router-view />
   </html>
 </template>
 

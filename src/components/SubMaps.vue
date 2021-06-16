@@ -28,15 +28,16 @@
 </template>
 
 <script>
+
 /* import des bibliothèques et des assets */
 import * as fs from 'fs';
 
-import * as Vue2Leaflet from 'vue2-leaflet'
-import Vue2LeafletMarkercluster from 'vue2-leaflet-markercluster'
+import * as Vue2Leaflet from 'vue2-leaflet';
+import Vue2LeafletMarkercluster from 'vue2-leaflet-markercluster';
 
-import "leaflet/dist/leaflet.css"
-import "leaflet.markercluster/dist/MarkerCluster.css"
-import "leaflet.markercluster/dist/MarkerCluster.Default.css"
+import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import L from "leaflet";
 
@@ -57,18 +58,18 @@ export default {
   props: ['locations', 'center', 'popup', 'geojsons'],
   methods: {
     click: function (item) {
-      this.$root.$emit('mouse-click-marker', item)
-      console.log('emit => mouse-click-marker')
+      this.$root.$emit('mouse-click-marker', item);
+      console.log('emit => mouse-click-marker');
     },
     ready: (e) => console.log('ready', e),
   },
   watch: {
     center: function (val) {
-      console.log('Watch Center')
-      this.center = val
+      console.log('Watch Center');
+      this.center = val;
     },
     popup: function (val) {
-      console.log('Watch Popup')
+      console.log('Watch Popup');
     }
   },
   data() {
@@ -99,15 +100,13 @@ export default {
     }
   },
   beforeMount() {
-    var file = fs.open("@/assets/communesHteSavoie.geojson")
-    this.geojsons = file
+    var file = fs.open("@/assets/communesHteSavoie.geojson");
+    this.geojsons = file;
   },
   mounted() {
-
   },
   created() {
   }
-
 }
 </script>
 
