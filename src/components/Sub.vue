@@ -1,6 +1,8 @@
 <!-- Composant Parent -->
 <template>
-  <b-container fluid>
+  <div>
+    <Header v-if="UtilisateurCourant" v-bind:UtilisateurCourant="UtilisateurCourant"></Header>
+    <b-container-fluid>
     <b-row>
       <b-col cols="12">
         <Login v-if="!UtilisateurCourant"></Login>
@@ -14,8 +16,8 @@
         <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
       </b-col>
     </b-row>
-
-  </b-container>
+    </b-container-fluid>
+  </div>
 </template>
 
 <script>
@@ -23,10 +25,11 @@
 import SubMaps from "@/components/SubMaps";
 import SubList from "@/components/SubList";
 import Login from "@/components/Login";
+import Header from "@/components/Header";
 import axios from "axios"
 
 export default {
-  components: { SubList, SubMaps, Login },
+  components: {SubList, SubMaps, Login, Header},
   props: {
     SubDataList: Array,
     MapCenter: Array,

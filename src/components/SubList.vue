@@ -20,7 +20,6 @@
     </b-input-group>
     <b-table responsive sticky-header="80vh"
              hover
-             sort-icon-right
              :items="SubData"
              :fields="fields"
              :filter="filter"
@@ -81,7 +80,7 @@ export default {
   props: ['SubData', 'SelectRow'],
   data() {
     return {
-      /* date;heure;numabo;nom;pnom;nvoie;addr;postc;comm;telabo;agent;motif;intertype;numtrans;idabo; */
+      /* date; heure; numabo; nom; pnom; nvoie; addr; postc; comm; telabo; agent; motif; intertype; numtrans; idabo; */
       fields: [
         {
           label: 'Date',
@@ -96,7 +95,7 @@ export default {
         {
           label: 'Adresse',
           key: 'fulladdr',
-          sortable: true
+          sortable: false
         },
         {label: 'Agent', key: 'agent.nom', sortable: true}, {
           label: 'Transmetteur n°',
@@ -133,24 +132,6 @@ export default {
         return formatDate;
       }
     }
-
-    /*/!* Fetching from server *!/
-    getUsersData() {
-      fetch("http://127.0.0.1:3000/testvue/agent", {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": "true"
-        }
-      }
-      )
-          .then(response => response.json())
-          .then(data => (this.UsersDataList = data))
-          .catch(err => console.log(err));
-    }
-  },*/
 
   },
   watch:{

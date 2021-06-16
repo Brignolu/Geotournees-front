@@ -29,7 +29,8 @@ nav {
 #logo{
     height: 7%;
     width: 7%;
-    margin-left: 10px;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 b-container{
     height: 100%;

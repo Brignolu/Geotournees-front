@@ -1,9 +1,8 @@
 <script>
 import Sub from "@/components/Sub";
-import Header from "@/components/Header";
 
 export default {
-  components: { Header, Sub }
+  components: { Sub }
 }
 </script>
 <head>
@@ -12,33 +11,24 @@ export default {
 <template>
 
   <html lang="fr">
-  <div id="app">
-  <Header></Header>
+  <div>
     <Sub></Sub>
   </div>
+
   </html>
 </template>
 
 
 <script>
+
 import Sub from './components/Sub.vue'
-import Header from './components/Header.vue'
+
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 export default {
   name: 'App',
   components: {
-    Sub,
-    Header
+    Sub
   },
 }
-
 </script>
-
-<style>
- html{
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-</style>

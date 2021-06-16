@@ -1,5 +1,7 @@
 <template>
-  <b-container>
+  <row>
+
+    <b-card id>
     <b-form>
       <b-form-group
           id="input-group-1"
@@ -27,7 +29,8 @@
       <b-button v-on:click="postLogin" variant="primary">Envoyer</b-button>
       <pre>{{ utilisateur }}</pre>
     </b-form>
-  </b-container>
+    </b-card>
+  </row>
 </template>
 <script>
 import axios from "axios"
