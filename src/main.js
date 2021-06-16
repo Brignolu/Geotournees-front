@@ -37,11 +37,14 @@ const routes = [
 // Initialisation du module store
 const store = new Vuex.Store({
   state: {
-    utilisateur: 0
+    utilisateur: null
   },
   mutations: {
     login (state, utilisateur) {
       state.utilisateur = utilisateur;
+    },
+    logout (state){
+      state.utilisateur = null
     }
   }
 })

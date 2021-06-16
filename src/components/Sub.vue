@@ -4,9 +4,9 @@
   <div>
     <b-container-fluid>
       <b-row>
-        <Header v-if="UtilisateurCourant" v-bind:UtilisateurCourant="UtilisateurCourant"></Header>
+        <Header v-if=this.$store.state.utilisateur v-bind:UtilisateurCourant=this.$store.state.utilisateur></Header>
       </b-row>
-      <b-row v-if="UtilisateurCourant">
+      <b-row v-if=this.$store.state.utilisateur>
         <b-col cols="7">
           <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
         </b-col>

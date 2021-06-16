@@ -55,8 +55,6 @@ export default {
         if (data.ok) {
           // this.$root.$emit('login-utilisateur', data);
           this.$store.commit("login", data);
-          console.log("store")
-          console.log(this.$store.state.utilisateur)
           this.$router.push({name: 'visualisation', params: data});
         } else {
           this.utilisateur = data.etat;

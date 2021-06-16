@@ -39,6 +39,7 @@ export default {
     deconnexion: function () {
       console.log("deconnexion");
       this.$router.push('/');
+      this.$store.commit("logout");
     },
     intervention: function () {
       console.log("intervention");
