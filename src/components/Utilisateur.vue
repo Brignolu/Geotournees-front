@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <b-row>
-      <b-col>
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
         <b-card>
           <b-form>
             <b-form-group
@@ -46,8 +44,6 @@
             </b-button>
           </b-form>
         </b-card>
-      </b-col>
-    </b-row>
   </div>
 </template>
 <script>
@@ -91,9 +87,9 @@ export default {
         statusId: 0
       },
       options: [
-        { value: 1, text: 'Admin' },
-        { value: 2, text: 'This is First option' },
-        { value: 3, text: 'Selected Option' }
+        { value: 1, text: 'Utilisateur' },
+        { value: 2, text: 'Modérateur' },
+        { value: 3, text: 'Administrateur' }
       ]
     }
   }

@@ -1,17 +1,16 @@
 <!-- Composant Parent -->
 
 <template>
-  <div>
-    <b-container-fluid>
-      <b-row v-if = this.$store.state.utilisateur>
-        <b-col cols="7">
+  <div class="my-4">
+
+      <b-row class="px-0" v-if = this.$store.state.utilisateur>
+        <b-col col="7">
           <SubList v-bind:SubData = "SubDataList" v-bind:SelectRow = "SelectDataRow"></SubList>
         </b-col>
-        <b-col cols="5">
+        <b-col col="5">
           <SubMaps v-bind:locations = "SubDataList" v-bind:center = "MapCenter" v-bind:popup = "Popup"></SubMaps>
         </b-col>
       </b-row>
-    </b-container-fluid>
   </div>
 </template>
 

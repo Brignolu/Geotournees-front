@@ -1,5 +1,7 @@
 <template>
+
   <div id="map-wrapper">
+
     <div id="map">
       <v-map :zoom=11 :center="center">
         <v-icondefault></v-icondefault>
@@ -25,6 +27,7 @@
       </v-map>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -74,12 +77,14 @@ export default {
   },
   data() {
     return {
+
       clusterOptions: {
         zoomToBoundsOnClick: true,
         showCoverageOnHover: true,
         spiderfyOnMaxZoom: true,
         removeOutsideVisibleBounds: true,
       },
+
       /* Icons */
       maintenanceIcon: L.icon({
         iconUrl: icon_maintenance,

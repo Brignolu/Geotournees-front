@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <div>
     <b-input-group
         size="sm"
     >
@@ -84,7 +84,7 @@
       </template>
 
     </b-table>
-  </b-container>
+  </div>
 </template>
 
 <script>

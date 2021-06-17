@@ -2,7 +2,7 @@
   <header>
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <b-navbar-brand class="mr-auto">
-        <img id="logo" alt="Conseil Départemental de Haute-Savoie" src="@/assets/Logo_Haute_Savoie.png">
+        <img @click="accueil" id="logo" alt="Conseil Départemental de Haute-Savoie" src="@/assets/Logo_Haute_Savoie.png">
         Visualisation des tournées
       </b-navbar-brand>
 
@@ -36,6 +36,10 @@ export default {
   name: 'Header',
   props: ['UtilisateurCourant'],
   methods: {
+    accueil: function (){
+      console.log("accueil");
+      this.$router.push('/visualisation');
+    },
     deconnexion: function () {
       console.log("deconnexion");
       this.$router.push('/');

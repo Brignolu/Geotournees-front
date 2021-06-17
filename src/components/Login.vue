@@ -1,6 +1,6 @@
 <template>
-  <b-row class="justify-content-center">
-    <b-card>
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <b-card class="text-center col-4">
       <b-form>
         <b-form-group
             id="input-group-1"
@@ -13,6 +13,7 @@
               type="text"
               placeholder="Nom Utilisateur"
               required
+              class="text-center"
           ></b-form-input>
         </b-form-group>
 
@@ -22,18 +23,22 @@
               v-model="form.password"
               placeholder="Mot de passe"
               type="password"
+              class="text-center"
               required
           ></b-form-input>
         </b-form-group>
-        <b-button v-on:click="postLogin" variant="primary">
+
+        <b-button v-on:click="postLogin" variant="success">
           Envoyer
         </b-button>
-        <pre>
+
+        <div>
           {{ utilisateur }}
-        </pre>
+        </div>
+
       </b-form>
     </b-card>
-  </b-row>
+  </div>
 </template>
 <script>
 
