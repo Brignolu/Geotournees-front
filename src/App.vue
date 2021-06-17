@@ -5,14 +5,16 @@
 <template>
 
   <html lang="fr">
-
+  <Header v-if = this.$store.state.utilisateur v-bind:UtilisateurCourant = this.$store.state.utilisateur></Header>
     <router-view />
   </html>
 </template>
 
 
 <script>
+import Header from "@/components/Header";
 export default {
   name: 'App',
+  components: { Header }
 }
 </script>

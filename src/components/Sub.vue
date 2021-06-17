@@ -3,15 +3,12 @@
 <template>
   <div>
     <b-container-fluid>
-      <b-row>
-        <Header v-if=this.$store.state.utilisateur v-bind:UtilisateurCourant=this.$store.state.utilisateur></Header>
-      </b-row>
-      <b-row v-if=this.$store.state.utilisateur>
+      <b-row v-if = this.$store.state.utilisateur>
         <b-col cols="7">
-          <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
+          <SubList v-bind:SubData = "SubDataList" v-bind:SelectRow = "SelectDataRow"></SubList>
         </b-col>
         <b-col cols="5">
-          <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
+          <SubMaps v-bind:locations = "SubDataList" v-bind:center = "MapCenter" v-bind:popup = "Popup"></SubMaps>
         </b-col>
       </b-row>
     </b-container-fluid>
@@ -23,12 +20,11 @@
 /* Import des Composants */
 import SubMaps from "@/components/SubMaps";
 import SubList from "@/components/SubList";
-import Header from "@/components/Header";
 import axios from "axios";
 
 
 export default {
-  components: {SubList, SubMaps, Header},
+  components: {SubList, SubMaps},
   props: {
     SubDataList: Array,
     MapCenter: Array,
@@ -144,4 +140,4 @@ export default {
 }
 
 </script>
-<!--TODO: sortir le header de sub pour utiliser les router-link, le mettre dans App.Vue-->
+<!--TODO: sortir le header ! router-link ???, le mettre dans App.Vue ?-->
