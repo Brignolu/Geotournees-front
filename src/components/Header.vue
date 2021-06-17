@@ -6,8 +6,8 @@
         Visualisation des tournées
       </b-navbar-brand>
 
-      <b-navbar-nav style="margin-left: auto" class="ml-auto">
-        <b-nav-item-dropdown>
+      <b-navbar-nav class="ml-auto mr-5">
+        <b-nav-item-dropdown >
 
           <template #button-content>
             <em>Bonjour {{ UtilisateurCourant.nom_utilisateur }}</em>
@@ -17,11 +17,11 @@
             Deconnexion
           </b-dropdown-item>
 
-          <b-dropdown-item v-if="UtilisateurCourant.roleId===3 || UtilisateurCourant.roleId===2" @click="intervention">
+          <b-dropdown-item v-if="UtilisateurCourant.roleId === 3 || UtilisateurCourant.roleId === 2" @click="intervention">
             Ajouter une intervention
           </b-dropdown-item>
 
-          <b-dropdown-item v-if="UtilisateurCourant.roleId===3" @click="administration">
+          <b-dropdown-item v-if="UtilisateurCourant.roleId === 3" @click="administration">
             Panneau d'administration
           </b-dropdown-item>
 

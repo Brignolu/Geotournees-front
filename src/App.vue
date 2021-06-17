@@ -4,10 +4,10 @@
 </head>
 <template>
 
-  <html lang="fr">
+<b-container-fluid>
   <Header v-if = this.$store.state.utilisateur v-bind:UtilisateurCourant = this.$store.state.utilisateur></Header>
     <router-view />
-  </html>
+</b-container-fluid>
 </template>
 
 

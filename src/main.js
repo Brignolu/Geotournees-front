@@ -6,17 +6,15 @@ import Vuex from 'vuex';
 
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+import "@/assets/app.scss";
 
-import "@/assets/bootstrap.css";
-import "@/assets/bootstrap.min.css";
-import "@/assets/style.css";
 
 //Importation des composants
 import Login from "@/components/Login";
 import Sub from "@/components/Sub";
 import Administration from "@/components/Administration";
 import Intervention from "@/components/Intervention";
+import Utilisateur from "@/components/Utilisateur";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -31,6 +29,7 @@ const routes = [
   { path: '/visualisation', name: 'visualisation', component: Sub },
   { path: '/intervention', name: 'intervention', component: Intervention },
   { path: '/administration', name: 'administration', component: Administration },
+  { path: '/utilisateur', name: 'utilisateur', component: Utilisateur },
   { path: '/', component: Login }
 ]
 

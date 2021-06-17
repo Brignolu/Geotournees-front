@@ -1,6 +1,6 @@
 <template>
-  <b-row>
-    <b-card id>
+  <b-row class="justify-content-center">
+    <b-card>
       <b-form>
         <b-form-group
             id="input-group-1"
@@ -53,7 +53,6 @@ export default {
           }).then(data => {
         this.utilisateur = data;
         if (data.ok) {
-          // this.$root.$emit('login-utilisateur', data);
           this.$store.commit("login", data);
           this.$router.push({name: 'visualisation', params: data});
         } else {

@@ -4,7 +4,8 @@
       <b-col>
         <b-card>
           intervention
-<!--          <b-form-group>
+<!--
+          <b-form-group>
             <b-form @submit="onSubmit" @reset="onReset">
               <b-form-group
                   id=""
@@ -52,7 +53,8 @@
               </b-form-group>
 
             </b-form>
-          </b-form-group>-->
+          </b-form-group>
+          -->
         </b-card>
       </b-col>
     </b-row>

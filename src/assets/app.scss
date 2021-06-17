@@ -1,0 +1,36 @@
+$primary : #5F3075;
+
+#map-wrapper{
+  margin: 0;
+  padding: 0;
+}
+
+/*
+.b-container-fluid {
+  height: 100vh;
+}
+*/
+
+#map {
+  height: 80vh;
+  width: 100%;
+}
+
+/*
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+*/
+
+#logo{
+  height: 7%;
+  width: 7%;
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import 'node_modules/bootstrap-vue/src/index.scss';
