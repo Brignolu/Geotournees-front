@@ -14,6 +14,7 @@ import Sub from "@/components/Sub";
 import Administration from "@/components/Administration";
 import Intervention from "@/components/Intervention";
 import Utilisateur from "@/components/Utilisateur";
+import Personne from "@/components/Personne";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -29,7 +30,8 @@ const routes = [
     {path: '/intervention', name: 'intervention', component: Intervention},
     {path: '/administration', name: 'administration', component: Administration},
     {path: '/administration/utilisateur', name: 'utilisateur', component: Utilisateur},
-    {path: '/', component: Login}
+    {path: '/', component: Login},
+    {path: '/intervention/abonne',name: 'abonne', component: Personne}
 ]
 
 // Initialisation du module store

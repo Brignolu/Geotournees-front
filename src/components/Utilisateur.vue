@@ -4,7 +4,6 @@
       <b-form>
         <b-form-group
             label="Nom :"
-            label-for="input-1"
         >
           <b-form-input
               v-model="form.nom"
@@ -16,7 +15,6 @@
 
         <b-form-group
             label="Nom d'utilisateur : "
-            label-for="input-1"
         >
           <b-form-input
 
@@ -27,7 +25,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-2" label="Mot de Passe :" label-for="input-2">
+        <b-form-group id="input-group-2" label="Mot de Passe :">
           <b-form-input
               v-model="form.mot_de_passe"
               placeholder="Mot de passe"
@@ -35,7 +33,7 @@
               required
           ></b-form-input>
         </b-form-group>
-        <b-form-group id="input-group-2" label="Status :" label-for="input-2">
+        <b-form-group id="input-group-2" label="Status :">
           <b-form-select v-model="form.statusId" :options="options" :select-size="4">
           </b-form-select>
         </b-form-group>
