@@ -45,6 +45,12 @@ const store = new Vuex.Store({
         },
         logout(state) {
             state.utilisateur = null
+        },
+        messagecreate(state, message){
+            state.message = message
+        },
+        messagedestroy(state, message){
+            state.message = null
         }
     }
 })

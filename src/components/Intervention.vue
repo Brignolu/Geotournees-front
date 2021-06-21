@@ -49,13 +49,10 @@ export default {
               return response.data
             }
           }).then(() => {
-        this.$bvToast.toast(`Intervention Créée !`, {
-          title: 'Intervention',
-          autoHideDelay: 5000,
-          appendToast: false
-        })
 
-        // this.$router.push({name: 'visualisation'});
+        this.$store.commit("messagecreate", "Intervention Créée !")
+        this.$router.push({name: 'visualisation'});
+
       }).catch(err => console.log(err))
     }
   },

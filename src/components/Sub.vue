@@ -2,7 +2,6 @@
 
 <template>
   <div class="my-4">
-
     <b-row class="px-0" v-if=this.$store.state.utilisateur>
       <b-col cols="7">
         <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
@@ -23,7 +22,7 @@ import axios from "axios";
 
 
 export default {
-  components: {SubList, SubMaps},
+  components: { SubList, SubMaps },
   props: {
     SubDataList: Array,
     MapCenter: Array,
@@ -122,6 +121,14 @@ export default {
       console.log(item.id)
       this.SelectDataRow = item.id;
     })
+    if (this.$store.state.message){
+      this.$bvToast.toast(this.$store.state.message, {
+        title: 'Notification',
+        autoHideDelay: 5000,
+        appendToast: false
+      });
+      this.$store.commit("messagedestroy");
+    }
   },
   beforeMount() {
 
@@ -129,7 +136,6 @@ export default {
     // Servait anciennement à simuler les données
     // this.mockSubData();
     */
-
     this.MapCenter = [46, 6.129384];
     this.UtilisateurCourant = this.$route.params;
     this.fetchData();
