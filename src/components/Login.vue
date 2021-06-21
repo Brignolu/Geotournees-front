@@ -57,9 +57,9 @@ export default {
             return value.data;
           }).then(data => {
         this.utilisateur = data;
-        if (data.ok) {
+        if (data.success) {
           this.$store.commit("login", data);
-          this.$router.push({name: 'visualisation', params: data});
+          this.$router.push({name: 'visualisation'});
         } else {
           this.utilisateur = data.etat;
         }

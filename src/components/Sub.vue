@@ -3,14 +3,14 @@
 <template>
   <div class="my-4">
 
-      <b-row class="px-0" v-if = this.$store.state.utilisateur>
-        <b-col col="7">
-          <SubList v-bind:SubData = "SubDataList" v-bind:SelectRow = "SelectDataRow"></SubList>
-        </b-col>
-        <b-col col="5">
-          <SubMaps v-bind:locations = "SubDataList" v-bind:center = "MapCenter" v-bind:popup = "Popup"></SubMaps>
-        </b-col>
-      </b-row>
+    <b-row class="px-0" v-if=this.$store.state.utilisateur>
+      <b-col cols="7">
+        <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
+      </b-col>
+      <b-col cols="5">
+        <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -139,4 +139,4 @@ export default {
 }
 
 </script>
-<!--TODO: sortir le header ! router-link ???, le mettre dans App.Vue ?-->
+<!--TODO: Toast-->

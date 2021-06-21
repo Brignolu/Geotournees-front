@@ -4,8 +4,7 @@ import VueRouter from "vue-router";
 import Vuex from 'vuex';
 
 
-
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
+import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import "@/assets/app.scss";
 
 
@@ -25,39 +24,41 @@ Vue.config.productionTip = false;
 
 // Association des routes aux composants
 const routes = [
-  //  Composant nommé
-  { path: '/visualisation', name: 'visualisation', component: Sub },
-  { path: '/intervention', name: 'intervention', component: Intervention },
-  { path: '/administration', name: 'administration', component: Administration },
-  { path: '/utilisateur', name: 'utilisateur', component: Utilisateur },
-  { path: '/', component: Login }
+    //  Composant nommé
+    {path: '/visualisation', name: 'visualisation', component: Sub},
+    {path: '/intervention', name: 'intervention', component: Intervention},
+    {path: '/administration', name: 'administration', component: Administration},
+    {path: '/administration/utilisateur', name: 'utilisateur', component: Utilisateur},
+    {path: '/', component: Login}
 ]
 
 // Initialisation du module store
 const store = new Vuex.Store({
-  state: {
-    utilisateur: null
-  },
-  mutations: {
-    login (state, utilisateur) {
-      state.utilisateur = utilisateur;
+    state: {
+        utilisateur: null,
+        message: null
+
     },
-    logout (state){
-      state.utilisateur = null
+    mutations: {
+        login(state, utilisateur) {
+            state.utilisateur = utilisateur;
+        },
+        logout(state) {
+            state.utilisateur = null
+        }
     }
-  }
 })
 
 // Initialisation du module routeur
 const router = new VueRouter({
-  routes
+    routes
 })
 
 // Initialisation de vue
 let app = new Vue({
-  router,
-  store,
-  render: h => h(App),
+    router,
+    store,
+    render: h => h(App),
 }).$mount('#app')
 
 global._vm = app;

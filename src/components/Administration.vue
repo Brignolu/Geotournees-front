@@ -1,6 +1,6 @@
 <template>
   <div>
-    Administration
+    <b-button to="/administration/utilisateur" variant="warning">Ajouter un Utilisateur</b-button>
   </div>
 </template>
 <script>
