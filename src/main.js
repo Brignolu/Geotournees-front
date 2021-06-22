@@ -38,7 +38,8 @@ const routes = [
 const store = new Vuex.Store({
     state: {
         utilisateur: null,
-        message: null
+        message: null,
+        mapcenter : [45.9182227,6.1248421]
 
     },
     mutations: {
@@ -53,6 +54,9 @@ const store = new Vuex.Store({
         },
         messagedestroy(state, message){
             state.message = null
+        },
+        updatemapcenter(state,mapcenter){
+            state.mapcenter=mapcenter;
         }
     }
 })

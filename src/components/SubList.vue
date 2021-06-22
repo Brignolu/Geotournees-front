@@ -135,25 +135,30 @@ export default {
 
     mouseOver(item) {
       this.hoveredRow = item;
-      this.$root.$emit('mouse-over-abo', item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long'])
-      console.log('emit => mouse-over-abo')
+      var coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
+      this.$store.commit("updatemapcenter", coords)
+      console.log(this.$store.state.mapcenter)
+      console.log('store commit => updatemapcenter')
     },
 
-    computed: {
-      splitDate: function () {
-        var isoDate = new Date(this.item["date"]);
-        var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();
-        return formatDate;
-      }
-    }
+
 
   },
+  computed: {
+    splitDate: function () {
+      var isoDate = new Date(this.item["date"]);
+      var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();
+      return formatDate;
+    }
+  }
+/*
   watch: {
     SelectRow: function (rowindex) {
       console.log("Watch => SelectRow " + rowindex)
-      this.$refs.selectableTable.selectRow(rowindex)
+      this.$refs.selectableTable.selectRow(rowindex-1)
     }
   }
+  */
   /* TODO: computed properties sur l'heure pour le format, relier le click sur marqueur pour sélectionner dans liste */
 };
 </script>

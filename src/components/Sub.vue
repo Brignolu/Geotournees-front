@@ -7,7 +7,7 @@
         <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
       </b-col>
       <b-col cols="5">
-        <SubMaps v-bind:locations="SubDataList" v-bind:center="MapCenter" v-bind:popup="Popup"></SubMaps>
+        <SubMaps v-bind:locations="SubDataList" v-bind:center="this.$store.state.mapcenter" v-bind:popup="Popup"></SubMaps>
       </b-col>
     </b-row>
   </div>
@@ -25,16 +25,13 @@ export default {
   components: { SubList, SubMaps },
   props: {
     SubDataList: Array,
-    MapCenter: Array,
     Popup: Object,
     SelectDataRow: Object,
-    UtilisateurCourant: Object,
   },
   methods: {
     data() {
       return {
         SubDataList: [],
-        MapCenter: [45.9, 6.129384],
       }
     },
     /* Mock la BDD */
@@ -108,10 +105,6 @@ export default {
     }
   },
   mounted() {
-    this.$root.$on('mouse-over-abo', (lat, lng) => {
-      console.log('on => mouse-over-abo')
-      this.MapCenter = [lat, lng];
-    })
     this.$root.$on('mouse-click-abo', (item) => {
       console.log('on => mouse-click-abo')
       this.Popup = item.index;
@@ -133,11 +126,9 @@ export default {
   beforeMount() {
 
     /*
-    // Servait anciennement à simuler les données
-    // this.mockSubData();
+    Servait anciennement à simuler les données
+    this.mockSubData();
     */
-    this.MapCenter = [46, 6.129384];
-    this.UtilisateurCourant = this.$route.params;
     this.fetchData();
   },
 

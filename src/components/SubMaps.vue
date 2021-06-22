@@ -33,7 +33,6 @@
 <script>
 
 /* import des bibliothèques et des assets */
-import * as fs from 'fs';
 
 import * as Vue2Leaflet from 'vue2-leaflet';
 import Vue2LeafletMarkercluster from 'vue2-leaflet-markercluster';
@@ -105,8 +104,10 @@ export default {
     }
   },
   beforeMount() {
+   /*
     var file = fs.open("@/assets/communesHteSavoie.geojson");
     this.geojsons = file;
+    */
   },
   mounted() {
   },
