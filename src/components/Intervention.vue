@@ -5,12 +5,12 @@
         <b-card>
           <b-form>
             <b-form-group label="Date et Heure de l'intervention :">
-            <b-form-datepicker id="example-datepicker" v-model="form.date" class="mb-2"></b-form-datepicker>
-            <b-form-timepicker v-model="form.heure" locale="fr"></b-form-timepicker>
+              <b-form-datepicker id="example-datepicker" v-model="form.date" class="mb-2"></b-form-datepicker>
+              <b-form-timepicker v-model="form.heure" locale="fr"></b-form-timepicker>
             </b-form-group>
             <b-form-group label="Abonné :">
-            <b-form-select v-model="form.abonneId" :options="optionsabonnes" :select-size="4">
-            </b-form-select>
+              <b-form-select v-model="form.abonneId" :options="optionsabonnes" :select-size="4">
+              </b-form-select>
               <div>
                 <b-button to="/intervention/abonne">Nouvel abonné</b-button>
 
@@ -20,14 +20,14 @@
               </div>
             </b-form-group>
             <b-form-group label="Agent :">
-            <b-form-select v-model="form.agentId" :options="optionsagents" :select-size="4">
-            </b-form-select>
+              <b-form-select v-model="form.agentId" :options="optionsagents" :select-size="4">
+              </b-form-select>
             </b-form-group>
             <b-form-group label="Type et motif de l'intervention :">
-            <b-form-select v-model="form.typeId" :options="optionstypes" :select-size="4">
-            </b-form-select>
-            <b-form-select v-model="form.motifId" :options="optionsmotifs" :select-size="4">
-            </b-form-select>
+              <b-form-select v-model="form.typeId" :options="optionstypes" :select-size="4">
+              </b-form-select>
+              <b-form-select v-model="form.motifId" :options="optionsmotifs" :select-size="4">
+              </b-form-select>
             </b-form-group>
             <div>
               <b-button v-on:click="postIntervention" variant="success">
@@ -46,7 +46,7 @@ import Personne from "@/components/Personne";
 
 export default {
   name: 'Intervention',
-  components: { Personne },
+  components: {Personne},
   methods: {
     postIntervention: function () {
       var dateheure = this.form.date + " " + this.form.heure + " UTC";
@@ -120,7 +120,7 @@ export default {
     }).catch(err => console.log(err))
   },
   mounted() {
-    if (this.$store.state.message){
+    if (this.$store.state.message) {
       this.$bvToast.toast(this.$store.state.message, {
         title: 'Notification',
         autoHideDelay: 5000,

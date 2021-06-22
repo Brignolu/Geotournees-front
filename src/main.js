@@ -31,7 +31,7 @@ const routes = [
     {path: '/administration', name: 'administration', component: Administration},
     {path: '/administration/utilisateur', name: 'utilisateur', component: Utilisateur},
     {path: '/', component: Login},
-    {path: '/intervention/abonne',name: 'abonne', component: Personne}
+    {path: '/intervention/abonne', name: 'abonne', component: Personne}
 ]
 
 // Initialisation du module store
@@ -39,7 +39,9 @@ const store = new Vuex.Store({
     state: {
         utilisateur: null,
         message: null,
-        mapcenter : [45.9182227,6.1248421]
+        mapcenter: [46.0736617,6.4048087],
+        zoom: 9,
+        datalist: null,
 
     },
     mutations: {
@@ -49,14 +51,26 @@ const store = new Vuex.Store({
         logout(state) {
             state.utilisateur = null
         },
-        messagecreate(state, message){
+        messagecreate(state, message) {
             state.message = message
         },
-        messagedestroy(state, message){
+        messagedestroy(state) {
             state.message = null
         },
-        updatemapcenter(state,mapcenter){
-            state.mapcenter=mapcenter;
+        updatemapcenter(state, mapcenter) {
+            state.mapcenter = mapcenter;
+        },
+        resetmapcenter(state){
+            state.mapcenter = [46.0736617,6.4048087];
+        },
+        updatedatalist(state, datalist) {
+            state.datalist = datalist;
+        },
+        individualzoom(state){
+            state.zoom = 15;
+        },
+        resetzoom(state){
+          state.zoom = 9;
         }
     }
 })

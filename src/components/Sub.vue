@@ -4,10 +4,11 @@
   <div class="my-4">
     <b-row class="px-0" v-if=this.$store.state.utilisateur>
       <b-col cols="7">
-        <SubList v-bind:SubData="SubDataList" v-bind:SelectRow="SelectDataRow"></SubList>
+        <SubList v-bind:SubData="this.$store.state.datalist" v-bind:SelectRow="SelectDataRow"></SubList>
       </b-col>
       <b-col cols="5">
-        <SubMaps v-bind:locations="SubDataList" v-bind:center="this.$store.state.mapcenter" v-bind:popup="Popup"></SubMaps>
+        <SubMaps v-bind:locations="this.$store.state.datalist" v-bind:zoom="this.$store.state.zoom" v-bind:center="this.$store.state.mapcenter"
+                 v-bind:popup="Popup"></SubMaps>
       </b-col>
     </b-row>
   </div>
@@ -22,85 +23,21 @@ import axios from "axios";
 
 
 export default {
-  components: { SubList, SubMaps },
+  components: {SubList, SubMaps},
   props: {
-    SubDataList: Array,
     Popup: Object,
     SelectDataRow: Object,
   },
   methods: {
-    data() {
-      return {
-        SubDataList: [],
-      }
-    },
-    /* Mock la BDD */
-    mockSubData() {
-      this.SubDataList =
-          [
-            {
-              'date': '2021-05-26T08:50:04.000Z',
-              'abonne.numero_abo': '25552',
-              'abonne.personne.nom': 'Garin',
-              'abonne.personne.prenom': 'Enzo',
-              'abonne.personne.adresses.numero': '66',
-              'abonne.personne.adresses.rue': 'rue des Artistes',
-              'abonne.personne.adresses.codepostal': '77380',
-              'abonne.personne.adresses.ville': 'Valenciennes',
-              'abonne.personne.numtel': '0450666666',
-              'agent.nom': 'Frederic Munier',
-              'motif.motif': 'Depannage',
-              'type.type': 'Maintenance',
-              'abonne.transmetteur': '6666',
-              'abonne.identifiant_wbb': '676666666',
-              'abonne.personne.adresses.coordonne.lat': 5.66,
-              'abonne.personne.adresses.coordonne.long': 9.4,
-            },
-            {
-              'date': '2021-05-26T08:50:04.000Z',
-              'abonne.numero_abo': '25552',
-              'abonne.personne.nom': 'Ferniez',
-              'abonne.personne.prenom': 'Maximilien',
-              'abonne.personne.adresses.numero': '94',
-              'abonne.personne.adresses.rue': 'rue du Stade',
-              'abonne.personne.adresses.codepostal': '77380',
-              'abonne.personne.adresses.ville': 'Valenciennes',
-              'abonne.personne.numtel': '0450666666',
-              'agent.nom': 'Frederic Munier',
-              'motif.motif': 'Depannage',
-              'type.type': 'Maintenance',
-              'abonne.transmetteur': '6666',
-              'abonne.identifiant_wbb': '676666676',
-              'abonne.personne.adresses.coordonne.lat': 6.66,
-              'abonne.personne.adresses.coordonne.long': 9.4,
-            },
-            {
-              'date': '2021-05-26T08:50:04.000Z',
-              'abonne.numero_abo': '25552',
-              'abonne.personne.nom': 'John',
-              'abonne.personne.prenom': 'Laurent',
-              'abonne.personne.adresses.numero': '80',
-              'abonne.personne.adresses.rue': 'rue des Hodlers',
-              'abonne.personne.adresses.codepostal': '77380',
-              'abonne.personne.adresses.ville': 'Valenciennes',
-              'abonne.personne.numtel': '0450666666',
-              'agent.nom': 'Frederic Munier',
-              'motif.motif': 'Depannage',
-              'type.type': 'Maintenance',
-              'abonne.transmetteur': '6666',
-              'abonne.identifiant_wbb': '676676666',
-              'abonne.personne.adresses.coordonne.lat': 4.66,
-              'abonne.personne.adresses.coordonne.long': 9.4,
-            }
-          ]
-    },
     /* Get From BDD */
     fetchData() {
       axios.get("http://127.0.0.1:3000/interventions")
           .then(function (value) {
             return value.data;
           }).then(data => {
-        this.SubDataList = data;
+
+        //this.SubDataList = data;
+        this.$store.commit("updatedatalist", data);
       }).catch(err => console.log(err));
     }
   },
@@ -114,7 +51,7 @@ export default {
       console.log(item.id)
       this.SelectDataRow = item.id;
     })
-    if (this.$store.state.message){
+    if (this.$store.state.message) {
       this.$bvToast.toast(this.$store.state.message, {
         title: 'Notification',
         autoHideDelay: 5000,
@@ -124,11 +61,6 @@ export default {
     }
   },
   beforeMount() {
-
-    /*
-    Servait anciennement à simuler les données
-    this.mockSubData();
-    */
     this.fetchData();
   },
 

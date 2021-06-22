@@ -2,12 +2,13 @@
   <header>
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <b-navbar-brand class="mr-auto">
-        <img @click="accueil" id="logo" alt="Conseil Départemental de Haute-Savoie" src="@/assets/Logo_Haute_Savoie.png">
-        Visualisation des tournées
+        <img @click="accueil" id="logo" alt="Conseil Départemental de Haute-Savoie"
+             src="@/assets/Logo_Haute_Savoie_Blanc.png">
+<!--       {{ this.$route.name }}-->Visualisation des tournées
       </b-navbar-brand>
 
       <b-navbar-nav class="ml-auto mr-5">
-        <b-nav-item-dropdown >
+        <b-nav-item-dropdown>
 
           <template #button-content>
             <em>Bonjour {{ UtilisateurCourant.nom_utilisateur }}</em>
@@ -17,7 +18,8 @@
             Deconnexion
           </b-dropdown-item>
 
-          <b-dropdown-item v-if="UtilisateurCourant.roleId === 3 || UtilisateurCourant.roleId === 2" @click="intervention">
+          <b-dropdown-item v-if="UtilisateurCourant.roleId === 3 || UtilisateurCourant.roleId === 2"
+                           @click="intervention">
             Ajouter une intervention
           </b-dropdown-item>
 
@@ -36,9 +38,11 @@ export default {
   name: 'Header',
   props: ['UtilisateurCourant'],
   methods: {
-    accueil: function (){
+    accueil: function () {
       console.log("accueil");
-      this.$router.push('/visualisation');
+      this.$store.commit("resetmapcenter");
+      this.$store.commit("resetzoom");
+      this.$router.push('/visualisation').catch(err => console.log(err));
     },
     deconnexion: function () {
       console.log("deconnexion");

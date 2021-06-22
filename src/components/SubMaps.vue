@@ -3,11 +3,12 @@
   <div id="map-wrapper">
 
     <div id="map">
-      <v-map :zoom=11 :center="center">
+<!--      <b-button v-if="this.$store.state.zoom > 9"><b-icon-zoom-out></b-icon-zoom-out></b-button>-->
+      <v-map :zoom="zoom" :center="center">
         <v-icondefault></v-icondefault>
         <v-tilelayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"></v-tilelayer>
-        <v-geojson v-for="geojson in geojsons" :key="geojson.id" :geojson="geojson"></v-geojson>
+        <v-geojson :geojson="geojsoncommunes"></v-geojson>
         <v-marker-cluster :options="clusterOptions" @ready="ready()">
           <template v-for="l in locations">
             <v-marker v-if="l['type.type'] === 'Depannage'" :key="l['id']"
@@ -46,6 +47,7 @@ import L from "leaflet";
 import icon_maintenance from "@/assets/Marqueur00.png";
 import icon_depannage from "@/assets/Marqueur06.png";
 import icon_installation from "@/assets/Marqueur08.png";
+import geojsoncommunes from "@/assets/communesHteSavoie.json"
 
 export default {
   name: 'SubMaps',
@@ -57,7 +59,7 @@ export default {
     'v-marker-cluster': Vue2LeafletMarkercluster,
     'v-geojson': Vue2Leaflet.LGeoJson
   },
-  props: ['locations', 'center', 'popup', 'geojsons'],
+  props: ['locations', 'center', 'zoom'],
   methods: {
     click: function (item) {
       this.$root.$emit('mouse-click-marker', item);
@@ -70,9 +72,6 @@ export default {
       console.log('Watch Center');
       this.center = val;
     },
-    popup: function (val) {
-      console.log('Watch Popup');
-    }
   },
   data() {
     return {
@@ -90,24 +89,26 @@ export default {
         iconSize: [42, 42],
         iconAnchor: [13, 42],
       }),
+
       depannageIcon: L.icon({
         iconUrl: icon_depannage,
         iconSize: [42, 42],
         iconAnchor: [13, 42],
       }),
+
       installationIcon: L.icon({
         iconUrl: icon_installation,
         iconSize: [42, 42],
         iconAnchor: [13, 42],
       }),
-      geojson: null
+      geojsoncommunes: geojsoncommunes
     }
   },
   beforeMount() {
-   /*
-    var file = fs.open("@/assets/communesHteSavoie.geojson");
-    this.geojsons = file;
-    */
+    /*
+     var file = fs.open("@/assets/communesHteSavoie.json");
+     this.geojson = file;
+     */
   },
   mounted() {
   },

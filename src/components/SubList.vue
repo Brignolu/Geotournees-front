@@ -137,10 +137,10 @@ export default {
       this.hoveredRow = item;
       var coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
       this.$store.commit("updatemapcenter", coords)
+      this.$store.commit("individualzoom")
       console.log(this.$store.state.mapcenter)
       console.log('store commit => updatemapcenter')
     },
-
 
 
   },
@@ -151,14 +151,14 @@ export default {
       return formatDate;
     }
   }
-/*
-  watch: {
-    SelectRow: function (rowindex) {
-      console.log("Watch => SelectRow " + rowindex)
-      this.$refs.selectableTable.selectRow(rowindex-1)
+  /*
+    watch: {
+      SelectRow: function (rowindex) {
+        console.log("Watch => SelectRow " + rowindex)
+        this.$refs.selectableTable.selectRow(rowindex-1)
+      }
     }
-  }
-  */
+    */
   /* TODO: computed properties sur l'heure pour le format, relier le click sur marqueur pour sélectionner dans liste */
 };
 </script>

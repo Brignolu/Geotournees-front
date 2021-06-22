@@ -46,7 +46,6 @@ import axios from "axios"
 
 export default {
   name: 'Login',
-  props: ['utilisateur'],
   methods: {
     postLogin: function () {
       axios.post('http://localhost:3000/login', {
@@ -72,7 +71,8 @@ export default {
       form: {
         nom_utilisateur: "",
         password: ""
-      }
+      },
+      utilisateur: null,
     }
   }
 }
