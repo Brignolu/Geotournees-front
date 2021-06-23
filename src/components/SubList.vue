@@ -48,8 +48,11 @@
               :href="'http://10.200.2.102/webbuncher/gestionAbonne/rechercher.php?idA=' + data.item['abonne.identifiant_wbb']">
             {{ data.item['abonne.numero_abo'] }}
           </b-button>
-          <b-button size="sm" @click="data.toggleDetails" class="mr-2" variant="primary">
+          <b-button size="sm" @click="data.toggleDetails" variant="primary">
             <b-icon-clipboard-plus></b-icon-clipboard-plus>
+          </b-button>
+          <b-button @click="deleteIntervention(data.item)" variant="danger" v-if="$store.state.utilisateur.roleId > 1">
+            <b-icon-trash></b-icon-trash>
           </b-button>
         </b-button-group>
       </template>
@@ -88,6 +91,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'SubList',
   emits: ['tablehover', 'tableclick'],
@@ -142,6 +147,24 @@ export default {
       console.log('store commit => updatemapcenter')
     },
 
+    deleteIntervention(item) {
+      console.log(item.id);
+      axios.delete("http://localhost:3000/delete/intervention/"+ item.id, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': '*'
+        }
+      }).then(function(response){
+        if(response.status === 204)
+          return response
+      }).then(() => {
+        this.$store.commit("messagecreate", "Intervention Supprimée")
+        this.$store.commit("updatedatalist")
+      } )
+
+    }
+
 
   },
   computed: {
@@ -151,6 +174,7 @@ export default {
       return formatDate;
     }
   }
+
   /*
     watch: {
       SelectRow: function (rowindex) {
@@ -159,6 +183,7 @@ export default {
       }
     }
     */
+
   /* TODO: computed properties sur l'heure pour le format, relier le click sur marqueur pour sélectionner dans liste */
 };
 </script>

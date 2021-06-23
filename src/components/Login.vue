@@ -58,6 +58,7 @@ export default {
         this.utilisateur = data;
         if (data.success) {
           this.$store.commit("login", data);
+          this.$store.commit('initdatalist')
           this.$router.push({name: 'visualisation'});
         } else {
           this.utilisateur = data.etat;

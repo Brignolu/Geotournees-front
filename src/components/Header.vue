@@ -4,7 +4,7 @@
       <b-navbar-brand class="mr-auto">
         <img @click="accueil" id="logo" alt="Conseil Départemental de Haute-Savoie"
              src="@/assets/Logo_Haute_Savoie_Blanc.png">
-<!--       {{ this.$route.name }}-->Visualisation des tournées
+        Visualisation des tournées
       </b-navbar-brand>
 
       <b-navbar-nav class="ml-auto mr-5">
@@ -26,14 +26,14 @@
           <b-dropdown-item v-if="UtilisateurCourant.roleId === 3" @click="administration">
             Panneau d'administration
           </b-dropdown-item>
-
         </b-nav-item-dropdown>
-
       </b-navbar-nav>
     </b-navbar>
   </header>
 </template>
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: 'Header',
   props: ['UtilisateurCourant'],
@@ -56,6 +56,19 @@ export default {
     administration: function () {
       console.log("administration");
       this.$router.push('/administration');
+    }
+  },
+  computed:{
+    ...mapGetters({messageNot:'messageNotification'})
+  },
+  watch:{
+    messageNot: function (newMessage){
+      this.$bvToast.toast(newMessage, {
+        title: 'Notification',
+        autoHideDelay: 5000,
+        appendToast: false
+      });
+      this.$store.commit("messagedestroy");
     }
   }
 }

@@ -15,6 +15,7 @@ import Administration from "@/components/Administration";
 import Intervention from "@/components/Intervention";
 import Utilisateur from "@/components/Utilisateur";
 import Personne from "@/components/Personne";
+import axios from "axios";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -39,7 +40,7 @@ const store = new Vuex.Store({
     state: {
         utilisateur: null,
         message: null,
-        mapcenter: [46.0736617,6.4048087],
+        mapcenter: [46.0736617, 6.4048087],
         zoom: 9,
         datalist: null,
 
@@ -60,17 +61,36 @@ const store = new Vuex.Store({
         updatemapcenter(state, mapcenter) {
             state.mapcenter = mapcenter;
         },
-        resetmapcenter(state){
-            state.mapcenter = [46.0736617,6.4048087];
+        resetmapcenter(state) {
+            state.mapcenter = [46.0736617, 6.4048087];
         },
-        updatedatalist(state, datalist) {
-            state.datalist = datalist;
+        updatedatalist(state) {
+            axios.get("http://127.0.0.1:3000/interventions")
+                .then(function (value) {
+                    return value.data;
+                }).then(data => {
+                state.datalist = data;
+            }).catch(err => console.log(err));
         },
-        individualzoom(state){
+        initdatalist(state) {
+            console.log("oui")
+            axios.get("http://127.0.0.1:3000/interventions")
+                .then(function (value) {
+                    return value.data;
+                }).then(data => {
+                state.datalist = data;
+            }).catch(err => console.log(err));
+        },
+        individualzoom(state) {
             state.zoom = 15;
         },
-        resetzoom(state){
-          state.zoom = 9;
+        resetzoom(state) {
+            state.zoom = 9;
+        }
+    },
+    getters:{
+        messageNotification: state => {
+            return state.message;
         }
     }
 })
