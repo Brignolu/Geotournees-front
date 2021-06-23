@@ -58,11 +58,11 @@ export default {
       this.$router.push('/administration');
     }
   },
-  computed:{
-    ...mapGetters({messageNot:'messageNotification'})
+  computed: {
+    ...mapGetters({messageNot: 'messageNotification'})
   },
-  watch:{
-    messageNot: function (newMessage){
+  watch: {
+    messageNot: function (newMessage) {
       this.$bvToast.toast(newMessage, {
         title: 'Notification',
         autoHideDelay: 5000,

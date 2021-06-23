@@ -25,6 +25,7 @@
              :filter="filter"
              @row-clicked="click"
              @row-hovered="mouseOver"
+             @row-unhovered="mouseLeave"
              ref="selectableTable"
              selectable
     >
@@ -76,7 +77,7 @@
           <b-row>
             <b-col sm="3" class="text-sm-right">
               <b>
-                n°Téléphone:
+                n° Téléphone:
               </b>
             </b-col>
             <b-col>
@@ -85,7 +86,6 @@
           </b-row>
         </b-card>
       </template>
-
     </b-table>
   </div>
 </template>
@@ -127,7 +127,6 @@ export default {
           sortable: false
         }],
       filter: '',
-      hoveredRow: null,
     }
   },
   methods: {
@@ -139,7 +138,6 @@ export default {
     },
 
     mouseOver(item) {
-      this.hoveredRow = item;
       var coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
       this.$store.commit("updatemapcenter", coords)
       this.$store.commit("individualzoom")
@@ -147,21 +145,25 @@ export default {
       console.log('store commit => updatemapcenter')
     },
 
+    mouseLeave() {
+      console.log("mouseleave")
+    },
+
     deleteIntervention(item) {
       console.log(item.id);
-      axios.delete("http://localhost:3000/delete/intervention/"+ item.id, {
+      axios.delete("http://localhost:3000/delete/intervention/" + item.id, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': '*'
         }
-      }).then(function(response){
-        if(response.status === 204)
+      }).then(function (response) {
+        if (response.status === 204)
           return response
       }).then(() => {
         this.$store.commit("messagecreate", "Intervention Supprimée")
         this.$store.commit("updatedatalist")
-      } )
+      })
 
     }
 
@@ -175,16 +177,6 @@ export default {
     }
   }
 
-  /*
-    watch: {
-      SelectRow: function (rowindex) {
-        console.log("Watch => SelectRow " + rowindex)
-        this.$refs.selectableTable.selectRow(rowindex-1)
-      }
-    }
-    */
-
-  /* TODO: computed properties sur l'heure pour le format, relier le click sur marqueur pour sélectionner dans liste */
 };
 </script>
 

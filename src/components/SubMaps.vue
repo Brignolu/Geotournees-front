@@ -3,7 +3,7 @@
   <div id="map-wrapper">
 
     <div id="map">
-<!--      <b-button v-if="this.$store.state.zoom > 9"><b-icon-zoom-out></b-icon-zoom-out></b-button>-->
+      <!--      <b-button v-if="this.$store.state.zoom > 9"><b-icon-zoom-out></b-icon-zoom-out></b-button>-->
       <v-map :zoom="zoom" :center="center">
         <v-icondefault></v-icondefault>
         <v-tilelayer

@@ -7,7 +7,8 @@
         <SubList v-bind:SubData="this.$store.state.datalist"></SubList>
       </b-col>
       <b-col cols="5">
-        <SubMaps v-bind:locations="this.$store.state.datalist" v-bind:zoom="this.$store.state.zoom" v-bind:center="this.$store.state.mapcenter"></SubMaps>
+        <SubMaps v-bind:locations="this.$store.state.datalist" v-bind:zoom="this.$store.state.zoom"
+                 v-bind:center="this.$store.state.mapcenter"></SubMaps>
       </b-col>
     </b-row>
   </div>
@@ -38,4 +39,3 @@ export default {
 }
 
 </script>
-<!--TODO: Toast-->

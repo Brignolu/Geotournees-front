@@ -27,12 +27,55 @@ Vue.config.productionTip = false;
 // Association des routes aux composants
 const routes = [
     //  Composant nommé
-    {path: '/visualisation', name: 'visualisation', component: Sub},
-    {path: '/intervention', name: 'intervention', component: Intervention},
-    {path: '/administration', name: 'administration', component: Administration},
-    {path: '/administration/utilisateur', name: 'utilisateur', component: Utilisateur},
+    {
+        path: '/visualisation', name: 'visualisation', component: Sub, beforeEnter: (to, from, next) => {
+            if (store.state.utilisateur === null) {
+                next(false);
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/intervention', name: 'intervention', component: Intervention, beforeEnter: (to, from, next) => {
+            if (store.state.utilisateur === null || store.state.utilisateur.roleId < 2) {
+                next(false);
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/administration', name: 'administration', component: Administration, beforeEnter: (to, from, next) => {
+            if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
+                next(false);
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/administration/utilisateur',
+        name: 'utilisateur',
+        component: Utilisateur,
+        beforeEnter: (to, from, next) => {
+            if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
+                next(false);
+            } else {
+                next();
+            }
+        }
+    },
     {path: '/', component: Login},
-    {path: '/intervention/abonne', name: 'abonne', component: Personne}
+    {
+        path: '/intervention/abonne', name: 'abonne', component: Personne, beforeEnter: (to, from, next) => {
+            if (store.state.utilisateur === null || store.state.utilisateur.roleId < 2) {
+                next(false);
+            } else {
+                next();
+            }
+        }
+    }
 ]
 
 // Initialisation du module store
@@ -88,7 +131,7 @@ const store = new Vuex.Store({
             state.zoom = 9;
         }
     },
-    getters:{
+    getters: {
         messageNotification: state => {
             return state.message;
         }

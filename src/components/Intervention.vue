@@ -120,14 +120,6 @@ export default {
     }).catch(err => console.log(err))
   },
   mounted() {
-/*    if (this.$store.state.message) {
-      this.$bvToast.toast(this.$store.state.message, {
-        title: 'Notification',
-        autoHideDelay: 5000,
-        appendToast: false
-      });
-      this.$store.commit("messagedestroy");
-    }*/
   },
 
 

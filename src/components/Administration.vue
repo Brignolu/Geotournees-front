@@ -1,6 +1,27 @@
 <template>
   <div>
-    <b-button to="/administration/utilisateur" variant="warning">Ajouter un Utilisateur</b-button>
+    <b-button-group>
+      <b-button to="/administration/utilisateur" variant="success">
+        <b-icon-person-plus-fill></b-icon-person-plus-fill>
+        Ajouter un Utilisateur
+      </b-button>
+      <b-button to="/administration/utilisateur" variant="primary">
+        <b-icon-person-fill></b-icon-person-fill>
+        Voir/Supprimer un Utilisateur
+      </b-button>
+    </b-button-group>
+
+    <b-button-group>
+      <b-button to="/intervention/abonne" variant="success">
+        <b-icon-file-earmark-plus-fill></b-icon-file-earmark-plus-fill>
+        Ajouter un Abonné
+      </b-button>
+      <b-button to="/administration/utilisateur" variant="primary">
+        <b-icon-file-earmark-minus-fill></b-icon-file-earmark-minus-fill>
+        Voir/Supprimer un Abonné
+      </b-button>
+    </b-button-group>
+
   </div>
 </template>
 <script>
