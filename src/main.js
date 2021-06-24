@@ -15,12 +15,14 @@ import Administration from "@/components/Administration";
 import Intervention from "@/components/Intervention";
 import Utilisateur from "@/components/Utilisateur";
 import Personne from "@/components/Personne";
+
 import axios from "axios";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueRouter);
 Vue.use(Vuex);
+
 
 Vue.config.productionTip = false;
 

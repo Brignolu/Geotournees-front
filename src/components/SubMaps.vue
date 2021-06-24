@@ -3,7 +3,6 @@
   <div id="map-wrapper">
 
     <div id="map">
-      <!--      <b-button v-if="this.$store.state.zoom > 9"><b-icon-zoom-out></b-icon-zoom-out></b-button>-->
       <v-map :zoom="zoom" :center="center">
         <v-icondefault></v-icondefault>
         <v-tilelayer
@@ -11,7 +10,7 @@
         <v-geojson :geojson="geojsoncommunes"></v-geojson>
         <v-marker-cluster :options="clusterOptions" @ready="ready()">
           <template v-for="l in locations">
-            <v-marker v-if="l['type.type'] === 'Depannage'" :key="l['id']"
+            <v-marker v-if="l['type.type'] === 'Dépannage'" :key="l['id']"
                       :lat-lng="[l['abonne.personne.adresses.coordonne.lat'],l['abonne.personne.adresses.coordonne.long']]"
                       :icon="depannageIcon" @click="click(l)">
             </v-marker>

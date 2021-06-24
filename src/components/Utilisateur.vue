@@ -1,46 +1,57 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center col-12">
     <b-card>
       <b-form>
         <b-form-group
-            label="Nom :"
+            label="Informations:"
         >
           <b-form-input
               v-model="form.nom"
               type="text"
               placeholder="Nom"
-              required
           ></b-form-input>
         </b-form-group>
 
         <b-form-group
-            label="Nom d'utilisateur : "
+            label="Identifiants:"
         >
+
           <b-form-input
 
               v-model="form.nom_utilisateur"
               type="text"
               placeholder="Nom d'utilisateur"
+              :state="betweenSixTwelve('nom_utilisateur')"
               required
           ></b-form-input>
-        </b-form-group>
 
-        <b-form-group id="input-group-2" label="Mot de Passe :">
+          <b-form-invalid-feedback :state="betweenSixTwelve('nom_utilisateur')">
+            Votre nom d'utilisateur doit comprendre entre 6 et 12 caractères
+          </b-form-invalid-feedback>
+
           <b-form-input
               v-model="form.mot_de_passe"
               placeholder="Mot de passe"
-              type="text"
+              type="password"
+              :state="betweenSixTwelve('mot_de_passe')"
               required
           ></b-form-input>
+
+          <b-form-invalid-feedback :state="betweenSixTwelve('mot_de_passe')">
+            Votre mot de passe doit comprendre entre 6 et 12 caractères
+          </b-form-invalid-feedback>
+
         </b-form-group>
-        <b-form-group id="input-group-2" label="Status :">
-          <b-form-select v-model="form.statusId" :options="options" :select-size="4">
+        <b-form-group id="input-group-2" label="Statut:">
+          <b-form-select v-model="form.statusId" :options="options" :state="requiredStatus" :select-size="4">
           </b-form-select>
+          <b-form-invalid-feedback :state="betweenSixTwelve('mot_de_passe')">
+            Veuillez sélectionner un statut
+          </b-form-invalid-feedback>
         </b-form-group>
         <div>
-          <b-button v-on:click="postUtilisateur" variant="success">
-            Ajouter l'utilisateur
-          </b-button>
+<!--          <b-button type="reset" variant="danger">Effacer</b-button>-->
+          <b-button v-on:click="postUtilisateur" variant="success">Ajouter</b-button>
         </div>
       </b-form>
     </b-card>
@@ -54,6 +65,7 @@ export default {
   props: ['statut'],
   methods: {
     postUtilisateur: function () {
+      if (this.betweenSixTwelve('nom_utilisateur') && this.betweenSixTwelve('mot_de_passe') && this.requiredStatus){
       axios.post('http://localhost:3000/create/utilisateur', {
             nom: this.form.nom,
             nom_utilisateur: this.form.nom_utilisateur,
@@ -69,14 +81,25 @@ export default {
             }
           }).then(() => {
         this.$router.push({name: 'visualisation'});
-      }).catch(err => console.log(err))
+      }).catch(err => console.log(err))}
+    },
+    onreset(event) {
+      event.preventDefault()
+      this.form.nom = '';
+      this.form.nom_utilisateur = '';
+      this.form.mot_de_passe = '';
+      this.form.statusId = null;
     }
 
   },
   computed: {
-    emptyText() {
-      return this.form.nom_utilisateur.length > 2 ? true : false
+    betweenSixTwelve() {
+      return item => this.form[item].length >= 6 && this.form.nom_utilisateur.length <= 12
+    },
+    requiredStatus(){
+      return this.form.statusId != null;
     }
+
   },
   data() {
     return {
@@ -84,7 +107,7 @@ export default {
         nom: "",
         nom_utilisateur: "",
         mot_de_passe: "",
-        statusId: 0
+        statusId: null
       },
 
       options: [
