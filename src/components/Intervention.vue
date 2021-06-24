@@ -81,7 +81,7 @@ export default {
             return response.data
           }
         }).then((data) => {
-      for (var i in data) {
+      for (let i in data) {
         this.optionsmotifs.push({value: data[i].id, text: data[i].motif})
       }
     }).catch(err => console.log(err))
@@ -92,7 +92,7 @@ export default {
             return response.data
           }
         }).then((data) => {
-      for (var i in data) {
+      for (let i in data) {
         this.optionsagents.push({value: data[i].id, text: data[i].nom})
       }
     }).catch(err => console.log(err))
@@ -103,7 +103,7 @@ export default {
             return response.data
           }
         }).then((data) => {
-      for (var i in data) {
+      for (let i in data) {
         this.optionstypes.push({value: data[i].id, text: data[i].type})
       }
     }).catch(err => console.log(err))
@@ -114,7 +114,7 @@ export default {
             return response.data
           }
         }).then((data) => {
-      for (var i in data) {
+      for (let i in data) {
         this.optionsabonnes.push({value: data[i].abonneId, text: data[i].nom + " " + data[i].prenom})
       }
     }).catch(err => console.log(err))

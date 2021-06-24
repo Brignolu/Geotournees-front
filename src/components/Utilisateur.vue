@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center col-12">
-    <b-card>
+  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <b-card class="col-4">
       <b-form>
         <b-form-group
             label="Informations:"
@@ -50,7 +50,7 @@
           </b-form-invalid-feedback>
         </b-form-group>
         <div>
-<!--          <b-button type="reset" variant="danger">Effacer</b-button>-->
+          <!--          <b-button type="reset" variant="danger">Effacer</b-button>-->
           <b-button v-on:click="postUtilisateur" variant="success">Ajouter</b-button>
         </div>
       </b-form>
@@ -65,23 +65,24 @@ export default {
   props: ['statut'],
   methods: {
     postUtilisateur: function () {
-      if (this.betweenSixTwelve('nom_utilisateur') && this.betweenSixTwelve('mot_de_passe') && this.requiredStatus){
-      axios.post('http://localhost:3000/create/utilisateur', {
-            nom: this.form.nom,
-            nom_utilisateur: this.form.nom_utilisateur,
-            mot_de_passe: this.form.mot_de_passe,
-            statusId: this.form.statusId
-          }
-      )
-          .then(function (response) {
-            console.log(response.status);
-            console.log(response);
-            if (response.status === 201) {
-              return response.data
+      if (this.betweenSixTwelve('nom_utilisateur') && this.betweenSixTwelve('mot_de_passe') && this.requiredStatus) {
+        axios.post('http://localhost:3000/create/utilisateur', {
+              nom: this.form.nom,
+              nom_utilisateur: this.form.nom_utilisateur,
+              mot_de_passe: this.form.mot_de_passe,
+              statusId: this.form.statusId
             }
-          }).then(() => {
-        this.$router.push({name: 'visualisation'});
-      }).catch(err => console.log(err))}
+        )
+            .then(function (response) {
+              console.log(response.status);
+              console.log(response);
+              if (response.status === 201) {
+                return response.data
+              }
+            }).then(() => {
+          this.$router.push({name: 'visualisation'});
+        }).catch(err => console.log(err))
+      }
     },
     onreset(event) {
       event.preventDefault()
@@ -96,7 +97,7 @@ export default {
     betweenSixTwelve() {
       return item => this.form[item].length >= 6 && this.form.nom_utilisateur.length <= 12
     },
-    requiredStatus(){
+    requiredStatus() {
       return this.form.statusId != null;
     }
 
