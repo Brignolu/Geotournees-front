@@ -1,104 +1,128 @@
 <template>
   <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-    <b-row>
-      <b-col>
-        <b-card>
-          <b-form>
-            <b-form-group label="Informations abonné :">
-              <b-form-input
+    <b-card class="col-6">
+      <b-form>
+        <b-form-group label="Informations abonné:">
+          <b-form-input
 
-                  v-model="form.numero_abo"
-                  type="text"
-                  placeholder="Numéro abonné"
-                  required
-              ></b-form-input>
+              v-model="form.numero_abo"
+              type="text"
+              placeholder="Numéro abonné"
+              :state="requiredStr('numero_abo')"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredStr('numero_abo')">
+            Veuillez préciser le numéro d'abonné
+          </b-form-invalid-feedback>
 
+          <b-form-input
 
-              <b-form-input
+              v-model="form.transmetteur"
+              type="number"
+              placeholder="Transmetteur"
+              required
+          ></b-form-input>
 
-                  v-model="form.transmetteur"
-                  type="number"
-                  placeholder="Transmetteur"
-                  required
-              ></b-form-input>
+          <b-form-input
+              v-model="form.identifiant_wbb"
+              type="number"
+              placeholder="Identifiant WBB"
+              :state="requiredNbr('identifiant_wbb')"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredNbr('identifiant_wbb')">
+            Veuillez Préciser l'identifiant WebBuncher
+          </b-form-invalid-feedback>
+        </b-form-group>
 
+        <b-form-group label="Informations personnelles :">
+          <b-form-input
 
-              <b-form-input
-                  v-model="form.identifiant_wbb"
-                  type="number"
-                  placeholder="Identifiant WBB"
-                  required
-              ></b-form-input>
-            </b-form-group>
+              v-model="form.nom"
+              type="text"
+              placeholder="Nom"
+              :state="requiredStr('nom')"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredStr('nom')">
+            Veuillez sélectionner un nom
+          </b-form-invalid-feedback>
 
-            <b-form-group label="Informations personnelles :">
-              <b-form-input
+          <b-form-input
 
-                  v-model="form.nom"
-                  type="text"
-                  placeholder="Nom"
-                  required
-              ></b-form-input>
+              v-model="form.prenom"
+              type="text"
+              placeholder="Prénom"
+              :state="requiredStr('prenom')"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredStr('prenom')">
+            Veuillez sélectionner un prénom
+          </b-form-invalid-feedback>
 
-              <b-form-input
+          <b-form-input
 
-                  v-model="form.prenom"
-                  type="text"
-                  placeholder="Prénom"
-                  required
-              ></b-form-input>
+              v-model="form.numtel"
+              type="text"
+              placeholder="N° téléphone"
+              required
+          ></b-form-input>
+        </b-form-group>
 
-              <b-form-input
+        <b-form-group label="Adresse :">
+          <b-form-input
+              v-model="form.numero"
+              type="text"
+              placeholder="Numéro de voie"
+              :state="requiredStr('numero')"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredStr('numero')">
+            Veuillez sélectionner un numero
+          </b-form-invalid-feedback>
 
-                  v-model="form.numtel"
-                  type="text"
-                  placeholder="N° téléphone"
-                  required
-              ></b-form-input>
-            </b-form-group>
+          <b-form-input
+              v-model="form.rue"
+              type="text"
+              placeholder="Rue"
+              :state="requiredStr('rue')"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredStr('rue')">
+            Veuillez sélectionner la rue
+          </b-form-invalid-feedback>
 
-            <b-form-group label="Adresse :">
-              <b-form-input
-                  v-model="form.numero"
-                  type="text"
-                  placeholder="Numéro de voie"
-                  required
-              ></b-form-input>
+          <b-form-input
+              v-model="form.codepostal"
+              type="text"
+              placeholder="CP"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredStr('codepostal')">
+            Veuillez preciser le code postal
+          </b-form-invalid-feedback>
 
-              <b-form-input
-                  v-model="form.rue"
-                  type="text"
-                  placeholder="Rue"
-                  required
-              ></b-form-input>
+          <b-form-input
+              v-model="form.ville"
+              type="text"
+              placeholder="Ville"
+              required
+          ></b-form-input>
+          <b-form-invalid-feedback :state="requiredStr('ville')">
+            Veuillez preciser la ville
+          </b-form-invalid-feedback>
+        </b-form-group>
 
-              <b-form-input
-                  v-model="form.codepostal"
-                  type="text"
-                  placeholder="CP"
-                  required
-              ></b-form-input>
-
-              <b-form-input
-                  v-model="form.ville"
-                  type="text"
-                  placeholder="Ville"
-                  required
-              ></b-form-input>
-            </b-form-group>
-
-            <div>
-              <b-button v-on:click="postAbonne" variant="success">
-                Créer l'Abonné
-              </b-button>
-            </div>
-          </b-form>
-        </b-card>
-      </b-col>
-    </b-row>
+        <div>
+          <b-button v-on:click="postAbonne" variant="success">
+            Créer l'Abonné
+          </b-button>
+        </div>
+      </b-form>
+    </b-card>
   </div>
-
 </template>
+
 <script>
 import axios from "axios";
 
@@ -223,6 +247,15 @@ export default {
         personneId: 0,
       },
     }
-  }
+  },
+  computed: {
+    requiredNbr() {
+      return item => this.form[item] < 0;
+    },
+    requiredStr() {
+      return item => this.form[item] !== "";
+    }
+
+  },
 }
 </script>

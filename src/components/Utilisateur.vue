@@ -17,7 +17,6 @@
         >
 
           <b-form-input
-
               v-model="form.nom_utilisateur"
               type="text"
               placeholder="Nom d'utilisateur"
@@ -49,10 +48,11 @@
             Veuillez sélectionner un statut
           </b-form-invalid-feedback>
         </b-form-group>
+
         <div>
-          <!--          <b-button type="reset" variant="danger">Effacer</b-button>-->
           <b-button v-on:click="postUtilisateur" variant="success">Ajouter</b-button>
         </div>
+
       </b-form>
     </b-card>
   </div>

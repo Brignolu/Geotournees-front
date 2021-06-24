@@ -1,43 +1,65 @@
 <template>
   <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-    <b-row>
-      <b-col>
-        <b-card>
-          <b-form>
-            <b-form-group label="Date et Heure de l'intervention :">
-              <b-form-datepicker id="example-datepicker" v-model="form.date" class="mb-2"></b-form-datepicker>
-              <b-form-timepicker v-model="form.heure" locale="fr"></b-form-timepicker>
-            </b-form-group>
-            <b-form-group label="Abonné :">
-              <b-form-select v-model="form.abonneId" :options="optionsabonnes" :select-size="4">
-              </b-form-select>
-              <div>
-                <b-button to="/intervention/abonne">Nouvel abonné</b-button>
 
-                <b-modal id="modal-abonne" title="Nouvel Abonné">
-                  <Personne></Personne>
-                </b-modal>
-              </div>
-            </b-form-group>
-            <b-form-group label="Agent :">
-              <b-form-select v-model="form.agentId" :options="optionsagents" :select-size="4">
-              </b-form-select>
-            </b-form-group>
-            <b-form-group label="Type et motif de l'intervention :">
-              <b-form-select v-model="form.typeId" :options="optionstypes" :select-size="4">
-              </b-form-select>
-              <b-form-select v-model="form.motifId" :options="optionsmotifs" :select-size="4">
-              </b-form-select>
-            </b-form-group>
-            <div>
-              <b-button v-on:click="postIntervention" variant="success">
-                Créer l'intervention
-              </b-button>
-            </div>
-          </b-form>
-        </b-card>
-      </b-col>
-    </b-row>
+    <b-card class="col-6 h-75">
+      <h3>Nouvelle Intervention</h3>
+      <b-form>
+        <b-form-group label="Date et Heure de l'intervention :">
+          <b-form-datepicker id="example-datepicker" v-model="form.date" :state="datetimeSelected('date')"
+                             class="mb-2"></b-form-datepicker>
+          <b-form-timepicker v-model="form.heure" :state="datetimeSelected('heure')" locale="fr"></b-form-timepicker>
+          <b-form-invalid-feedback :state="datetimeSelected('date') && datetimeSelected('heure')">
+            Veuillez préciser la date et l'heure de l'intervention
+          </b-form-invalid-feedback>
+        </b-form-group>
+        <b-form-group label="Abonné :">
+          <b-form-select v-model="form.abonneId" :state="requiredSelect('abonneId')" :options="optionsabonnes"
+                         :select-size="4">
+          </b-form-select>
+          <b-form-invalid-feedback :state="requiredSelect('abonneId')">
+            Veuillez sélectionner un abonné
+          </b-form-invalid-feedback>
+          <div>
+            <b-button variant="success" to="/intervention/nouvelabonne">
+              <b-icon-person-plus-fill></b-icon-person-plus-fill>
+              Ajouter un abonné
+            </b-button>
+
+            <b-modal id="modal-abonne" title="Nouvel Abonné">
+              <Personne></Personne>
+            </b-modal>
+          </div>
+        </b-form-group>
+        <b-form-group label="Agent :">
+          <b-form-select v-model="form.agentId" :state="requiredSelect('agentId')" :options="optionsagents"
+                         :select-size="4">
+          </b-form-select>
+          <b-form-invalid-feedback :state="requiredSelect('agentId')">
+            Veuillez affecter un agent
+          </b-form-invalid-feedback>
+        </b-form-group>
+        <b-form-group label="Type et motif de l'intervention :">
+          <b-form-select v-model="form.typeId" :state="requiredSelect('typeId')" :options="optionstypes"
+                         :select-size="4">
+          </b-form-select>
+          <b-form-invalid-feedback :state="requiredSelect('typeId')">
+            Veuillez sélectionner un type d'intervention
+          </b-form-invalid-feedback>
+          <b-form-select v-model="form.motifId" :state="requiredSelect('motifId')" :options="optionsmotifs"
+                         :select-size="4">
+          </b-form-select>
+          <b-form-invalid-feedback :state="requiredSelect('motifId')">
+            Veuillez sélectionner un motif d'intervention
+          </b-form-invalid-feedback>
+        </b-form-group>
+        <div>
+          <b-button v-on:click="postIntervention" variant="success">
+            Créer l'intervention
+          </b-button>
+        </div>
+      </b-form>
+    </b-card>
+
   </div>
 </template>
 <script>
@@ -49,28 +71,38 @@ export default {
   components: {Personne},
   methods: {
     postIntervention: function () {
-      var dateheure = this.form.date + " " + this.form.heure + " UTC";
-      axios.post('http://localhost:3000/create/intervention', {
-            agentId: this.form.agentId,
-            abonneId: this.form.abonneId,
-            etatId: this.form.etatId,
-            typeId: this.form.typeId,
-            motifId: this.form.motifId,
-            date: dateheure
-          }
-      )
-          .then(function (response) {
-            console.log(response.status);
-            console.log(response);
-            if (response.status === 201) {
-              return response.data
+      if (this.datetimeSelected('date') && this.datetimeSelected('heure') && this.requiredSelect('abonneId') && this.requiredSelect('agentId') && this.requiredSelect('typeId') && this.requiredSelect('motifId')) {
+        var dateheure = this.form.date + " " + this.form.heure + " UTC";
+        axios.post('http://localhost:3000/create/intervention', {
+              agentId: this.form.agentId,
+              abonneId: this.form.abonneId,
+              etatId: this.form.etatId,
+              typeId: this.form.typeId,
+              motifId: this.form.motifId,
+              date: dateheure
             }
-          }).then(() => {
-        this.$store.commit("updatedatalist")
-        this.$store.commit("messagecreate", "Intervention Créée !")
-        this.$router.push({name: 'visualisation'});
+        )
+            .then(function (response) {
+              console.log(response.status);
+              console.log(response);
+              if (response.status === 201) {
+                return response.data
+              }
+            }).then(() => {
+          this.$store.commit("updatedatalist")
+          this.$store.commit("messagecreate", "Intervention Créée !")
+          this.$router.push({name: 'visualisation'});
 
-      }).catch(err => console.log(err))
+        }).catch(err => console.log(err))
+      }
+    }
+  },
+  computed: {
+    datetimeSelected() {
+      return item => this.form[item].length > 0
+    },
+    requiredSelect() {
+      return item => this.form[item] != 0;
     }
   },
   beforeMount() {

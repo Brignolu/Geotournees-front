@@ -7,7 +7,6 @@ import Vuex from 'vuex';
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import "@/assets/app.scss";
 
-
 //Importation des composants
 import Login from "@/components/Login";
 import Sub from "@/components/Sub";
@@ -15,7 +14,8 @@ import Administration from "@/components/Administration";
 import Intervention from "@/components/Intervention";
 import Utilisateur from "@/components/Utilisateur";
 import Personne from "@/components/Personne";
-
+import AfficheAbonnes from "@/components/AfficheAbonnes.vue";
+import AfficheUtilisateurs from "@/components/AfficheUtilisateurs";
 import axios from "axios";
 
 Vue.use(BootstrapVue);
@@ -57,7 +57,7 @@ const routes = [
         }
     },
     {
-        path: '/administration/utilisateur',
+        path: '/administration/nouvelutilisateur',
         name: 'utilisateur',
         component: Utilisateur,
         beforeEnter: (to, from, next) => {
@@ -68,9 +68,34 @@ const routes = [
             }
         }
     },
+    {
+        path: '/administration/utilisateurs',
+        name: 'utilisateurs',
+        component: AfficheUtilisateurs,
+        beforeEnter: (to, from, next) => {
+            if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
+                next(false);
+            } else {
+                next();
+            }
+        }
+    },
+
+    {
+        path: '/administration/abonnes',
+        name: 'abonnes',
+        component: AfficheAbonnes,
+        beforeEnter: (to, from, next) => {
+            if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
+                next(false);
+            } else {
+                next();
+            }
+        }
+    },
     {path: '/', component: Login},
     {
-        path: '/intervention/abonne', name: 'abonne', component: Personne, beforeEnter: (to, from, next) => {
+        path: '/intervention/nouvelabonne', name: 'abonne', component: Personne, beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 2) {
                 next(false);
             } else {

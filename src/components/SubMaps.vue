@@ -1,7 +1,6 @@
 <template>
 
   <div id="map-wrapper">
-
     <div id="map">
       <v-map :zoom="zoom" :center="center">
         <v-icondefault></v-icondefault>
@@ -33,7 +32,6 @@
 <script>
 
 /* import des bibliothèques et des assets */
-
 import * as Vue2Leaflet from 'vue2-leaflet';
 import Vue2LeafletMarkercluster from 'vue2-leaflet-markercluster';
 
@@ -115,6 +113,4 @@ export default {
   }
 }
 </script>
-
-<!--TODO : Relier vue + GEOJSON-->
 

@@ -15,7 +15,6 @@
 </template>
 
 <script>
-
 /* Import des Composants */
 import SubMaps from "@/components/SubMaps";
 import SubList from "@/components/SubList";
@@ -37,5 +36,4 @@ export default {
   },
 
 }
-
 </script>
