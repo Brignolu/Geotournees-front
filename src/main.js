@@ -3,7 +3,6 @@ import App from './App.vue';
 import VueRouter from "vue-router";
 import Vuex from 'vuex';
 
-
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import "@/assets/app.scss";
 
@@ -17,6 +16,8 @@ import Personne from "@/components/Personne";
 import AfficheAbonnes from "@/components/AfficheAbonnes.vue";
 import AfficheUtilisateurs from "@/components/AfficheUtilisateurs";
 import axios from "axios";
+import SocketIO from "socket.io-client";
+import VueSocketIO from "vue-socket.io";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -161,10 +162,15 @@ const store = new Vuex.Store({
     getters: {
         messageNotification: state => {
             return state.message;
+        },
+        listUpdate: state => {
+            return state.datalist;
         }
     }
 })
 
+Vue.use( new VueSocketIO({connection: SocketIO('localhost:3000')
+}) )
 // Initialisation du module routeur
 const router = new VueRouter({
     routes

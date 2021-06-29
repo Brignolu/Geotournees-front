@@ -65,10 +65,14 @@ export default {
             return value.data;
           }).then(data => {
         if (data.success) {
+          // emission de l'event sur le socket vers le serveur
+          this.$socket.emit('connexion', this.form.nom_utilisateur)
+          this.$socket.emit('connexion', this.form.password)
           this.$store.commit("login", data);
           this.$store.commit('initdatalist')
           this.$router.push({name: 'visualisation'});
         } else {
+
           this.erreur = false
           this.messageErreur = data.etat;
         }

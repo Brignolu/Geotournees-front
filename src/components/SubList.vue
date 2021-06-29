@@ -162,18 +162,19 @@ export default {
           return response
       }).then(() => {
         this.$store.commit("messagecreate", "Intervention Supprimée")
+        this.$socket.emit('nouvelleintervention')
         this.$store.commit("updatedatalist")
       })
-
-    }
+    },
   },
   computed: {
     splitDate: function () {
       var isoDate = new Date(this.item["date"]);
       var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();
       return formatDate;
-    }
-  }
+    },
+  },
+
 
 };
 </script>

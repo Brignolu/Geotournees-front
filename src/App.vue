@@ -16,6 +16,12 @@ import Header from "@/components/Header";
 export default {
   name: 'App',
   components: {Header},
+  sockets:{
+    refreshinterventionlist:function (){
+      console.log('socket recv refresh intervention list')
+      this.$store.commit("updatedatalist")
+    }
+  }
 
 }
 </script>

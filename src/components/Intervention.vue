@@ -89,9 +89,10 @@ export default {
                 return response.data
               }
             }).then(() => {
+          this.$socket.emit('nouvelleintervention')
           this.$store.commit("updatedatalist")
           this.$store.commit("messagecreate", "Intervention Créée !")
-          this.$router.push({name: 'visualisation'});
+          this.$router.push( { name: 'visualisation' } );
 
         }).catch(err => console.log(err))
       }
@@ -106,6 +107,7 @@ export default {
     }
   },
   beforeMount() {
+
 
     axios.get('http://localhost:3000/motifs')
         .then(function (response) {

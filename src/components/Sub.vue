@@ -18,6 +18,7 @@
 /* Import des Composants */
 import SubMaps from "@/components/SubMaps";
 import SubList from "@/components/SubList";
+import {mapGetters} from "vuex";
 
 export default {
   components: {SubList, SubMaps},
@@ -34,6 +35,17 @@ export default {
       })
     },
   },
+  computed:{
+    ...mapGetters({listeup:'listUpdate'})
+
+  },
+  watch: {
+    listeup: function () {
+      console.log("update list watch")
+      //this.$store.commit("updatedatalist")
+
+    }
+  }
 
 }
 </script>
