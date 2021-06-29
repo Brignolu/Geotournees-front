@@ -54,7 +54,7 @@
 import axios from "axios"
 
 export default {
-  name: 'Login',
+  name: 'ConnexionRacine',
   methods: {
     postLogin: function () {
       axios.post('http://localhost:3000/login', {

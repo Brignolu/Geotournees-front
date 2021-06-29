@@ -7,17 +7,17 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import "@/assets/app.scss";
 
 //Importation des composants
-import Login from "@/components/Login";
-import Sub from "@/components/Sub";
-import Administration from "@/components/Administration";
+import ConnexionRacine from "@/components/ConnexionRacine";
+import VisualisationCarteListe from "@/components/VisualisationCarteListe";
 import Intervention from "@/components/Intervention";
-import Utilisateur from "@/components/Utilisateur";
-import Personne from "@/components/Personne";
+import NouvelUtilisateur from "@/components/NouvelUtilisateur";
+import NouvellePersonne from "@/components/NouvellePersonne";
 import AfficheAbonnes from "@/components/AfficheAbonnes.vue";
 import AfficheUtilisateurs from "@/components/AfficheUtilisateurs";
 import axios from "axios";
 import SocketIO from "socket.io-client";
 import VueSocketIO from "vue-socket.io";
+import PanneauAdministration from "@/components/PanneauAdministration";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -31,7 +31,7 @@ Vue.config.productionTip = false;
 const routes = [
     //  Composant nommé
     {
-        path: '/visualisation', name: 'visualisation', component: Sub, beforeEnter: (to, from, next) => {
+        path: '/visualisation', name: 'visualisation', component: VisualisationCarteListe, beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null) {
                 next(false);
             } else {
@@ -49,7 +49,7 @@ const routes = [
         }
     },
     {
-        path: '/administration', name: 'administration', component: Administration, beforeEnter: (to, from, next) => {
+        path: '/administration', name: 'administration', component: PanneauAdministration, beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
                 next(false);
             } else {
@@ -60,7 +60,7 @@ const routes = [
     {
         path: '/administration/nouvelutilisateur',
         name: 'utilisateur',
-        component: Utilisateur,
+        component: NouvelUtilisateur,
         beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
                 next(false);
@@ -94,9 +94,9 @@ const routes = [
             }
         }
     },
-    {path: '/', component: Login},
+    {path: '/', component: ConnexionRacine},
     {
-        path: '/intervention/nouvelabonne', name: 'abonne', component: Personne, beforeEnter: (to, from, next) => {
+        path: '/intervention/nouvelabonne', name: 'abonne', component: NouvellePersonne, beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 2) {
                 next(false);
             } else {

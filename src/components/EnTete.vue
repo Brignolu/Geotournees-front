@@ -35,7 +35,7 @@
 import {mapGetters} from "vuex";
 
 export default {
-  name: 'Header',
+  name: 'EnTete',
   props: {
     UtilisateurCourant: Object,
 },

@@ -4,18 +4,18 @@
 <template>
 
   <b-container fluid class="px-0">
-    <Header v-if=this.$store.state.utilisateur v-bind:UtilisateurCourant=this.$store.state.utilisateur></Header>
+    <EnTete v-if=this.$store.state.utilisateur v-bind:UtilisateurCourant=this.$store.state.utilisateur></EnTete>
     <router-view/>
   </b-container>
 </template>
 
 
 <script>
-import Header from "@/components/Header";
+import EnTete from "@/components/EnTete";
 
 export default {
   name: 'App',
-  components: {Header},
+  components: {EnTete},
   sockets:{
     refreshinterventionlist:function (){
       console.log('socket recv refresh intervention list')

@@ -127,7 +127,7 @@
 import axios from "axios";
 
 export default {
-  name: 'Personne',
+  name: 'NouvellePersonne',
   methods: {
     postAbonne: function () {
 

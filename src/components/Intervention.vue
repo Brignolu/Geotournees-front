@@ -64,7 +64,7 @@
 </template>
 <script>
 import axios from "axios";
-import Personne from "@/components/Personne";
+import Personne from "@/components/NouvellePersonne";
 
 export default {
   name: 'Intervention',

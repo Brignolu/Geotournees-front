@@ -94,7 +94,7 @@
 import axios from "axios";
 
 export default {
-  name: 'SubList',
+  name: 'VisualisationListe',
   emits: ['tablehover', 'tableclick'],
   props: {
     SubData: Array,

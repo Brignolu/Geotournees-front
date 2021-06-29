@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import { shallowMount} from '@vue/test-utils'
-import Login from '@/components/Login.vue'
+import ConnexionRacine from '@/components/ConnexionRacine.vue'
 
 
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
 
-describe('Login.vue', () => {
+describe('ConnexionRacine.vue', () => {
   it('test h4', () => {
-    const wrapper = shallowMount(Login);
+    const wrapper = shallowMount(ConnexionRacine);
     expect(wrapper.find('h4').exists()).toBe(true)
   })
 })

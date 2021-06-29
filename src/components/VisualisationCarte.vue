@@ -47,7 +47,7 @@ import icon_installation from "@/assets/Marqueur08.png";
 import cantons from "@/assets/communesHteSavoie.json"
 
 export default {
-  name: 'SubMaps',
+  name: 'VisualisationCarte',
   components: {
     'v-map': Vue2Leaflet.LMap,
     'v-tilelayer': Vue2Leaflet.LTileLayer,

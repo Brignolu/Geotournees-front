@@ -4,11 +4,11 @@
   <div class="my-4">
     <b-row class="px-0" v-if=this.$store.state.utilisateur>
       <b-col cols="7">
-        <SubList v-bind:SubData="this.$store.state.datalist"></SubList>
+        <VisualisationListe v-bind:SubData="this.$store.state.datalist"></VisualisationListe>
       </b-col>
       <b-col cols="5">
-        <SubMaps v-bind:locations="this.$store.state.datalist" v-bind:zoom="this.$store.state.zoom"
-                 v-bind:center="this.$store.state.mapcenter"></SubMaps>
+        <VisualisationCarte v-bind:locations="this.$store.state.datalist" v-bind:zoom="this.$store.state.zoom"
+                 v-bind:center="this.$store.state.mapcenter"></VisualisationCarte>
       </b-col>
     </b-row>
   </div>
@@ -16,12 +16,12 @@
 
 <script>
 /* Import des Composants */
-import SubMaps from "@/components/SubMaps";
-import SubList from "@/components/SubList";
+import VisualisationCarte from "@/components/VisualisationCarte";
+import VisualisationListe from "@/components/VisualisationListe";
 import {mapGetters} from "vuex";
 
 export default {
-  components: {SubList, SubMaps},
+  components: {VisualisationListe, VisualisationCarte},
   props: {},
   methods: {
     /* Get From BDD */
@@ -54,11 +54,11 @@ export default {
   <div class="my-4">
     <b-row class="px-0" v-if=this.$store.state.utilisateur>
       <b-col cols="7">
-        <SubList v-bind:SubData="this.$store.state.datalist"></SubList>
+        <VisualisationListe v-bind:SubData="this.$store.state.datalist"></VisualisationListe>
       </b-col>
       <b-col cols="5">
-        <SubMaps v-bind:locations="this.$store.state.datalist" v-bind:zoom="this.$store.state.zoom"
-                 v-bind:center="this.$store.state.mapcenter"></SubMaps>
+        <VisualisationCarte v-bind:locations="this.$store.state.datalist" v-bind:zoom="this.$store.state.zoom"
+                 v-bind:center="this.$store.state.mapcenter"></VisualisationCarte>
       </b-col>
     </b-row>
   </div>
@@ -66,13 +66,13 @@ export default {
 
 <script>
 /* Import des Composants */
-import SubMaps from "@/components/SubMaps";
-import SubList from "@/components/SubList";
+import VisualisationCarte from "@/components/VisualisationCarte";
+import VisualisationListe from "@/components/VisualisationListe";
 import {mapGetters} from "vuex";
 
 export default {
-  components: {SubList, SubMaps},
-  props: {},
+  name: 'VisualisationCarteListe',
+  components: {VisualisationListe, VisualisationCarte},
   methods: {
     /* Get From BDD */
     mounted() {

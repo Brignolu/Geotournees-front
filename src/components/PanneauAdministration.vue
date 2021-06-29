@@ -26,6 +26,6 @@
 </template>
 <script>
 export default {
-  name: 'Administration'
+  name: 'PanneauAdministration'
 }
 </script>
