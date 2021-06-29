@@ -62,7 +62,6 @@ import axios from "axios";
 
 export default {
   name: 'Utilisateur',
-  props: ['statut'],
   methods: {
     postUtilisateur: function () {
       if (this.betweenSixTwelve('nom_utilisateur') && this.betweenSixTwelve('mot_de_passe') && this.requiredStatus) {

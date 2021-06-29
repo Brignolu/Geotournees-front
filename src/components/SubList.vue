@@ -96,7 +96,9 @@ import axios from "axios";
 export default {
   name: 'SubList',
   emits: ['tablehover', 'tableclick'],
-  props: ['SubData', 'SelectRow'],
+  props: {
+    SubData: Array,
+  },
   data() {
     return {
       /* date; heure; numabo; nom; pnom; nvoie; addr; postc; comm; telabo; agent; motif; intertype; numtrans; idabo; */
@@ -162,7 +164,7 @@ export default {
           return response
       }).then(() => {
         this.$store.commit("messagecreate", "Intervention Supprimée")
-        this.$socket.emit('nouvelleintervention')
+        this.$socket.emit('ws-refresh-intervention')
         this.$store.commit("updatedatalist")
       })
     },

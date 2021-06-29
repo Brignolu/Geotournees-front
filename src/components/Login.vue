@@ -3,7 +3,7 @@
     <b-card class="text-center col-4">
       <img class="col-3" src="@/assets/Logo_Haute_Savoie.png"/>
       <h3>Visualisation des Tournées</h3>
-      <h4>Service TeleAlarme</h4>
+      <h4>Service TéléAlarme</h4>
       <b-form>
         <b-form-group
             id="input-group-1"

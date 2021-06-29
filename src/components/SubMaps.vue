@@ -6,7 +6,7 @@
         <v-icondefault></v-icondefault>
         <v-tilelayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"></v-tilelayer>
-        <v-geojson :geojson="geojsoncommunes"></v-geojson>
+        <v-geojson :geojson="cantons"></v-geojson>
         <v-marker-cluster :options="clusterOptions" @ready="ready()">
           <template v-for="l in locations">
             <v-marker v-if="l['type.type'] === 'Dépannage'" :key="l['id']"
@@ -44,7 +44,7 @@ import L from "leaflet";
 import icon_maintenance from "@/assets/Marqueur00.png";
 import icon_depannage from "@/assets/Marqueur06.png";
 import icon_installation from "@/assets/Marqueur08.png";
-import geojsoncommunes from "@/assets/communesHteSavoie.json"
+import cantons from "@/assets/communesHteSavoie.json"
 
 export default {
   name: 'SubMaps',
@@ -56,7 +56,11 @@ export default {
     'v-marker-cluster': Vue2LeafletMarkercluster,
     'v-geojson': Vue2Leaflet.LGeoJson
   },
-  props: ['locations', 'center', 'zoom'],
+  props: {
+    locations: Array,
+    center: Array,
+    zoom: Number
+  },
   methods: {
     click: function (item) {
       this.$root.$emit('mouse-click-marker', item);
@@ -98,14 +102,10 @@ export default {
         iconSize: [42, 42],
         iconAnchor: [13, 42],
       }),
-      geojsoncommunes: geojsoncommunes
+      cantons: cantons
     }
   },
   beforeMount() {
-    /*
-     var file = fs.open("@/assets/communesHteSavoie.json");
-     this.geojson = file;
-     */
   },
   mounted() {
   },

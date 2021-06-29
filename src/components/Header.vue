@@ -36,7 +36,9 @@ import {mapGetters} from "vuex";
 
 export default {
   name: 'Header',
-  props: ['UtilisateurCourant'],
+  props: {
+    UtilisateurCourant: Object,
+},
   methods: {
     accueil: function () {
       console.log("accueil");

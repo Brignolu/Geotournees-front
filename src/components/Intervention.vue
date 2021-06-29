@@ -17,7 +17,7 @@
                          :select-size="4">
           </b-form-select>
           <b-form-invalid-feedback :state="requiredSelect('abonneId')">
-            Veuillez sélectionner un abonné
+            Veuillez selectionner un abonné
           </b-form-invalid-feedback>
           <div>
             <b-button variant="success" to="/intervention/nouvelabonne">
@@ -89,7 +89,7 @@ export default {
                 return response.data
               }
             }).then(() => {
-          this.$socket.emit('nouvelleintervention')
+          this.$socket.emit('ws-refresh-intervention')
           this.$store.commit("updatedatalist")
           this.$store.commit("messagecreate", "Intervention Créée !")
           this.$router.push( { name: 'visualisation' } );
