@@ -9,7 +9,7 @@ import "@/assets/app.scss";
 //Importation des composants
 import ConnexionRacine from "@/components/ConnexionRacine";
 import VisualisationCarteListe from "@/components/VisualisationCarteListe";
-import Intervention from "@/components/Intervention";
+import NouvelleIntervention from "@/components/NouvelleIntervention";
 import NouvelUtilisateur from "@/components/NouvelUtilisateur";
 import NouvellePersonne from "@/components/NouvellePersonne";
 import AfficheAbonnes from "@/components/AfficheAbonnes.vue";
@@ -40,7 +40,7 @@ const routes = [
         }
     },
     {
-        path: '/intervention', name: 'intervention', component: Intervention, beforeEnter: (to, from, next) => {
+        path: '/intervention', name: 'intervention', component: NouvelleIntervention, beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 2) {
                 next(false);
             } else {
@@ -114,6 +114,7 @@ const store = new Vuex.Store({
         mapcenter: [46.0736617, 6.4048087],
         zoom: 9,
         datalist: null,
+        itemselected: null,
 
     },
     mutations: {
@@ -157,15 +158,30 @@ const store = new Vuex.Store({
         },
         resetzoom(state) {
             state.zoom = 9;
+        },
+        mouseclickmarker(state, data){
+            state.itemselected = data
+        },
+        markerclickreset(state){
+            state.itemselected = null
         }
     },
     getters: {
+        centerUpdate: state => {
+            return state.mapcenter
+        },
+        zoomUpdate: state => {
+            return state.zoom
+        },
         messageNotification: state => {
             return state.message;
         },
         listUpdate: state => {
             return state.datalist;
-        }
+        },
+        clickMarkerUpdate: state => {
+            return state.itemselected;
+        },
     }
 })
 

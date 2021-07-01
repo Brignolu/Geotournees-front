@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ this.$store.state.mapcenter }}{{ this.$store.state.zoom }}
     <b-input-group
         size="sm"
     >
@@ -13,7 +14,7 @@
       <b-input-group-append>
         <b-button
             :disabled="!filter"
-            @click="filter = ''">
+            @click="resetFilter">
           Effacer
         </b-button>
       </b-input-group-append>
@@ -26,8 +27,11 @@
              @row-clicked="click"
              @row-hovered="mouseOver"
              @row-unhovered="mouseLeave"
-             ref="selectableTable"
+             ref="myTable"
              selectable
+             select-mode="single"
+             id="myTable"
+             primary-key="id"
     >
 
       <template #cell(dateformat)="data">
@@ -35,7 +39,7 @@
       </template>
 
       <template #cell(nompnom)="data">
-        {{ data.item["abonne.personne.nom"] }} {{ data.item["abonne.personne.prenom"] }}
+       {{ data.item["abonne.personne.nom"] }} {{ data.item["abonne.personne.prenom"] }}
       </template>
 
       <template #cell(fulladdr)="data">
@@ -87,11 +91,13 @@
         </b-card>
       </template>
     </b-table>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'VisualisationListe',
@@ -111,7 +117,7 @@ export default {
         {
           label: 'Nom Prénom',
           key: 'nompnom',
-          sortable: true
+          sortable: false
         },
         {
           label: 'Adresse',
@@ -121,7 +127,7 @@ export default {
         {label: 'Agent', key: 'agent.nom', sortable: true}, {
           label: 'Transmetteur n°',
           key: 'abonne.transmetteur',
-          sortable: true
+          sortable: false
         },
         {
           label: 'Numéro Abonné',
@@ -133,18 +139,26 @@ export default {
   },
   methods: {
 
+    resetFilter(){
+      this.filter = ''
+      this.$store.commit('markerclickreset')
+      this.$store.commit('resetzoom')
+      this.$store.commit('resetmapcenter')
+    },
+
     click(item) {
+
       this.$root.$emit('mouse-click-abo', item)
+
       console.log('emit => mouse-click-abo')
       console.log(item)
+      console.log(item.id)
     },
 
     mouseOver(item) {
       var coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
       this.$store.commit("updatemapcenter", coords)
       this.$store.commit("individualzoom")
-      console.log(this.$store.state.mapcenter)
-      console.log('store commit => updatemapcenter')
     },
 
     mouseLeave() {
@@ -169,7 +183,21 @@ export default {
       })
     },
   },
+  watch:{
+    markerup:function (){
+      console.log(this.$store.state.itemselected.id)
+      let myTable = this.$refs.myTable.$el,
+          tableBody = myTable.getElementsByTagName('tbody')[0],
+          tableRows = tableBody.getElementsByTagName('tr');
+
+      this.filter = this.$store.state.itemselected['abonne.personne.nom'];
+      tableRows[this.$store.state.itemselected.id - 1].click()
+
+
+    }
+  },
   computed: {
+    ...mapGetters({markerup: "clickMarkerUpdate"}),
     splitDate: function () {
       var isoDate = new Date(this.item["date"]);
       var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();

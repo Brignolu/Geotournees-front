@@ -3,7 +3,7 @@
 </head>
 <template>
 
-  <b-container fluid class="px-0">
+  <b-container fluid class="min-vh-100 m-0 p-0">
     <EnTete v-if=this.$store.state.utilisateur v-bind:UtilisateurCourant=this.$store.state.utilisateur></EnTete>
     <router-view/>
   </b-container>
@@ -15,7 +15,7 @@ import EnTete from "@/components/EnTete";
 
 export default {
   name: 'App',
-  components: {EnTete},
+  components: { EnTete },
   sockets:{
     refreshinterventionlist:function (){
       console.log('socket recv refresh intervention list')

@@ -4,10 +4,12 @@
       <b-icon-arrow-left></b-icon-arrow-left>
       Retour panneau d'administration</b-icon-arrow-bar-left></b-button>
 
-    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-      <b-card class="col-6">
+    <b-row class="min-vh-100" align-v="center">
+      <b-col></b-col>
+      <b-col cols="12" sm="10" md="8" lg="6" xl="4">
+      <b-card>
 
-        <b-table responsive sticky-header="80vh"
+        <b-table responsive sticky-header
                  hover
                  :items="this.abonnes"
                  :fields="fields"
@@ -33,7 +35,10 @@
           </template>
         </b-table>
       </b-card>
-    </div>
+      </b-col>
+      <b-col></b-col>
+
+    </b-row>
   </div>
 </template>
 

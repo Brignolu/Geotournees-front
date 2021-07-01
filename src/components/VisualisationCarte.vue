@@ -1,14 +1,15 @@
 <template>
 
   <div id="map-wrapper">
+    center : {{this.centerLatLong}} zoom :{{this.zoomlvl}} data center : {{ this.center }} data zoom : {{ this.zoom }}
     <div id="map">
-      <v-map :zoom="zoom" :center="center">
+      <v-map :zoom="this.$store.state.zoom" :center="this.$store.state.mapcenter" ref="map">
         <v-icondefault></v-icondefault>
         <v-tilelayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"></v-tilelayer>
         <v-geojson :geojson="cantons"></v-geojson>
         <v-marker-cluster :options="clusterOptions" @ready="ready()">
-          <template v-for="l in locations">
+          <template v-for="l in this.$store.state.datalist">
             <v-marker v-if="l['type.type'] === 'Dépannage'" :key="l['id']"
                       :lat-lng="[l['abonne.personne.adresses.coordonne.lat'],l['abonne.personne.adresses.coordonne.long']]"
                       :icon="depannageIcon" @click="click(l)">
@@ -45,6 +46,7 @@ import icon_maintenance from "@/assets/Marqueur00.png";
 import icon_depannage from "@/assets/Marqueur06.png";
 import icon_installation from "@/assets/Marqueur08.png";
 import cantons from "@/assets/communesHteSavoie.json"
+import {mapGetters} from "vuex";
 
 export default {
   name: 'VisualisationCarte',
@@ -56,22 +58,22 @@ export default {
     'v-marker-cluster': Vue2LeafletMarkercluster,
     'v-geojson': Vue2Leaflet.LGeoJson
   },
-  props: {
-    locations: Array,
-    center: Array,
-    zoom: Number
-  },
   methods: {
     click: function (item) {
-      this.$root.$emit('mouse-click-marker', item);
-      console.log('emit => mouse-click-marker');
+      console.log('store => mouseclickmarker');
+      this.$store.commit("mouseclickmarker", item)
+      this.$store.commit('updatemapcenter', [item['abonne.personne.adresses.coordonne.lat'],item['abonne.personne.adresses.coordonne.long']])
+      this.$store.commit('individualzoom')
     },
     ready: (e) => console.log('ready', e),
   },
+  computed:{
+    ...mapGetters({center:'centerUpdate'}),
+    ...mapGetters({zoom: 'zoomUpdate'})
+  },
   watch: {
-    center: function (val) {
+    center: function () {
       console.log('Watch Center');
-      this.center = val;
     },
   },
   data() {
@@ -102,12 +104,22 @@ export default {
         iconSize: [42, 42],
         iconAnchor: [13, 42],
       }),
-      cantons: cantons
+      cantons: cantons,
+      centerLatLong:null,
+      zoomlvl: null,
+      zoom: this.$store.state.zoom,
+      center: this.$store.state.mapcenter
     }
   },
   beforeMount() {
   },
   mounted() {
+    this.$refs.map.mapObject.on('move', () => {
+          this.centerLatLong = this.$refs.map.mapObject.getCenter()
+    }),
+        this.$refs.map.mapObject.on('zoom', () => {
+          this.zoomlvl = this.$refs.map.mapObject.getZoom()
+        })
   },
   created() {
   }

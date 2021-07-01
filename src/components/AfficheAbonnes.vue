@@ -3,7 +3,7 @@
 
     <b-button to="/administration" variant="warning">
       <b-icon-arrow-left></b-icon-arrow-left>
-      Retour panneau d'administration</b-icon-arrow-bar-left></b-button>
+      Retour panneau d'administration</b-button>
 
     <b-table responsive sticky-header="80vh"
              hover

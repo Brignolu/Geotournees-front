@@ -1,13 +1,15 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+  <b-row class="min-vh-100" align-v="center">
+    <b-col></b-col>
+    <b-col cols="12" sm="10" md="8" lg="6" xl="4">
 
-    <b-card class="col-6 h-75">
+    <b-card>
       <h3>Nouvelle Intervention</h3>
       <b-form>
         <b-form-group label="Date et Heure de l'intervention :">
           <b-form-datepicker id="example-datepicker" v-model="form.date" :state="datetimeSelected('date')"
-                             class="mb-2"></b-form-datepicker>
-          <b-form-timepicker v-model="form.heure" :state="datetimeSelected('heure')" locale="fr"></b-form-timepicker>
+          placeholder="Date de l'intervention"></b-form-datepicker>
+          <b-form-timepicker v-model="form.heure" :state="datetimeSelected('heure')" locale="fr" placeholder="Horaire de l'intervention"></b-form-timepicker>
           <b-form-invalid-feedback :state="datetimeSelected('date') && datetimeSelected('heure')">
             Veuillez préciser la date et l'heure de l'intervention
           </b-form-invalid-feedback>
@@ -59,15 +61,17 @@
         </div>
       </b-form>
     </b-card>
+    </b-col>
+    <b-col></b-col>
 
-  </div>
+    </b-row>
 </template>
 <script>
 import axios from "axios";
 import Personne from "@/components/NouvellePersonne";
 
 export default {
-  name: 'Intervention',
+  name: 'NouvelleIntervention',
   components: {Personne},
   methods: {
     postIntervention: function () {

@@ -1,6 +1,8 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-    <b-card class="col-4">
+  <b-row class="min-vh-100" align-v="center">
+    <b-col></b-col>
+    <b-col cols="12" sm="10" md="8" lg="6" xl="4">
+    <b-card>
       <b-form>
         <b-form-group
             label="Informations:"
@@ -55,7 +57,10 @@
 
       </b-form>
     </b-card>
-  </div>
+    </b-col>
+    <b-col></b-col>
+
+  </b-row>
 </template>
 <script>
 import axios from "axios";

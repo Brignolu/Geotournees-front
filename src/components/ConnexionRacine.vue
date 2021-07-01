@@ -1,53 +1,58 @@
 <template>
-  <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
-    <b-card class="text-center col-4">
-      <img class="col-3" src="@/assets/Logo_Haute_Savoie.png"/>
-      <h3>Visualisation des Tournées</h3>
-      <h4>Service TéléAlarme</h4>
-      <b-form>
-        <b-form-group
-            id="input-group-1"
-            label="Identification:"
-            label-for="input-1"
-        >
-          <b-form-input
-              id="input-1"
-              v-model="form.nom_utilisateur"
-              type="text"
-              placeholder="Identifiant"
-              :state="this.erreur"
-              required
-              class="text-center"
-          ></b-form-input>
+    <b-row class="min-vh-100" align-v="center">
+      <b-col></b-col>
+      <b-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <b-card class="text-center">
+          <img class="col-6" src="@/assets/Logo_Haute_Savoie.png"/>
+          <h3>Visualisation des Tournées</h3>
+          <h4>Service TéléAlarme</h4>
+          <b-form>
+            <b-form-group
+                id="input-group-1"
+                label="Identification:"
+                label-for="input-1"
+            >
+              <b-form-input
+                  id="input-1"
+                  v-model="form.nom_utilisateur"
+                  type="text"
+                  placeholder="Identifiant"
+                  :state="this.erreur"
+                  required
+                  class="text-center"
+              ></b-form-input>
 
-        </b-form-group>
-        <b-form-group>
-          <b-form-input
-              id="input-2"
-              v-model="form.password"
-              placeholder="Mot de passe"
-              type="password"
-              class="text-center"
-              :state="this.erreur"
-              required
-          ></b-form-input>
-          <b-form-invalid-feedback :state="this.messageErreur === null">
-            {{ messageErreur }}
-          </b-form-invalid-feedback>
-        </b-form-group>
+            </b-form-group>
+            <b-form-group>
+              <b-form-input
+                  id="input-2"
+                  v-model="form.password"
+                  placeholder="Mot de passe"
+                  type="password"
+                  class="text-center"
+                  :state="this.erreur"
+                  required
+              ></b-form-input>
+              <b-form-invalid-feedback :state="this.messageErreur === null">
+                {{ messageErreur }}
+              </b-form-invalid-feedback>
+            </b-form-group>
 
-        <b-button v-on:click="postLogin" variant="success">
-          Envoyer
-        </b-button>
+            <b-button v-on:click="postLogin" variant="success">
+              Envoyer
+            </b-button>
 
-        <div>
+            <div>
 
 
-        </div>
+            </div>
 
-      </b-form>
-    </b-card>
-  </div>
+          </b-form>
+        </b-card>
+      </b-col>
+      <b-col></b-col>
+
+    </b-row>
 </template>
 <script>
 
