@@ -143,14 +143,14 @@ export default {
           }
       )
           .then(function (response) {
-            console.log(response.status);
-            console.log(response.data.id);
+            // console.log(response.status);
+            // console.log(response.data.id);
             if (response.status === 201) {
               return response.data;
             }
           }).then((data) => {
         this.form.abonneId = data.id;
-        console.log("abonneOK")
+        // console.log("abonneOK")
         axios.post('http://localhost:3000/create/personne', {
               nom: this.form.nom,
               prenom: this.form.prenom,
@@ -159,14 +159,14 @@ export default {
             }
         )
             .then(function (response) {
-              console.log(response.status);
-              console.log(response);
+              // console.log(response.status);
+              // console.log(response);
               if (response.status === 201) {
                 return response.data;
               }
             }).then((data) => {
           this.form.personneId = data.id;
-          console.log("personneOK")
+          // console.log("personneOK")
           axios.post('http://localhost:3000/create/adresse', {
                 numero: this.form.numero,
                 rue: this.form.rue,
@@ -176,29 +176,29 @@ export default {
               }
           )
               .then(function (response) {
-                console.log(response.status);
-                console.log(response);
+                // console.log(response.status);
+                // console.log(response);
                 if (response.status === 201) {
                   return response.data;
                 }
               }).then((data) => {
             this.form.adresseId = data.id
             console.log("adresseOK")
-            var url = "https://api-adresse.data.gouv.fr/search/?q=" + this.form.numero + " " + this.form.rue + "&postcode=" + this.form.codepostal + "&limit=1";
+            let url = "https://api-adresse.data.gouv.fr/search/?q=" + this.form.numero + " " + this.form.rue + "&postcode=" + this.form.codepostal + "&limit=1";
 
             axios.get(url).then(function (response) {
-              console.log(response.status);
-              console.log(response);
+              // console.log(response.status);
+              // console.log(response);
               if (response.status === 200) {
                 return response.data;
               }
             }).then((data) => {
-              console.log(data.features[0])
-              console.log(data.features[0].geometry.coordinates[1])
+              // console.log(data.features[0])
+              // console.log(data.features[0].geometry.coordinates[1])
               this.form.lat = data.features[0].geometry.coordinates[1];
               this.form.long = data.features[0].geometry.coordinates[0];
-              console.log(this.form.lat)
-              console.log("APIOK")
+              // console.log(this.form.lat)
+              // console.log("APIOK")
               //this.$store.commit("messagecreate", "Abonné Créé !")
               axios.post('http://localhost:3000/create/coordonnees', {
                     latitude: this.form.lat,
@@ -213,7 +213,7 @@ export default {
                       return response.data;
                     }
                   }).then(() => {
-                console.log("coordoOK")
+                // console.log("coordoOK")
                 this.$store.commit("messagecreate", "Abonné Créé !");
                 this.$router.push('/intervention');
 

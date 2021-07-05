@@ -39,7 +39,7 @@
       </template>
 
       <template #cell(nompnom)="data">
-       {{ data.item["abonne.personne.nom"] }} {{ data.item["abonne.personne.prenom"] }}
+        {{ data.item["abonne.personne.nom"] }} {{ data.item["abonne.personne.prenom"] }}
       </template>
 
       <template #cell(fulladdr)="data">
@@ -63,15 +63,15 @@
       </template>
 
       <template #row-details="data">
-        <b-card>
-          <b-row class="mb-2">
-            <b-col sm="3" class="text-sm-right">
+        <div>
+          <b-row>
+            <b-col>
               <b>Intervention:</b>
             </b-col>
             <b-col>
               {{ data.item["type.type"] }} {{ data.item["motif.motif"] }}
             </b-col>
-            <b-col sm="3" class="text-sm-right">
+            <b-col>
               <b>Heure:</b>
             </b-col>
             <b-col>
@@ -79,7 +79,7 @@
             </b-col>
           </b-row>
           <b-row>
-            <b-col sm="3" class="text-sm-right">
+            <b-col>
               <b>
                 n° Téléphone:
               </b>
@@ -88,7 +88,11 @@
               {{ data.item["abonne.personne.numtel"] }}
             </b-col>
           </b-row>
-        </b-card>
+          <b-row>
+            <b-col><b>Commentaires : </b></b-col>
+            <b-col>{{ data.item["commentaires"] }}</b-col>
+          </b-row>
+        </div>
       </template>
     </b-table>
 
@@ -97,7 +101,7 @@
 
 <script>
 import axios from "axios";
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'VisualisationListe',
@@ -139,7 +143,7 @@ export default {
   },
   methods: {
 
-    resetFilter(){
+    resetFilter() {
       this.filter = ''
       this.$store.commit('markerclickreset')
       this.$store.commit('resetzoom')
@@ -183,8 +187,8 @@ export default {
       })
     },
   },
-  watch:{
-    markerup:function (){
+  watch: {
+    markerup: function () {
       console.log(this.$store.state.itemselected.id)
       let myTable = this.$refs.myTable.$el,
           tableBody = myTable.getElementsByTagName('tbody')[0],

@@ -54,6 +54,14 @@
             Veuillez sélectionner un motif d'intervention
           </b-form-invalid-feedback>
         </b-form-group>
+        <b-form-group label="Commentaires :">
+          <b-form-textarea
+              v-model="form.commentaires"
+              placeholder="Commentaires"
+              rows="4"
+              max-rows="4"
+          ></b-form-textarea>
+        </b-form-group>
         <div>
           <b-button v-on:click="postIntervention" variant="success">
             Créer l'intervention
@@ -83,7 +91,8 @@ export default {
               etatId: this.form.etatId,
               typeId: this.form.typeId,
               motifId: this.form.motifId,
-              date: dateheure
+              date: dateheure,
+              commentaires: this.form.commentaires
             }
         )
             .then(function (response) {
@@ -107,7 +116,7 @@ export default {
       return item => this.form[item].length > 0
     },
     requiredSelect() {
-      return item => this.form[item] != 0;
+      return item => this.form[item] !== 0;
     }
   },
   beforeMount() {
@@ -174,7 +183,8 @@ export default {
         abonneId: 0,
         agentId: 0,
         date: "",
-        heure: ""
+        heure: "",
+        commentaires: ""
 
       },
     }
