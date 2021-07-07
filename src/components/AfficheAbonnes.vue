@@ -75,18 +75,15 @@ export default {
           key: 'show_details',
           sortable: false
         }],
-      abonnes: null
     }
   },
-  beforeMount() {
-    axios.get(this.$hostname +'/abonnes')
-        .then(function (response) {
-          if (response.status === 200) {
-            return response.data
-          }
-        }).then((data) => {
-      this.abonnes = data;
-    })
+  computed:{
+    abonnes(){
+      return this.$store.state.abonnes
+    }
+  },
+  created(){
+    this.$store.dispatch('loadAbonnes')
   },
   methods: {
     deleteAbonne: async function(item) {
@@ -111,7 +108,7 @@ export default {
           return response
       }).then(() => {
         this.$store.commit("messagecreate", "Abonné Supprimé")
-        //this.$router.push("/administration")
+        this.$store.dispatch('loadAbonnes')
       }).catch(err => console.log(err))
 
     }

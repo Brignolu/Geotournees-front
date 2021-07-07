@@ -71,12 +71,12 @@ export default {
           }).then(data => {
         if (data.success) {
           // emission de l'event sur le socket vers le serveur
-          this.$socket.emit('connexion', this.form.nom_utilisateur)
+          console.log(data)
+          this.$socket.emit('connexion', this.form.nom_utilisateur);
           this.$store.commit("login", data);
-          this.$store.commit('updatedatalist')
+          this.$store.commit('updatedatalist');
           this.$router.push({name: 'visualisation'});
         } else {
-
           this.erreur = false
           this.messageErreur = data.etat;
         }

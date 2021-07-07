@@ -30,7 +30,10 @@ Vue.use(Vuex);
 
 
 Vue.config.productionTip = false;
-Vue.prototype.$hostname = 'http://localhost:3000'
+let hostname = 'http://localhost:3000'
+Vue.prototype.$hostname = hostname
+
+
 
 // Association des routes aux composants
 const routes = [
@@ -115,6 +118,8 @@ const routes = [
 const store = new Vuex.Store({
     state: {
         utilisateur: null,
+        abonnes: null,
+        utilisateurs: null,
         message: null,
         mapcenter: [46.0736617, 6.4048087],
         zoom: 9,
@@ -142,7 +147,7 @@ const store = new Vuex.Store({
             state.mapcenter = [46.0736617, 6.4048087];
         },
         updatedatalist(state) {
-            axios.get("http://127.0.0.1:3000/interventions")
+            axios.get(hostname + "/interventions")
                 .then(function (value) {
                     return value.data;
                 }).then(data => {
@@ -163,7 +168,28 @@ const store = new Vuex.Store({
         },
         markerclickreset(state){
             state.itemselected = null
+        },
+        updateAbonnes(state, abonnes){
+            state.abonnes = abonnes;
+        },
+        updateUtilisateurs(state, utilisateurs){
+            state.utilisateurs = utilisateurs;
         }
+    },
+    actions: {
+      loadAbonnes({commit}){
+          axios.get(hostname +'/abonnes')
+              .then(function (response) {
+                  commit('updateAbonnes', response.data);
+              }).catch(err => console.log(err))
+      },
+        loadUtilisateurs({commit}){
+            axios.get(hostname +'/utilisateurs')
+                .then(function (response) {
+                    commit('updateUtilisateurs', response.data);
+                }).catch(err => console.log(err))
+        },
+
     },
     getters: {
         centerUpdate: state => {
@@ -184,6 +210,12 @@ const store = new Vuex.Store({
         userUpdate: state => {
             return state.utilisateur
         },
+        userStatus: state => {
+            return state.utilisateur.roleId
+        },
+        userName: state => {
+            return state.utilisateur.nom_utilisateur
+        }
 
     }
 })

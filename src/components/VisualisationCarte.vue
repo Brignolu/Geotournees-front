@@ -39,14 +39,11 @@ import Vue2LeafletMarkercluster from 'vue2-leaflet-markercluster';
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-
 import L from "leaflet";
-
 import icon_maintenance from "@/assets/Marqueur00.png";
 import icon_depannage from "@/assets/Marqueur06.png";
 import icon_installation from "@/assets/Marqueur08.png";
 import cantons from "@/assets/communesHteSavoie.json"
-import { mapGetters } from "vuex";
 
 export default {
   name: 'VisualisationCarte',

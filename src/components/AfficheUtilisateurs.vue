@@ -11,12 +11,12 @@
 
         <b-table responsive sticky-header
                  hover
-                 :items="this.abonnes"
+                 :items="this.utilisateurs"
                  :fields="fields"
         >
 
           <template #cell(nompnom)="data">
-            {{ data.item['nom'] }} {{ data.item['nom_utilisateur'] }}
+            {{ data.item['nom'] }} ({{ data.item['nom_utilisateur'] }})
           </template>
 
           <template #cell(buttons)="data">
@@ -59,18 +59,15 @@ export default {
           label: 'Supprimer',
           key: 'buttons',
         }],
-      abonnes: null
     }
   },
-  beforeMount() {
-    axios.get(this.$hostname +'/utilisateurs')
-        .then(function (response) {
-          if (response.status === 200) {
-            return response.data
-          }
-        }).then((data) => {
-      this.abonnes = data;
-    })
+  computed:{
+    utilisateurs(){
+      return this.$store.state.utilisateurs
+    }
+  },
+  created(){
+    this.$store.dispatch('loadUtilisateurs')
   },
   methods: {
     deleteUtilisateur(item) {
@@ -87,6 +84,7 @@ export default {
       }).then(() => {
         this.$store.commit("messagecreate", "Utilisateur Supprimé")
         //this.$router.push("/administration")
+        this.$store.dispatch('loadUtilisateurs')
       })
 
     }

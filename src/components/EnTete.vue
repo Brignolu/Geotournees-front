@@ -18,12 +18,12 @@
                 Deconnexion
               </b-dropdown-item>
 
-              <b-dropdown-item v-if="UtilisateurCourant.roleId === 3 || UtilisateurCourant.roleId === 2"
+              <b-dropdown-item v-if="this.$store.getters.userStatus === 3 || this.$store.getters.userStatus === 2"
                                @click="intervention">
                 Ajouter une intervention
               </b-dropdown-item>
 
-              <b-dropdown-item v-if="UtilisateurCourant.roleId === 3" @click="administration">
+              <b-dropdown-item v-if="this.$store.getters.userStatus === 3" @click="administration">
                 Panneau d'administration
               </b-dropdown-item>
             </b-nav-item-dropdown>

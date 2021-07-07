@@ -101,7 +101,7 @@
 
 <script>
 import axios from "axios";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'VisualisationListe',
@@ -150,10 +150,11 @@ export default {
     click(item) {
 
       this.$root.$emit('mouse-click-abo', item)
-
+      /*
       console.log('emit => mouse-click-abo')
       console.log(item)
       console.log(item.id)
+      */
     },
 
     mouseOver(item) {
@@ -199,11 +200,13 @@ export default {
   },
   computed: {
     ...mapGetters({markerup: "clickMarkerUpdate"}),
+/*
     splitDate: function () {
       var isoDate = new Date(this.item["date"]);
       var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();
       return formatDate;
     },
+*/
   },
 
 
