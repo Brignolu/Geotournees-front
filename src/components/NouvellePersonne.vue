@@ -5,6 +5,7 @@
     <b-card>
       <b-form>
         <b-form-group label="Informations abonné:">
+          <b-form-group label="n° Abonné">
           <b-form-input
 
               v-model="form.numero_abo"
@@ -16,18 +17,22 @@
           <b-form-invalid-feedback :state="requiredStr('numero_abo')">
             Veuillez préciser le numéro d'abonné
           </b-form-invalid-feedback>
-
+          </b-form-group>
+          <b-form-group label="n° Transmetteur">
           <b-form-input
 
               v-model="form.transmetteur"
               type="number"
+              :number="true"
               placeholder="Transmetteur"
               required
           ></b-form-input>
-
+          </b-form-group>
+          <b-form-group label="Identifiant WebBuncher">
           <b-form-input
               v-model="form.identifiant_wbb"
               type="number"
+              :number="true"
               placeholder="Identifiant WBB"
               :state="requiredNbr('identifiant_wbb')"
               required
@@ -35,6 +40,7 @@
           <b-form-invalid-feedback :state="requiredNbr('identifiant_wbb')">
             Veuillez Préciser l'identifiant WebBuncher
           </b-form-invalid-feedback>
+          </b-form-group>
         </b-form-group>
 
         <b-form-group label="Informations personnelles :">
@@ -98,15 +104,17 @@
               v-model="form.codepostal"
               type="text"
               placeholder="CP"
+              :state="requiredPostalCode('codepostal')"
               required
           ></b-form-input>
-          <b-form-invalid-feedback :state="requiredStr('codepostal')">
+          <b-form-invalid-feedback :state="requiredPostalCode('codepostal')">
             Veuillez preciser le code postal
           </b-form-invalid-feedback>
 
           <b-form-input
               v-model="form.ville"
               type="text"
+              :state="requiredStr('ville')"
               placeholder="Ville"
               required
           ></b-form-input>
@@ -136,7 +144,7 @@ export default {
   methods: {
     postAbonne: function () {
 
-      axios.post('http://localhost:3000/create/abonne', {
+      axios.post(this.$hostname +'/create/abonne', {
             numero_abo: this.form.numero_abo,
             transmetteur: this.form.transmetteur,
             identifiant_wbb: this.form.identifiant_wbb,
@@ -151,7 +159,7 @@ export default {
           }).then((data) => {
         this.form.abonneId = data.id;
         // console.log("abonneOK")
-        axios.post('http://localhost:3000/create/personne', {
+        axios.post(this.$hostname +'/create/personne', {
               nom: this.form.nom,
               prenom: this.form.prenom,
               numtel: this.form.numtel,
@@ -167,7 +175,7 @@ export default {
             }).then((data) => {
           this.form.personneId = data.id;
           // console.log("personneOK")
-          axios.post('http://localhost:3000/create/adresse', {
+          axios.post(this.$hostname +'/create/adresse', {
                 numero: this.form.numero,
                 rue: this.form.rue,
                 ville: this.form.ville,
@@ -193,32 +201,37 @@ export default {
                 return response.data;
               }
             }).then((data) => {
-              // console.log(data.features[0])
+               console.log(data)
               // console.log(data.features[0].geometry.coordinates[1])
-              this.form.lat = data.features[0].geometry.coordinates[1];
-              this.form.long = data.features[0].geometry.coordinates[0];
-              // console.log(this.form.lat)
-              // console.log("APIOK")
-              //this.$store.commit("messagecreate", "Abonné Créé !")
-              axios.post('http://localhost:3000/create/coordonnees', {
-                    latitude: this.form.lat,
-                    longitude: this.form.long,
-                    adresseId: this.form.adresseId
-                  }
-              )
-                  .then(function (response) {
-                    console.log(response.status);
-                    console.log(response);
-                    if (response.status === 201) {
-                      return response.data;
+              //TODO : check if data.features exist => to do so is to check if object dat.containskey features
+              if (data.features.length > 0 ) {
+                this.form.lat = data.features[0].geometry.coordinates[1];
+                this.form.long = data.features[0].geometry.coordinates[0];
+                // console.log(this.form.lat)
+                // console.log("APIOK")
+                //this.$store.commit("messagecreate", "Abonné Créé !")
+                axios.post(this.$hostname +'/create/coordonnees', {
+                      latitude: this.form.lat,
+                      longitude: this.form.long,
+                      adresseId: this.form.adresseId
                     }
-                  }).then(() => {
-                // console.log("coordoOK")
-                this.$store.commit("messagecreate", "Abonné Créé !");
-                this.$router.push('/intervention');
+                )
+                    .then(function (response) {
+                      console.log(response.status);
+                      console.log(response);
+                      if (response.status === 201) {
+                        return response.data;
+                      }
+                    }).then(() => {
+                  // console.log("coordoOK")
+                  this.$store.commit("messagecreate", "Abonné Créé !");
+                  // Redirige vers la route précédente
+                  this.$router.go(-1);
 
-              }).catch(err => console.log(err))
-            }).catch(err => console.log(err))
+                }).catch(err => console.log(err))
+              }else{
+                alert("L'adresse entrée est incorrecte et/ou n'existe pas")
+              }}).catch(err => console.log(err))
           }).catch(err => console.log(err))
 
         }).catch(err => console.log(err))
@@ -230,6 +243,10 @@ export default {
   },
   beforeMount() {
   },
+  beforeRouteUpdate: (to, from, next) => {
+      this.previousroute = from
+    next()
+      },
 
 
   data() {
@@ -251,16 +268,22 @@ export default {
         adresseId: 0,
         personneId: 0,
       },
+      previousroute:null,
     }
   },
   computed: {
     requiredNbr() {
-      return item => this.form[item] < 0;
+      return item => this.form[item] > 0;
     },
     requiredStr() {
       return item => this.form[item] !== "";
+    },
+    requiredPostalCode(){
+      //let regex = /d/g;
+      return item => this.form[item] !== ""; // && regex.exec(item);
     }
 
   },
 }
+
 </script>

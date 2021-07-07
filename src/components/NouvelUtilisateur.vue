@@ -70,7 +70,7 @@ export default {
   methods: {
     postUtilisateur: function () {
       if (this.betweenSixTwelve('nom_utilisateur') && this.betweenSixTwelve('mot_de_passe') && this.requiredStatus) {
-        axios.post('http://localhost:3000/create/utilisateur', {
+        axios.post(this.$hostname +'/create/utilisateur', {
               nom: this.form.nom,
               nom_utilisateur: this.form.nom_utilisateur,
               mot_de_passe: this.form.mot_de_passe,

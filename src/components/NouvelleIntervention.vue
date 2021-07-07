@@ -6,22 +6,24 @@
     <b-card>
       <h3>Nouvelle Intervention</h3>
       <b-form>
-        <b-form-group label="Date et Heure de l'intervention :">
-          <b-form-datepicker id="example-datepicker" v-model="form.date" :state="datetimeSelected('date')"
+        <b-form-group label="Date de l'intervention :">
+          <b-form-datepicker v-model="form.date" v-bind:min="min" :state="datetimeSelected('date')">
           placeholder="Date de l'intervention"></b-form-datepicker>
-          <b-form-timepicker v-model="form.heure" :state="datetimeSelected('heure')" locale="fr" placeholder="Horaire de l'intervention"></b-form-timepicker>
+          <v-app>
+            <v-time-picker :landscape="true" v-model="form.heure" format="24hr" color="#5F3075" :allowed-hours="allowedHours" :allowed-minutes="allowedStep" ></v-time-picker>
+          </v-app>
           <b-form-invalid-feedback :state="datetimeSelected('date') && datetimeSelected('heure')">
-            Veuillez préciser la date et l'heure de l'intervention
+            <h6>Veuillez préciser la date et l'heure de l'intervention</h6>
           </b-form-invalid-feedback>
+
         </b-form-group>
+
         <b-form-group label="Abonné :">
           <b-form-select v-model="form.abonneId" :state="requiredSelect('abonneId')" :options="optionsabonnes"
                          :select-size="4">
           </b-form-select>
-          <b-form-invalid-feedback :state="requiredSelect('abonneId')">
-            Veuillez selectionner un abonné
-          </b-form-invalid-feedback>
           <div>
+
             <b-button variant="success" to="/intervention/nouvelabonne">
               <b-icon-person-plus-fill></b-icon-person-plus-fill>
               Ajouter un abonné
@@ -31,6 +33,10 @@
               <Personne></Personne>
             </b-modal>
           </div>
+          <b-form-invalid-feedback :state="requiredSelect('abonneId')">
+            Veuillez selectionner un abonné
+          </b-form-invalid-feedback>
+
         </b-form-group>
         <b-form-group label="Agent :">
           <b-form-select v-model="form.agentId" :state="requiredSelect('agentId')" :options="optionsagents"
@@ -77,15 +83,17 @@
 <script>
 import axios from "axios";
 import Personne from "@/components/NouvellePersonne";
+import { VApp, VTimePicker } from 'vuetify/lib'
 
 export default {
   name: 'NouvelleIntervention',
-  components: {Personne},
+  components: {Personne, VApp, VTimePicker},
   methods: {
+
     postIntervention: function () {
       if (this.datetimeSelected('date') && this.datetimeSelected('heure') && this.requiredSelect('abonneId') && this.requiredSelect('agentId') && this.requiredSelect('typeId') && this.requiredSelect('motifId')) {
         var dateheure = this.form.date + " " + this.form.heure + " UTC";
-        axios.post('http://localhost:3000/create/intervention', {
+        axios.post(this.$hostname +'/create/intervention', {
               agentId: this.form.agentId,
               abonneId: this.form.abonneId,
               etatId: this.form.etatId,
@@ -109,7 +117,29 @@ export default {
 
         }).catch(err => console.log(err))
       }
-    }
+    },
+    enabledHours: function(context) {
+      this.ctx = context
+      if (context.value === "") {
+        this.form.heure = ""
+      } else if (context.value <= "07:59:00") {
+        this.form.heure = "07:03:00"
+        this.form.heure = "08:00:00";
+        //
+        // context.hours = 8
+        // context.minutes = 1
+        // context.formatted = "08:00"
+        // this.context.value = "08:00:00"
+      } else if (context.value >= "18:00:00") {
+        this.form.heure = "08:00:00";
+        // context.hours = 8
+        // context.minutes = 0
+        // context.formatted = "08:00"
+      }
+    },
+
+  allowedStep: function (m){return  m % 15 === 0},
+  allowedHours: function (v){return v>= 8 && v <= 18},
   },
   computed: {
     datetimeSelected() {
@@ -117,12 +147,12 @@ export default {
     },
     requiredSelect() {
       return item => this.form[item] !== 0;
-    }
+    },
   },
   beforeMount() {
 
 
-    axios.get('http://localhost:3000/motifs')
+    axios.get(this.$hostname +'/motifs')
         .then(function (response) {
           if (response.status === 200) {
             return response.data
@@ -133,7 +163,7 @@ export default {
       }
     }).catch(err => console.log(err))
 
-    axios.get('http://localhost:3000/agents')
+    axios.get(this.$hostname +'/agents')
         .then(function (response) {
           if (response.status === 200) {
             return response.data
@@ -144,7 +174,7 @@ export default {
       }
     }).catch(err => console.log(err))
 
-    axios.get('http://localhost:3000/types')
+    axios.get(this.$hostname +'/types')
         .then(function (response) {
           if (response.status === 200) {
             return response.data
@@ -155,7 +185,7 @@ export default {
       }
     }).catch(err => console.log(err))
 
-    axios.get('http://localhost:3000/personnes')
+    axios.get(this.$hostname +'/personnes')
         .then(function (response) {
           if (response.status === 200) {
             return response.data
@@ -171,11 +201,18 @@ export default {
 
 
   data() {
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const minDate = today;
+    const maxDate = new Date(today)
+    maxDate.setMonth(maxDate.getMonth() + 1)
     return {
       optionsabonnes: [],
       optionsagents: [],
       optionsmotifs: [],
       optionstypes: [],
+      min: minDate,
+      timepickercolor: "danger",
       form: {
         motifId: 0,
         typeId: 0,
@@ -184,8 +221,7 @@ export default {
         agentId: 0,
         date: "",
         heure: "",
-        commentaires: ""
-
+        commentaires: "",
       },
     }
   }

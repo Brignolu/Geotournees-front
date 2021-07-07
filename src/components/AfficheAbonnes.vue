@@ -79,7 +79,7 @@ export default {
     }
   },
   beforeMount() {
-    axios.get('http://localhost:3000/abonnes')
+    axios.get(this.$hostname +'/abonnes')
         .then(function (response) {
           if (response.status === 200) {
             return response.data
@@ -89,9 +89,18 @@ export default {
     })
   },
   methods: {
-    deleteAbonne(item) {
+    deleteAbonne: async function(item) {
       console.log(item.id);
-      axios.delete("http://localhost:3000/delete/abonne/" + item.id, {
+      await axios.delete(this.$hostname +"/delete/abonne/personne/" + item.id, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': '*'
+        }
+      }).then(function () {
+        console.log("personne supprimée")
+      }).catch(err=> console.log(err))
+      await axios.delete(this.$hostname +"/delete/abonne/" + item.id, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -101,9 +110,9 @@ export default {
         if (response.status === 204)
           return response
       }).then(() => {
-        this.$store.commit("messagecreate", "Abonné Supprimée")
-        this.$router.push("/administration")
-      })
+        this.$store.commit("messagecreate", "Abonné Supprimé")
+        //this.$router.push("/administration")
+      }).catch(err => console.log(err))
 
     }
   }

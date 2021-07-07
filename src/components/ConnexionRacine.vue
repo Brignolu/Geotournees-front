@@ -62,7 +62,7 @@ export default {
   name: 'ConnexionRacine',
   methods: {
     postLogin: function () {
-      axios.post('http://localhost:3000/login', {
+      axios.post(this.$hostname +'/login', {
         nom_utilisateur: this.form.nom_utilisateur,
         mot_de_passe: this.form.password
       })
@@ -72,9 +72,8 @@ export default {
         if (data.success) {
           // emission de l'event sur le socket vers le serveur
           this.$socket.emit('connexion', this.form.nom_utilisateur)
-          this.$socket.emit('connexion', this.form.password)
           this.$store.commit("login", data);
-          this.$store.commit('initdatalist')
+          this.$store.commit('updatedatalist')
           this.$router.push({name: 'visualisation'});
         } else {
 

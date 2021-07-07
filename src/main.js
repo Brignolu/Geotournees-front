@@ -3,6 +3,7 @@ import App from './App.vue';
 import VueRouter from "vue-router";
 import Vuex from 'vuex';
 
+import Vuetify from 'vuetify/lib'
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import "@/assets/app.scss";
 
@@ -19,6 +20,9 @@ import SocketIO from "socket.io-client";
 import VueSocketIO from "vue-socket.io";
 import PanneauAdministration from "@/components/PanneauAdministration";
 
+
+Vue.use(Vuetify)
+const vuetify = new Vuetify({});
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueRouter);
@@ -26,6 +30,7 @@ Vue.use(Vuex);
 
 
 Vue.config.productionTip = false;
+Vue.prototype.$hostname = 'http://localhost:3000'
 
 // Association des routes aux composants
 const routes = [
@@ -144,14 +149,8 @@ const store = new Vuex.Store({
                 state.datalist = data;
             }).catch(err => console.log(err));
         },
-        initdatalist(state) {
-            console.log("oui")
-            axios.get("http://127.0.0.1:3000/interventions")
-                .then(function (value) {
-                    return value.data;
-                }).then(data => {
-                state.datalist = data;
-            }).catch(err => console.log(err));
+        setzoom(state,data){
+          state.zoom = data;
         },
         individualzoom(state) {
             state.zoom = 15;
@@ -182,6 +181,10 @@ const store = new Vuex.Store({
         clickMarkerUpdate: state => {
             return state.itemselected;
         },
+        userUpdate: state => {
+            return state.utilisateur
+        },
+
     }
 })
 
@@ -196,6 +199,7 @@ const router = new VueRouter({
 let app = new Vue({
     router,
     store,
+    vuetify,
     render: h => h(App),
 }).$mount('#app')
 

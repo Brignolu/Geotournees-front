@@ -21,7 +21,7 @@
     </b-input-group>
     <b-table responsive sticky-header="80vh"
              hover
-             :items="SubData"
+             :items="this.$store.state.datalist"
              :fields="fields"
              :filter="filter"
              @row-clicked="click"
@@ -106,9 +106,6 @@ import {mapGetters} from "vuex";
 export default {
   name: 'VisualisationListe',
   emits: ['tablehover', 'tableclick'],
-  props: {
-    SubData: Array,
-  },
   data() {
     return {
       /* date; heure; numabo; nom; pnom; nvoie; addr; postc; comm; telabo; agent; motif; intertype; numtrans; idabo; */
@@ -160,9 +157,9 @@ export default {
     },
 
     mouseOver(item) {
-      var coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
-      this.$store.commit("updatemapcenter", coords)
+      let coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
       this.$store.commit("individualzoom")
+      this.$store.commit("updatemapcenter", coords)
     },
 
     mouseLeave() {
@@ -171,7 +168,7 @@ export default {
 
     deleteIntervention(item) {
       console.log(item.id);
-      axios.delete("http://localhost:3000/delete/intervention/" + item.id, {
+      axios.delete(this.$hostname +"/delete/intervention/" + item.id, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',

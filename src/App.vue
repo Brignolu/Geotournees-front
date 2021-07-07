@@ -14,15 +14,20 @@
 
 <script>
 import EnTete from "@/components/EnTete";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'App',
   components: { EnTete },
+  computed: {
+    ...mapGetters({markerup: "clickMarkerUpdate"}),
+  },
   sockets:{
     refreshinterventionlist:function (){
       console.log('socket recv refresh intervention list')
       this.$store.commit("updatedatalist")
     }
+
   }
 
 }

@@ -63,7 +63,7 @@ export default {
     }
   },
   beforeMount() {
-    axios.get('http://localhost:3000/utilisateurs')
+    axios.get(this.$hostname +'/utilisateurs')
         .then(function (response) {
           if (response.status === 200) {
             return response.data
@@ -75,7 +75,7 @@ export default {
   methods: {
     deleteUtilisateur(item) {
       console.log(item.id);
-      axios.delete("http://localhost:3000/delete/utilisateur/" + item.id, {
+      axios.delete(this.$hostname +"/delete/utilisateur/" + item.id, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -86,7 +86,7 @@ export default {
           return response
       }).then(() => {
         this.$store.commit("messagecreate", "Utilisateur Supprimé")
-        this.$router.push("/administration")
+        //this.$router.push("/administration")
       })
 
     }

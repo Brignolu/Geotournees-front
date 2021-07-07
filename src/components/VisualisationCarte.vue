@@ -1,9 +1,9 @@
 <template>
 
   <div id="map-wrapper">
-    center : {{this.centerLatLong}} zoom :{{this.zoomlvl}} data center : {{ this.center }} data zoom : {{ this.zoom }}
+    center : {{this.centerLatLong}} zoom :{{this.zoomlvl}} data center : {{ center }} data zoom : {{ this.zoom }}
     <div id="map">
-      <v-map :zoom="this.$store.state.zoom" :center="this.$store.state.mapcenter" ref="map">
+      <v-map :zoom="this.$store.getters.zoomUpdate" :center="this.$store.getters.centerUpdate" ref="map">
         <v-icondefault></v-icondefault>
         <v-tilelayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"></v-tilelayer>
@@ -46,7 +46,7 @@ import icon_maintenance from "@/assets/Marqueur00.png";
 import icon_depannage from "@/assets/Marqueur06.png";
 import icon_installation from "@/assets/Marqueur08.png";
 import cantons from "@/assets/communesHteSavoie.json"
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'VisualisationCarte',
@@ -68,13 +68,22 @@ export default {
     ready: (e) => console.log('ready', e),
   },
   computed:{
-    ...mapGetters({center:'centerUpdate'}),
-    ...mapGetters({zoom: 'zoomUpdate'})
+    center(){
+      return this.$store.getters.centerUpdate
+    },
+    zoom(){
+      return this.$store.getters.zoomUpdate
+    }
   },
   watch: {
     center: function () {
       console.log('Watch Center');
+      console.log(this.$store.getters.centerUpdate)
     },
+    zoom: function () {
+      console.log('Watch Zoom');
+      console.log(this.$store.getters.zoomUpdate)
+    }
   },
   data() {
     return {
@@ -107,8 +116,6 @@ export default {
       cantons: cantons,
       centerLatLong:null,
       zoomlvl: null,
-      zoom: this.$store.state.zoom,
-      center: this.$store.state.mapcenter
     }
   },
   beforeMount() {
@@ -119,6 +126,7 @@ export default {
     }),
         this.$refs.map.mapObject.on('zoom', () => {
           this.zoomlvl = this.$refs.map.mapObject.getZoom()
+          this.$store.commit("setzoom", this.$refs.map.mapObject.getZoom())
         })
   },
   created() {
