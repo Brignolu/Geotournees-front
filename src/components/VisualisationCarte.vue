@@ -1,15 +1,14 @@
 <template>
 
   <div id="map-wrapper">
-    center : {{this.centerLatLong}} zoom :{{this.zoomlvl}} data center : {{ center }} data zoom : {{ this.zoom }}
     <div id="map">
-      <v-map :zoom="this.$store.getters.zoomUpdate" :center="this.$store.getters.centerUpdate" ref="map">
+      <v-map :zoom="9" :center="[46.0736617, 6.4048087]" ref="map">
         <v-icondefault></v-icondefault>
         <v-tilelayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"></v-tilelayer>
         <v-geojson :geojson="cantons"></v-geojson>
-        <v-marker-cluster :options="clusterOptions" @ready="ready()">
-          <template v-for="l in this.$store.state.datalist">
+        <v-marker-cluster :options="clusterOptions" ref="markercluster" @ready="ready()">
+          <template v-for="l in this.$store.state.interventions">
             <v-marker v-if="l['type.type'] === 'Dépannage'" :key="l['id']"
                       :lat-lng="[l['abonne.personne.adresses.coordonne.lat'],l['abonne.personne.adresses.coordonne.long']]"
                       :icon="depannageIcon" @click="click(l)">
@@ -57,39 +56,44 @@ export default {
   },
   methods: {
     click: function (item) {
-      console.log('store => mouseclickmarker');
-      this.$store.commit("mouseclickmarker", item)
-      this.$store.commit('updatemapcenter', [item['abonne.personne.adresses.coordonne.lat'],item['abonne.personne.adresses.coordonne.long']])
-      this.$store.commit('individualzoom')
+      console.log('store => setMarkerClicked');
+      this.$store.commit("setMarkerClicked", item)
+      this.$store.dispatch('loadCenter', [item['abonne.personne.adresses.coordonne.lat'],item['abonne.personne.adresses.coordonne.long']])
+      this.$store.dispatch('loadZoom',15)
     },
     ready: (e) => console.log('ready', e),
   },
   computed:{
     center(){
-      return this.$store.getters.centerUpdate
+      return this.$store.state.mapcenter
     },
     zoom(){
-      return this.$store.getters.zoomUpdate
+      return this.$store.state.zoom
+    },
+    interventions(){
+      return this.$store.state.interventions
     }
   },
   watch: {
     center: function () {
-      console.log('Watch Center');
-      console.log(this.$store.getters.centerUpdate)
+     let MyMapObj =  this.$refs.map.mapObject
+     MyMapObj.panTo(this.$store.state.mapcenter,{ animate:false })
+      console.log('Watch Center : ' + this.center);
     },
     zoom: function () {
-      console.log('Watch Zoom');
-      console.log(this.$store.getters.zoomUpdate)
+      console.log('Watch Zoom : ' + this.$store.getters.zoomUpdate)
+      let MyMapObj =  this.$refs.map.mapObject
+      MyMapObj.setZoom(this.$store.state.zoom)
     }
   },
   data() {
     return {
-
       clusterOptions: {
         zoomToBoundsOnClick: true,
         showCoverageOnHover: true,
         spiderfyOnMaxZoom: true,
         removeOutsideVisibleBounds: true,
+        animate: false,
       },
 
       /* Icons */
@@ -115,18 +119,8 @@ export default {
       zoomlvl: null,
     }
   },
-  beforeMount() {
-  },
-  mounted() {
-    this.$refs.map.mapObject.on('move', () => {
-          this.centerLatLong = this.$refs.map.mapObject.getCenter()
-    }),
-        this.$refs.map.mapObject.on('zoom', () => {
-          this.zoomlvl = this.$refs.map.mapObject.getZoom()
-          this.$store.commit("setzoom", this.$refs.map.mapObject.getZoom())
-        })
-  },
   created() {
+    this.$store.dispatch('loadCenter', [46.0736617, 6.4048087])
   }
 }
 </script>

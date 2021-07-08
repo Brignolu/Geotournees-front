@@ -107,7 +107,7 @@ export default {
         if (response.status === 204)
           return response
       }).then(() => {
-        this.$store.commit("messagecreate", "Abonné Supprimé")
+        this.$store.commit("setNotification", "Abonné Supprimé")
         this.$store.dispatch('loadAbonnes')
       }).catch(err => console.log(err))
 

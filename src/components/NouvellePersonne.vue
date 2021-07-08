@@ -209,7 +209,7 @@ export default {
                 this.form.long = data.features[0].geometry.coordinates[0];
                 // console.log(this.form.lat)
                 // console.log("APIOK")
-                //this.$store.commit("messagecreate", "Abonné Créé !")
+                //this.$store.commit("setNotification", "Abonné Créé !")
                 axios.post(this.$hostname +'/create/coordonnees', {
                       latitude: this.form.lat,
                       longitude: this.form.long,
@@ -224,7 +224,7 @@ export default {
                       }
                     }).then(() => {
                   // console.log("coordoOK")
-                  this.$store.commit("messagecreate", "Abonné Créé !");
+                  this.$store.commit("setNotification", "Abonné Créé !");
                   // Redirige vers la route précédente
                   this.$router.go(-1);
 

@@ -82,7 +82,7 @@ export default {
         if (response.status === 204)
           return response
       }).then(() => {
-        this.$store.commit("messagecreate", "Utilisateur Supprimé")
+        this.$store.commit("setNotification", "Utilisateur Supprimé")
         //this.$router.push("/administration")
         this.$store.dispatch('loadUtilisateurs')
       })

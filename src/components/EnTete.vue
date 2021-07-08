@@ -44,15 +44,15 @@ export default {
   methods: {
     accueil: function () {
       console.log("accueil");
-      this.$store.commit('markerclickreset')
-      this.$store.commit('resetzoom')
-      this.$store.commit('resetmapcenter')
+      this.$store.commit('setMarkerClicked',null)
+      this.$store.dispatch("loadZoom",9)
+      this.$store.dispatch("loadCenter", [46.0736617, 6.4048087])
       this.$router.push('/visualisation').catch(err => console.log(err));
     },
     deconnexion: function () {
       console.log("deconnexion");
       this.$router.push('/');
-      this.$store.commit("logout");
+      this.$store.commit("setUtilisateur",null);
     },
     intervention: function () {
       console.log("intervention");
@@ -73,7 +73,7 @@ export default {
         autoHideDelay: 5000,
         appendToast: false
       });
-      this.$store.commit("messagedestroy");
+      this.$store.commit("setNotification", null);
     }
   }
 }

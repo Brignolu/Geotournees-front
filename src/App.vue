@@ -25,7 +25,7 @@ export default {
   sockets:{
     refreshinterventionlist:function (){
       console.log('socket recv refresh intervention list')
-      this.$store.commit("updatedatalist")
+      this.$store.dispatch("loadInterventions")
     }
 
   }

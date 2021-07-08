@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ this.$store.state.mapcenter }}{{ this.$store.state.zoom }}
     <b-input-group
         size="sm"
     >
@@ -13,15 +12,14 @@
       </b-form-input>
       <b-input-group-append>
         <b-button
-            :disabled="!filter"
             @click="resetFilter">
-          Effacer
+          Effacer et/ou réinitialisation zoom
         </b-button>
       </b-input-group-append>
     </b-input-group>
     <b-table responsive sticky-header="80vh"
              hover
-             :items="this.$store.state.datalist"
+             :items="this.interventions"
              :fields="fields"
              :filter="filter"
              @row-clicked="click"
@@ -101,7 +99,7 @@
 
 <script>
 import axios from "axios";
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'VisualisationListe',
@@ -142,9 +140,9 @@ export default {
 
     resetFilter() {
       this.filter = ''
-      this.$store.commit('markerclickreset')
-      this.$store.commit('resetzoom')
-      this.$store.commit('resetmapcenter')
+      this.$store.commit('setMarkerClicked', null)
+      this.$store.dispatch("loadCenter", [46.0736617, 6.4048087])
+      this.$store.dispatch("loadZoom", 9)
     },
 
     click(item) {
@@ -159,8 +157,8 @@ export default {
 
     mouseOver(item) {
       let coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
-      this.$store.commit("individualzoom")
-      this.$store.commit("updatemapcenter", coords)
+      this.$store.dispatch("loadCenter", coords)
+      this.$store.dispatch("loadZoom", 15)
     },
 
     mouseLeave() {
@@ -169,7 +167,7 @@ export default {
 
     deleteIntervention(item) {
       console.log(item.id);
-      axios.delete(this.$hostname +"/delete/intervention/" + item.id, {
+      axios.delete(this.$hostname + "/delete/intervention/" + item.id, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -179,35 +177,44 @@ export default {
         if (response.status === 204)
           return response
       }).then(() => {
-        this.$store.commit("messagecreate", "Intervention Supprimée")
+        this.$store.commit("setNotification", "Intervention Supprimée")
         this.$socket.emit('ws-refresh-intervention')
-        this.$store.commit("updatedatalist")
+        this.$store.dispatch("loadInterventions")
       })
     },
   },
   watch: {
     markerup: function () {
-      console.log(this.$store.state.itemselected.id)
-      let myTable = this.$refs.myTable.$el,
-          tableBody = myTable.getElementsByTagName('tbody')[0],
-          tableRows = tableBody.getElementsByTagName('tr');
-
+      /*
+      // On récupère l'element puis on simule un click
+       let myTable = this.$refs.myTable.$el,
+           tableBody = myTable.getElementsByTagName('tbody')[0],
+           tableRows = tableBody.getElementsByTagName('tr');
+           tableRows[this.$store.state.itemselected.id - 1].click()
+       */
       this.filter = this.$store.state.itemselected['abonne.personne.nom'];
-      tableRows[this.$store.state.itemselected.id - 1].click()
+      this.$store.dispatch("loadCenter", [this.this.$store.state.itemselected['abonne.personne.adresses.coordonne.lat'], this.$store.state.itemselected['abonne.personne.adresses.coordonne.long']])
 
 
     }
   },
   computed: {
     ...mapGetters({markerup: "clickMarkerUpdate"}),
-/*
-    splitDate: function () {
-      var isoDate = new Date(this.item["date"]);
-      var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();
-      return formatDate;
+
+    interventions() {
+      return this.$store.state.interventions
     },
-*/
   },
+  created() {
+    this.$store.dispatch('loadInterventions')
+  }
+  /*
+      splitDate: function () {
+        var isoDate = new Date(this.item["date"]);
+        var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();
+        return formatDate;
+      },
+  */
 
 
 };

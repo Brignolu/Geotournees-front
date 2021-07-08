@@ -111,8 +111,8 @@ export default {
               }
             }).then(() => {
           this.$socket.emit('ws-refresh-intervention')
-          this.$store.commit("updatedatalist")
-          this.$store.commit("messagecreate", "Intervention Créée !")
+          this.$store.dispatch("loadInterventions")
+          this.$store.commit("setNotification", "Intervention Créée !")
           this.$router.push( { name: 'visualisation' } );
 
         }).catch(err => console.log(err))
@@ -150,8 +150,6 @@ export default {
     },
   },
   beforeMount() {
-
-
     axios.get(this.$hostname +'/motifs')
         .then(function (response) {
           if (response.status === 200) {
@@ -226,4 +224,7 @@ export default {
     }
   }
 }
+// TODO: Ajouter un filtre sur les abonnes + filtrer le type en fonction du motif selectionné
+
 </script>
+

@@ -73,8 +73,8 @@ export default {
           // emission de l'event sur le socket vers le serveur
           console.log(data)
           this.$socket.emit('connexion', this.form.nom_utilisateur);
-          this.$store.commit("login", data);
-          this.$store.commit('updatedatalist');
+          this.$store.commit("setUtilisateur", data);
+          this.$store.dispatch("loadInterventions")
           this.$router.push({name: 'visualisation'});
         } else {
           this.erreur = false

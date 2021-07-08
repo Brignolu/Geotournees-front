@@ -34,12 +34,14 @@ let hostname = 'http://localhost:3000'
 Vue.prototype.$hostname = hostname
 
 
-
 // Association des routes aux composants
 const routes = [
     //  Composant nommé
     {
-        path: '/visualisation', name: 'visualisation', component: VisualisationCarteListe, beforeEnter: (to, from, next) => {
+        path: '/visualisation',
+        name: 'visualisation',
+        component: VisualisationCarteListe,
+        beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null) {
                 next(false);
             } else {
@@ -57,7 +59,10 @@ const routes = [
         }
     },
     {
-        path: '/administration', name: 'administration', component: PanneauAdministration, beforeEnter: (to, from, next) => {
+        path: '/administration',
+        name: 'administration',
+        component: PanneauAdministration,
+        beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
                 next(false);
             } else {
@@ -104,7 +109,10 @@ const routes = [
     },
     {path: '/', component: ConnexionRacine},
     {
-        path: '/intervention/nouvelabonne', name: 'abonne', component: NouvellePersonne, beforeEnter: (to, from, next) => {
+        path: '/intervention/nouvelabonne',
+        name: 'abonne',
+        component: NouvellePersonne,
+        beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 2) {
                 next(false);
             } else {
@@ -121,74 +129,65 @@ const store = new Vuex.Store({
         abonnes: null,
         utilisateurs: null,
         message: null,
-        mapcenter: [46.0736617, 6.4048087],
+        mapcenter: null,
         zoom: 9,
         datalist: null,
+        interventions: null,
         itemselected: null,
 
     },
     mutations: {
-        login(state, utilisateur) {
+        setUtilisateur(state, utilisateur) {
             state.utilisateur = utilisateur;
         },
-        logout(state) {
-            state.utilisateur = null
-        },
-        messagecreate(state, message) {
+        setNotification(state, message) {
             state.message = message
         },
-        messagedestroy(state) {
-            state.message = null
-        },
-        updatemapcenter(state, mapcenter) {
+        setMapCenter(state, mapcenter) {
             state.mapcenter = mapcenter;
         },
-        resetmapcenter(state) {
-            state.mapcenter = [46.0736617, 6.4048087];
+        setZoom(state, data) {
+            state.zoom = data;
         },
-        updatedatalist(state) {
-            axios.get(hostname + "/interventions")
-                .then(function (value) {
-                    return value.data;
-                }).then(data => {
-                state.datalist = data;
-            }).catch(err => console.log(err));
-        },
-        setzoom(state,data){
-          state.zoom = data;
-        },
-        individualzoom(state) {
-            state.zoom = 15;
-        },
-        resetzoom(state) {
-            state.zoom = 9;
-        },
-        mouseclickmarker(state, data){
+        setMarkerClicked(state, data) {
             state.itemselected = data
         },
-        markerclickreset(state){
-            state.itemselected = null
-        },
-        updateAbonnes(state, abonnes){
+        setAbonnes(state, abonnes) {
             state.abonnes = abonnes;
         },
-        updateUtilisateurs(state, utilisateurs){
+        setUtilisateurs(state, utilisateurs) {
             state.utilisateurs = utilisateurs;
+        },
+        setInterventions(state, interventions) {
+            state.interventions = interventions;
         }
     },
     actions: {
-      loadAbonnes({commit}){
-          axios.get(hostname +'/abonnes')
-              .then(function (response) {
-                  commit('updateAbonnes', response.data);
-              }).catch(err => console.log(err))
-      },
-        loadUtilisateurs({commit}){
-            axios.get(hostname +'/utilisateurs')
+        loadAbonnes({commit}) {
+            axios.get(hostname + '/abonnes')
                 .then(function (response) {
-                    commit('updateUtilisateurs', response.data);
+                    commit('setAbonnes', response.data);
                 }).catch(err => console.log(err))
         },
+        loadUtilisateurs({commit}) {
+            axios.get(hostname + '/utilisateurs')
+                .then(function (response) {
+                    commit('setUtilisateurs', response.data);
+                }).catch(err => console.log(err))
+        },
+        loadInterventions({commit}) {
+            axios.get(hostname + '/interventions')
+                .then(function (response) {
+                    commit('setInterventions', response.data);
+                }).catch(err => console.log(err))
+        },
+        loadCenter({commit}, coords) {
+            commit("setMapCenter", coords)
+        },
+        loadZoom({commit}, zoomlvl) {
+            commit("setZoom", zoomlvl)
+        },
+
 
     },
     getters: {
@@ -220,8 +219,9 @@ const store = new Vuex.Store({
     }
 })
 
-Vue.use( new VueSocketIO({connection: SocketIO('localhost:3000')
-}) )
+Vue.use(new VueSocketIO({
+    connection: SocketIO('localhost:3000')
+}))
 // Initialisation du module routeur
 const router = new VueRouter({
     routes
