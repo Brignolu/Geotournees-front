@@ -1,25 +1,66 @@
 <template>
   <div>
-    <b-input-group
-        size="sm"
-    >
-      <b-form-input
-          id="filter-input"
-          v-model="filter"
-          type="search"
-          placeholder="Recherche"
-      >
-      </b-form-input>
-      <b-input-group-append>
+
+    <b-row>
+      <b-col>
+
+        <b-input-group
+            size="sm"
+        >
+          <b-form-input
+              id="filter-input"
+              v-model="filter"
+              type="search"
+              placeholder="Recherche"
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button
+                @click="resetFilter"
+                variant="secondary"
+            >
+              Effacer
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-col>
+    </b-row>
+    <b-row>
+
+      <b-col>
+        <b-form-datepicker v-model="customFilter.date"
+                           :placeholder="'Filtrer par date'"
+                           today-button
+                           label-today-button="Aujourd'hui"
+                           reset-button
+                           label-reset-button="Supprimer le filtre"
+                           close-button
+                           label-close-button="X"
+                           label-no-date-selected="Aucune date filtrée"
+        >
+        </b-form-datepicker>
+      </b-col>
+      <b-col>
+        <b-form-select v-model="customFilter.type" :options="optionstypes">
+        </b-form-select>
+      </b-col>
+
+      <b-col>
+        <b-form-select v-model="customFilter.agent" :options="optionsagents">
+        </b-form-select>
+      </b-col>
+      <b-col>
         <b-button
+            variant="secondary"
             @click="resetFilter">
-          Effacer et/ou réinitialisation zoom
+          Synchronisation SoPlanning
         </b-button>
-      </b-input-group-append>
-    </b-input-group>
+      </b-col>
+    </b-row>
+
     <b-table responsive sticky-header="80vh"
              hover
-             :items="this.interventions"
+             :items="this.interventionsFiltered"
              :fields="fields"
              :filter="filter"
              @row-clicked="click"
@@ -54,10 +95,11 @@
           <b-button size="sm" @click="data.toggleDetails" variant="primary">
             <b-icon-clipboard-plus></b-icon-clipboard-plus>
           </b-button>
-          <b-button @click="deleteIntervention(data.item)" variant="danger" v-if="$store.state.utilisateur.roleId > 1">
+          <b-button @click="showDeleteModal(data.item)" variant="danger" v-if="$store.state.utilisateur.roleId > 1">
             <b-icon-trash></b-icon-trash>
           </b-button>
         </b-button-group>
+
       </template>
 
       <template #row-details="data">
@@ -94,6 +136,20 @@
       </template>
     </b-table>
 
+    <b-modal id="my-modal" centered hide-footer title="Confirmation">
+      <div class="d-block text-center">
+        <h4>Confirmez-vous la suppression ?</h4>
+      </div>
+      <b-row>
+        <b-col>
+          <b-button variant="success" block @click="deleteIntervention(itemDelete)"><b-icon-check></b-icon-check></b-button>
+        </b-col>
+        <b-col>
+          <b-button variant="danger" block @click="hideDeleteModal"><b-icon-x></b-icon-x></b-button>
+        </b-col>
+      </b-row>
+    </b-modal>
+
   </div>
 </template>
 
@@ -104,6 +160,7 @@ import {mapGetters} from "vuex";
 export default {
   name: 'VisualisationListe',
   emits: ['tablehover', 'tableclick'],
+
   data() {
     return {
       /* date; heure; numabo; nom; pnom; nvoie; addr; postc; comm; telabo; agent; motif; intertype; numtrans; idabo; */
@@ -134,6 +191,14 @@ export default {
           sortable: false
         }],
       filter: '',
+      customFilter: {
+        agent: null,
+        type: null,
+        date: null,
+      },
+      optionsagents: [{value: null, text: "Filtrer par agent"}],
+      optionstypes: [{value: null, text: "Filtrer par type d'intervention"}],
+      itemDelete: null
     }
   },
   methods: {
@@ -164,9 +229,17 @@ export default {
     mouseLeave() {
       console.log("mouseleave")
     },
+    showDeleteModal(item) {
+      this.itemDelete = item
+      this.$bvModal.show('my-modal')
+    },
+    hideDeleteModal() {
+      this.$bvModal.hide('my-modal')
+    },
 
     deleteIntervention(item) {
       console.log(item.id);
+      this.$bvModal.hide('my-modal')
       axios.delete(this.$hostname + "/delete/intervention/" + item.id, {
         headers: {
           'Content-Type': 'application/json',
@@ -181,6 +254,7 @@ export default {
         this.$socket.emit('ws-refresh-intervention')
         this.$store.dispatch("loadInterventions")
       })
+
     },
   },
   watch: {
@@ -193,7 +267,7 @@ export default {
            tableRows[this.$store.state.itemselected.id - 1].click()
        */
       this.filter = this.$store.state.itemselected['abonne.personne.nom'];
-      this.$store.dispatch("loadCenter", [this.this.$store.state.itemselected['abonne.personne.adresses.coordonne.lat'], this.$store.state.itemselected['abonne.personne.adresses.coordonne.long']])
+      this.$store.dispatch("loadCenter", [this.$store.state.itemselected['abonne.personne.adresses.coordonne.lat'], this.$store.state.itemselected['abonne.personne.adresses.coordonne.long']])
 
 
     }
@@ -201,21 +275,60 @@ export default {
   computed: {
     ...mapGetters({markerup: "clickMarkerUpdate"}),
 
-    interventions() {
-      return this.$store.state.interventions
-    },
-  },
-  created() {
-    this.$store.dispatch('loadInterventions')
-  }
-  /*
-      splitDate: function () {
-        var isoDate = new Date(this.item["date"]);
-        var formatDate = isoDate.getDay() + isoDate.getMonth() + isoDate.getFullYear();
-        return formatDate;
+    interventions: {
+      get: function () {
+        return this.$store.state.interventions
       },
-  */
+    },
+    interventionsFiltered() {
+      let customFilter = this.customFilter
+      if (this.interventions === null) {
+        return this.$store.state.interventions
+      } else {
+        var filtered = this.interventions.filter(function (el) {
+          var filter = el;
+          if (customFilter.agent !== null) {
+            filter = el['agent.nom'].toLowerCase().indexOf(customFilter.agent.toLowerCase()) > -1
+          }
+          if (customFilter.type !== null) {
+            filter = el['type.type'].toLowerCase().indexOf(customFilter.type.toLowerCase()) > -1
+          }
+          if (customFilter.date !== null) {
+            filter = el['date'].split('T')[0].toLowerCase().indexOf(customFilter.date.toLowerCase()) > -1
+          }
+          if (customFilter.date !== null && customFilter.type !== null) {
+            filter = el['date'].split('T')[0].toLowerCase().indexOf(customFilter.date.toLowerCase()) > -1 &&
+                el['type.type'].toLowerCase().indexOf(customFilter.type.toLowerCase()) > -1
+          }
+          if (customFilter.type !== null && customFilter.agent !== null) {
+            filter = el['type.type'].toLowerCase().indexOf(customFilter.type.toLowerCase()) > -1 &&
+                el['agent.nom'].toLowerCase().indexOf(customFilter.agent.toLowerCase()) > -1
+          }
+          if (customFilter.date !== null && customFilter.agent !== null) {
+            filter = el['date'].split('T')[0].toLowerCase().indexOf(customFilter.date.toLowerCase()) > -1
+                && el['agent.nom'].toLowerCase().indexOf(customFilter.agent.toLowerCase()) > -1
+          }
+          if (customFilter.date !== null && customFilter.agent !== null && customFilter.type !== null) {
+            filter = el['date'].split('T')[0].toLowerCase().indexOf(customFilter.date.toLowerCase()) > -1
+                && el['agent.nom'].toLowerCase().indexOf(customFilter.agent.toLowerCase()) > -1 &&
+                el['type.type'].toLowerCase().indexOf(customFilter.type.toLowerCase()) > -1
+          }
+          return filter
+        });
+        return filtered
+      }
+    }
 
+  },
+  created: function () {
+    console.log(this.$store.state.agents)
+    for (let i in this.$store.state.agents) {
+      this.optionsagents.push({value: this.$store.state.agents[i].nom, text: this.$store.state.agents[i].nom})
+    }
+    for (let j in this.$store.state.type) {
+      this.optionstypes.push({value: this.$store.state.type[j].type, text: this.$store.state.type[j].type})
+    }
+  },
 
 };
 </script>

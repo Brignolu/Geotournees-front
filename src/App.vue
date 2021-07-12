@@ -26,9 +26,16 @@ export default {
     refreshinterventionlist:function (){
       console.log('socket recv refresh intervention list')
       this.$store.dispatch("loadInterventions")
-    }
+    },
+
 
   }
 
 }
+
+
+//TODO: Associer un agent a un utilisateur optionnellement et ajouter un filtre sur la table principale afin de filtrer si la personnes à le statut utilisateur
+
+
 </script>
+

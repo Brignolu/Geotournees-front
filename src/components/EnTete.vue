@@ -26,6 +26,10 @@
               <b-dropdown-item v-if="this.$store.getters.userStatus === 3" @click="administration">
                 Panneau d'administration
               </b-dropdown-item>
+
+              <b-dropdown-item v-if="this.$store.getters.userStatus === 3 || this.$store.getters.userStatus === 2" @click="postSoplanning">
+                Synchronisation SoPlanning
+              </b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -35,6 +39,7 @@
 </template>
 <script>
 import {mapGetters} from "vuex";
+import axios from "axios";
 
 export default {
   name: 'EnTete',
@@ -61,6 +66,9 @@ export default {
     administration: function () {
       console.log("administration");
       this.$router.push('/administration');
+    },
+    postSoplanning: async function (){
+      await axios.get(this.$hostname +'/synchronisationplanning').catch(err => console.log(err))
     }
   },
   computed: {

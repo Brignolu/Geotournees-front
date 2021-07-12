@@ -74,7 +74,6 @@ export default {
           console.log(data)
           this.$socket.emit('connexion', this.form.nom_utilisateur);
           this.$store.commit("setUtilisateur", data);
-          this.$store.dispatch("loadInterventions")
           this.$router.push({name: 'visualisation'});
         } else {
           this.erreur = false
@@ -92,6 +91,11 @@ export default {
       erreur: null,
       messageErreur: null,
     }
+  },
+  created() {
+    this.$store.dispatch("loadInterventions")
+    this.$store.dispatch('loadAgents')
+    this.$store.dispatch('loadTypes')
   }
 }
 </script>

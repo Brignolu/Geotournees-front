@@ -128,6 +128,8 @@ const store = new Vuex.Store({
         utilisateur: null,
         abonnes: null,
         utilisateurs: null,
+        agents:null,
+        type: null,
         message: null,
         mapcenter: null,
         zoom: 9,
@@ -160,6 +162,12 @@ const store = new Vuex.Store({
         },
         setInterventions(state, interventions) {
             state.interventions = interventions;
+        },
+        setAgents(state, agents){
+            state.agents = agents;
+        },
+        setTypes(state, type){
+            state.type = type
         }
     },
     actions: {
@@ -179,6 +187,18 @@ const store = new Vuex.Store({
             axios.get(hostname + '/interventions')
                 .then(function (response) {
                     commit('setInterventions', response.data);
+                }).catch(err => console.log(err))
+        },
+        loadAgents({commit}) {
+            axios.get(hostname + '/agents')
+                .then(function (response) {
+                    commit('setAgents', response.data);
+                }).catch(err => console.log(err))
+        },
+        loadTypes({commit}) {
+            axios.get(hostname + '/types')
+                .then(function (response) {
+                    commit('setTypes', response.data);
                 }).catch(err => console.log(err))
         },
         loadCenter({commit}, coords) {

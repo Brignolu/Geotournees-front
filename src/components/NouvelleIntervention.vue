@@ -19,7 +19,8 @@
         </b-form-group>
 
         <b-form-group label="Abonné :">
-          <b-form-select v-model="form.abonneId" :state="requiredSelect('abonneId')" :options="optionsabonnes"
+          <b-form-input v-model="filter"></b-form-input>
+          <b-form-select v-model="form.abonneId" :state="requiredSelect('abonneId')" :options="filtre"
                          :select-size="4">
           </b-form-select>
           <div>
@@ -89,7 +90,6 @@ export default {
   name: 'NouvelleIntervention',
   components: {Personne, VApp, VTimePicker},
   methods: {
-
     postIntervention: function () {
       if (this.datetimeSelected('date') && this.datetimeSelected('heure') && this.requiredSelect('abonneId') && this.requiredSelect('agentId') && this.requiredSelect('typeId') && this.requiredSelect('motifId')) {
         var dateheure = this.form.date + " " + this.form.heure + " UTC";
@@ -118,30 +118,13 @@ export default {
         }).catch(err => console.log(err))
       }
     },
-    enabledHours: function(context) {
-      this.ctx = context
-      if (context.value === "") {
-        this.form.heure = ""
-      } else if (context.value <= "07:59:00") {
-        this.form.heure = "07:03:00"
-        this.form.heure = "08:00:00";
-        //
-        // context.hours = 8
-        // context.minutes = 1
-        // context.formatted = "08:00"
-        // this.context.value = "08:00:00"
-      } else if (context.value >= "18:00:00") {
-        this.form.heure = "08:00:00";
-        // context.hours = 8
-        // context.minutes = 0
-        // context.formatted = "08:00"
-      }
-    },
-
   allowedStep: function (m){return  m % 15 === 0},
   allowedHours: function (v){return v>= 8 && v <= 18},
   },
   computed: {
+    filtre() {
+      return this.optionsabonnes.filter(abonne => !abonne.text.indexOf(this.filter.toUpperCase()))
+    },
     datetimeSelected() {
       return item => this.form[item].length > 0
     },
@@ -210,7 +193,7 @@ export default {
       optionsmotifs: [],
       optionstypes: [],
       min: minDate,
-      timepickercolor: "danger",
+      filter:"",
       form: {
         motifId: 0,
         typeId: 0,
@@ -222,9 +205,8 @@ export default {
         commentaires: "",
       },
     }
-  }
+  },
 }
-// TODO: Ajouter un filtre sur les abonnes + filtrer le type en fonction du motif selectionné
 
 </script>
 

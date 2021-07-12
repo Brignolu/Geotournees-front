@@ -160,8 +160,8 @@ export default {
         this.form.abonneId = data.id;
         // console.log("abonneOK")
         axios.post(this.$hostname +'/create/personne', {
-              nom: this.form.nom,
-              prenom: this.form.prenom,
+              nom: this.form.nom.toUpperCase(),
+              prenom: this.form.prenom.toUpperCase(),
               numtel: this.form.numtel,
               abonneId: this.form.abonneId
             }

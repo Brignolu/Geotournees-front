@@ -3,6 +3,10 @@ $info: #F3F1B0;
 $danger: #EB212E;
 $sucess: #79AA70;
 $warning: #d6a26a;
+ body, html {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 
 .v-application--wrap {
   min-height: 1vh !important;
