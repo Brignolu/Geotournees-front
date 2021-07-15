@@ -15,10 +15,14 @@ import NouvelUtilisateur from "@/components/NouvelUtilisateur";
 import NouvellePersonne from "@/components/NouvellePersonne";
 import AfficheAbonnes from "@/components/AfficheAbonnes.vue";
 import AfficheUtilisateurs from "@/components/AfficheUtilisateurs";
+import CalculItineraires from "@/components/CalculItineraires";
+import PanneauAdministration from "@/components/PanneauAdministration";
+
 import axios from "axios";
 import SocketIO from "socket.io-client";
 import VueSocketIO from "vue-socket.io";
-import PanneauAdministration from "@/components/PanneauAdministration";
+import moment from "moment";
+
 
 
 Vue.use(Vuetify)
@@ -119,6 +123,10 @@ const routes = [
                 next();
             }
         }
+    },
+    {path: '/calculitineraires',
+    name:'itineraires',
+    component: CalculItineraires
     }
 ]
 
@@ -133,10 +141,11 @@ const store = new Vuex.Store({
         message: null,
         mapcenter: null,
         zoom: 9,
-        datalist: null,
         interventions: null,
         itemselected: null,
-
+        events: null,
+        selectedDate: null,
+        interventionsfiltered:null,
     },
     mutations: {
         setUtilisateur(state, utilisateur) {
@@ -163,11 +172,20 @@ const store = new Vuex.Store({
         setInterventions(state, interventions) {
             state.interventions = interventions;
         },
+        setInterventionsFiltered(state, interventionsfiltered) {
+            state.interventionsfiltered = interventionsfiltered;
+        },
         setAgents(state, agents){
             state.agents = agents;
         },
         setTypes(state, type){
             state.type = type
+        },
+        setEvents(state, events){
+            state.events = events
+        },
+        setSelectedDate(state, selectedDate){
+            state.selectedDate = selectedDate
         }
     },
     actions: {
@@ -207,6 +225,21 @@ const store = new Vuex.Store({
         loadZoom({commit}, zoomlvl) {
             commit("setZoom", zoomlvl)
         },
+        async loadEvents({commit}) {
+            let interventions = await axios.get('http://localhost:3000/interventions').catch(err => console.log(err))
+            var events = []
+            for (let i = 0; i < interventions.data.length; i++) {
+                events.push({
+                    id: interventions.data[i].id,
+                    title: interventions.data[i]['agent.nom'] + " - " + interventions.data[i]['type.type'],
+                    start: moment(interventions.data[i].date).utc().toISOString(),
+                    end: moment(interventions.data[i].date).utc().add(30, 'minutes').toISOString()
+                })
+            }
+            console.log('events action')
+            console.log(events)
+            commit("setEvents", events)
+        },
 
 
     },
@@ -220,9 +253,6 @@ const store = new Vuex.Store({
         messageNotification: state => {
             return state.message;
         },
-        listUpdate: state => {
-            return state.datalist;
-        },
         clickMarkerUpdate: state => {
             return state.itemselected;
         },
@@ -234,6 +264,9 @@ const store = new Vuex.Store({
         },
         userName: state => {
             return state.utilisateur.nom_utilisateur
+        },
+        selectedDateGetter: state => {
+            return state.selectedDate
         }
 
     }

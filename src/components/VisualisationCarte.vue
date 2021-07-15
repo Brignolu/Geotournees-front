@@ -2,13 +2,13 @@
 
   <div id="map-wrapper">
     <div id="map">
-      <v-map :zoom="9" :center="[46.0736617, 6.4048087]" ref="map">
+      <v-map :zoom="9" :center="[46.0736617, 6.4048087]" ref="lmap">
         <v-icondefault></v-icondefault>
         <v-tilelayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"></v-tilelayer>
         <v-geojson :geojson="cantons"></v-geojson>
         <v-marker-cluster :options="clusterOptions" ref="markercluster" @ready="ready()">
-          <template v-for="l in this.$store.state.interventions">
+          <template v-for="l in this.$store.state.interventionsfiltered">
             <v-marker v-if="l['type.type'] === 'Dépannage'" :key="l['id']"
                       :lat-lng="[l['abonne.personne.adresses.coordonne.lat'],l['abonne.personne.adresses.coordonne.long']]"
                       :icon="depannageIcon" @click="click(l)">
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     click: function (item) {
-      console.log('store => setMarkerClicked');
+      // console.log('store => setMarkerClicked');
       this.$store.commit("setMarkerClicked", item)
       this.$store.dispatch('loadCenter', [item['abonne.personne.adresses.coordonne.lat'],item['abonne.personne.adresses.coordonne.long']])
       this.$store.dispatch('loadZoom',15)
@@ -76,13 +76,13 @@ export default {
   },
   watch: {
     center: function () {
-     let MyMapObj =  this.$refs.map.mapObject
+     let MyMapObj =  this.$refs.lmap.mapObject
      MyMapObj.panTo(this.$store.state.mapcenter,{ animate:false })
-      console.log('Watch Center : ' + this.center);
+      // console.log('Watch Center : ' + this.center);
     },
     zoom: function () {
-      console.log('Watch Zoom : ' + this.$store.getters.zoomUpdate)
-      let MyMapObj =  this.$refs.map.mapObject
+      // console.log('Watch Zoom : ' + this.$store.getters.zoomUpdate)
+      let MyMapObj =  this.$refs.lmap.mapObject
       MyMapObj.setZoom(this.$store.state.zoom)
     }
   },
@@ -121,6 +121,11 @@ export default {
   },
   created() {
     this.$store.dispatch('loadCenter', [46.0736617, 6.4048087])
+    let MyMapObj =  this.$refs.lmap.mapObject
+    MyMapObj.on('zoom',function (){
+      // console.log('zooming')
+      console.log(MyMapObj.getZoom())
+    })
   }
 }
 </script>

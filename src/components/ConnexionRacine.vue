@@ -39,7 +39,7 @@
             </b-form-group>
 
             <b-button v-on:click="postLogin" variant="success">
-              Envoyer
+              Se Connecter
             </b-button>
 
             <div>
@@ -96,6 +96,7 @@ export default {
     this.$store.dispatch("loadInterventions")
     this.$store.dispatch('loadAgents')
     this.$store.dispatch('loadTypes')
+    this.$store.dispatch("loadEvents")
   }
 }
 </script>

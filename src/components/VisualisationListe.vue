@@ -2,10 +2,9 @@
   <div>
 
     <b-row>
-      <b-col>
+      <b-col cols="10">
 
         <b-input-group
-            size="sm"
         >
           <b-form-input
               id="filter-input"
@@ -25,47 +24,44 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-row>
 
-      <b-col>
-        <b-form-datepicker v-model="customFilter.date"
-                           :placeholder="'Filtrer par date'"
-                           today-button
-                           label-today-button="Aujourd'hui"
-                           reset-button
-                           label-reset-button="Supprimer le filtre"
-                           close-button
-                           label-close-button="X"
-                           label-no-date-selected="Aucune date filtrée"
-        >
-        </b-form-datepicker>
-      </b-col>
-      <b-col>
-        <b-form-select v-model="customFilter.type" :options="optionstypes">
-        </b-form-select>
-      </b-col>
 
-      <b-col>
-        <b-form-select v-model="customFilter.agent" :options="optionsagents">
-        </b-form-select>
-      </b-col>
-      <b-col>
-        <b-button
-            variant="secondary"
-            @click="resetFilter">
-          Synchronisation SoPlanning
-        </b-button>
-      </b-col>
-    </b-row>
+    <b-form inline>
+      <b-form-datepicker v-model="customFilter.date"
+                         :placeholder="'Filtrer par date'"
+                         today-button
+                         label-today-button="Aujourd'hui"
+                         reset-button
+                         label-reset-button="Supprimer le filtre"
+                         close-button
+                         label-close-button="X"
+                         label-no-date-selected="Aucune date filtrée"
+                         :date-disabled-fn="dateDisabled"
+      >
+      </b-form-datepicker>
 
-    <b-table responsive sticky-header="80vh"
+      <b-form-select v-model="customFilter.type" :options="optionstypes">
+      </b-form-select>
+
+      <b-form-select v-model="customFilter.agent" :options="optionsagents">
+      </b-form-select>
+
+      <b-button
+          variant="outline-secondary"
+          size="sm"
+          @click="postSoplanning">
+        Synchronisation SoPlanning
+      </b-button>
+    </b-form>
+
+
+    <b-table responsive sticky-header="70vh"
              hover
              :items="this.interventionsFiltered"
              :fields="fields"
              :filter="filter"
              @row-clicked="click"
              @row-hovered="mouseOver"
-             @row-unhovered="mouseLeave"
              ref="myTable"
              selectable
              select-mode="single"
@@ -142,10 +138,14 @@
       </div>
       <b-row>
         <b-col>
-          <b-button variant="success" block @click="deleteIntervention(itemDelete)"><b-icon-check></b-icon-check></b-button>
+          <b-button variant="success" block @click="deleteIntervention(itemDelete)">
+            <b-icon-check></b-icon-check>
+          </b-button>
         </b-col>
         <b-col>
-          <b-button variant="danger" block @click="hideDeleteModal"><b-icon-x></b-icon-x></b-button>
+          <b-button variant="danger" block @click="hideDeleteModal">
+            <b-icon-x></b-icon-x>
+          </b-button>
         </b-col>
       </b-row>
     </b-modal>
@@ -156,6 +156,7 @@
 <script>
 import axios from "axios";
 import {mapGetters} from "vuex";
+import moment from "moment";
 
 export default {
   name: 'VisualisationListe',
@@ -203,6 +204,18 @@ export default {
   },
   methods: {
 
+    // desactive les weekends dans le date picker getday() === 0 => dimanche getday() === 6 => samedi
+    dateDisabled(ymd, date) {
+      const weekday = date.getDay()
+      return weekday === 0 || weekday === 6
+    },
+
+    // Synchronisation avec l'api SoPlanning
+    postSoplanning: async function () {
+      await axios.get(this.$hostname + '/synchronisationplanning').catch(err => console.log(err))
+    },
+
+    // reset le filtre et recentre dezoom la carte
     resetFilter() {
       this.filter = ''
       this.$store.commit('setMarkerClicked', null)
@@ -220,15 +233,14 @@ export default {
       */
     },
 
+    // change le centre et le zoom
     mouseOver(item) {
       let coords = [item['abonne.personne.adresses.coordonne.lat'], item['abonne.personne.adresses.coordonne.long']]
       this.$store.dispatch("loadCenter", coords)
       this.$store.dispatch("loadZoom", 15)
     },
 
-    mouseLeave() {
-      console.log("mouseleave")
-    },
+    // Ouvre le modal de confirmation de supression
     showDeleteModal(item) {
       this.itemDelete = item
       this.$bvModal.show('my-modal')
@@ -237,6 +249,7 @@ export default {
       this.$bvModal.hide('my-modal')
     },
 
+    // Supprime l'intervention : emet un evenement sur le websocket afin que tous les clients raffraichissent l'etat du store contenant les interventions
     deleteIntervention(item) {
       console.log(item.id);
       this.$bvModal.hide('my-modal')
@@ -258,6 +271,8 @@ export default {
     },
   },
   watch: {
+
+    // Watch l'etat clickmarkerupdate
     markerup: function () {
       /*
       // On récupère l'element puis on simule un click
@@ -266,10 +281,8 @@ export default {
            tableRows = tableBody.getElementsByTagName('tr');
            tableRows[this.$store.state.itemselected.id - 1].click()
        */
-      this.filter = this.$store.state.itemselected['abonne.personne.nom'];
-      this.$store.dispatch("loadCenter", [this.$store.state.itemselected['abonne.personne.adresses.coordonne.lat'], this.$store.state.itemselected['abonne.personne.adresses.coordonne.long']])
-
-
+      this.filter = this.$store.getters.clickMarkerUpdate['abonne.personne.nom'];
+      this.$store.dispatch("loadCenter", [this.$store.getters.clickMarkerUpdate['abonne.personne.adresses.coordonne.lat'], this.$store.state.itemselected['abonne.personne.adresses.coordonne.long']])
     }
   },
   computed: {
@@ -280,8 +293,17 @@ export default {
         return this.$store.state.interventions
       },
     },
+    // retourne les interventions filtré avec les champs date,type d'installation et agent
     interventionsFiltered() {
       let customFilter = this.customFilter
+      // console.log(customFilter.date)
+      if (customFilter.date === "" || customFilter.date === null) {
+        // console.log("selectedDateToday")
+        this.$store.commit("setSelectedDate", moment().format('YYYY-MM-DD'))
+      } else {
+        // console.log("selectedDate")
+        this.$store.commit("setSelectedDate", customFilter.date)
+      }
       if (this.interventions === null) {
         return this.$store.state.interventions
       } else {
@@ -315,13 +337,15 @@ export default {
           }
           return filter
         });
+        this.$store.commit("setInterventionsFiltered", filtered)
         return filtered
       }
     }
 
   },
+
   created: function () {
-    console.log(this.$store.state.agents)
+    // On charge les values dans le select
     for (let i in this.$store.state.agents) {
       this.optionsagents.push({value: this.$store.state.agents[i].nom, text: this.$store.state.agents[i].nom})
     }

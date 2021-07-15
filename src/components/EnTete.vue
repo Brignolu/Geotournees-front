@@ -3,7 +3,7 @@
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <b-navbar-brand class="mr-auto">
         <img @click="accueil" id="logo" alt="Conseil Départemental de Haute-Savoie"
-             src="@/assets/Logo_Haute_Savoie_Blanc.png">
+             src="@/assets/Logo_Haute_Savoie_Blanc.png"> GéoTournées
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
