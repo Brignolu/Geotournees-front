@@ -273,7 +273,7 @@ const store = new Vuex.Store({
 })
 
 Vue.use(new VueSocketIO({
-    connection: SocketIO('localhost:3000')
+    connection: SocketIO('http://localhost:3000')
 }))
 // Initialisation du module routeur
 const router = new VueRouter({
