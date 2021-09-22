@@ -85,7 +85,7 @@
       <template #cell(show_details)="data">
         <b-button-group>
           <b-button
-              :href="'http://10.200.2.102/webbuncher/gestionAbonne/rechercher.php?idA=' + data.item['abonne.identifiant_wbb']">
+              :href="'http://10.200.2.102/webbuncher/gestionAbonne/rechercher.php?idA=' + data.item['abonne.identifiant_wbb']" target="_blank">
             {{ data.item['abonne.numero_abo'] }}
           </b-button>
           <b-button size="sm" @click="data.toggleDetails" variant="primary">
@@ -104,7 +104,16 @@
             <b-col>
               <b>Intervention:</b>
             </b-col>
-            <b-col>
+            <b-col v-if="data.item['type.type']=='Installation'" class="bg-success">
+              {{ data.item["type.type"] }} {{ data.item["motif.motif"] }}
+            </b-col>
+            <b-col v-else-if="data.item['type.type']=='Dépannage'" class="bg-danger">
+              {{ data.item["type.type"] }} {{ data.item["motif.motif"] }}
+            </b-col>
+            <b-col v-else-if="data.item['type.type']=='Maintenance'" class="bg-warning">
+              {{ data.item["type.type"] }} {{ data.item["motif.motif"] }}
+            </b-col>
+            <b-col v-else class="bg-info">
               {{ data.item["type.type"] }} {{ data.item["motif.motif"] }}
             </b-col>
             <b-col>
@@ -132,7 +141,7 @@
       </template>
     </b-table>
 
-    <b-modal id="my-modal" centered hide-footer title="Confirmation">
+    <b-modal id="delete-modal" centered hide-footer title="Confirmation">
       <div class="d-block text-center">
         <h4>Confirmez-vous la suppression ?</h4>
       </div>
@@ -243,16 +252,16 @@ export default {
     // Ouvre le modal de confirmation de supression
     showDeleteModal(item) {
       this.itemDelete = item
-      this.$bvModal.show('my-modal')
+      this.$bvModal.show('delete-modal')
     },
     hideDeleteModal() {
-      this.$bvModal.hide('my-modal')
+      this.$bvModal.hide('delete-modal')
     },
 
     // Supprime l'intervention : emet un evenement sur le websocket afin que tous les clients raffraichissent l'etat du store contenant les interventions
     deleteIntervention(item) {
       console.log(item.id);
-      this.$bvModal.hide('my-modal')
+      this.$bvModal.hide('delete-modal')
       axios.delete(this.$hostname + "/delete/intervention/" + item.id, {
         headers: {
           'Content-Type': 'application/json',

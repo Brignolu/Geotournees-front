@@ -21,6 +21,10 @@
                       :lat-lng="[l['abonne.personne.adresses.coordonne.lat'],l['abonne.personne.adresses.coordonne.long']]"
                       :icon="installationIcon" @click="click(l)">
             </v-marker>
+            <v-marker v-else :key="l['id']"
+                      :lat-lng="[l['abonne.personne.adresses.coordonne.lat'],l['abonne.personne.adresses.coordonne.long']]"
+                      :icon="installationIcon" @click="click(l)">
+            </v-marker>
           </template>
         </v-marker-cluster>
       </v-map>
@@ -121,11 +125,11 @@ export default {
   },
   created() {
     this.$store.dispatch('loadCenter', [46.0736617, 6.4048087])
-    let MyMapObj =  this.$refs.lmap.mapObject
-    MyMapObj.on('zoom',function (){
-      // console.log('zooming')
-      console.log(MyMapObj.getZoom())
-    })
+    //let MyMapObj =  this.$refs.lmap.mapObject
+    // MyMapObj.on('zoom',function (){
+    //   console.log('zooming')
+    //   console.log(MyMapObj.getZoom())
+    // })
   }
 }
 </script>

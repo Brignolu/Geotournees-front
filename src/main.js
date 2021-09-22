@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import App from './App.vue';
+import "./assets/app.scss";
 import VueRouter from "vue-router";
 import Vuex from 'vuex';
 
 import Vuetify from 'vuetify/lib'
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
-import "@/assets/app.scss";
+
 
 //Importation des composants
 import ConnexionRacine from "@/components/ConnexionRacine";
@@ -34,7 +35,7 @@ Vue.use(Vuex);
 
 
 Vue.config.productionTip = false;
-let hostname = 'http://localhost:3000'
+let hostname = 'http://10.248.5.14:8083'
 Vue.prototype.$hostname = hostname
 
 
@@ -80,7 +81,7 @@ const routes = [
         component: NouvelUtilisateur,
         beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
-                next(false);
+                next(false);so
             } else {
                 next();
             }
@@ -226,7 +227,7 @@ const store = new Vuex.Store({
             commit("setZoom", zoomlvl)
         },
         async loadEvents({commit}) {
-            let interventions = await axios.get('http://localhost:3000/interventions').catch(err => console.log(err))
+            let interventions = await axios.get('http://10.248.5.14:8083/interventions').catch(err => console.log(err))
             var events = []
             for (let i = 0; i < interventions.data.length; i++) {
                 events.push({
@@ -273,7 +274,7 @@ const store = new Vuex.Store({
 })
 
 Vue.use(new VueSocketIO({
-    connection: SocketIO('http://localhost:3000')
+    connection: SocketIO('10.248.5.14:8083')
 }))
 // Initialisation du module routeur
 const router = new VueRouter({

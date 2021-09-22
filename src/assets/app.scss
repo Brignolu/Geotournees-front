@@ -3,16 +3,16 @@ $info: #F3F1B0;
 $danger: #EB212E;
 $sucess: #79AA70;
 $warning: #d6a26a;
- body, html {
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
+body, html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 .v-application--wrap {
   min-height: 1vh !important;
 }
 
-.fc{
+.fc {
   min-height: 80vh;
 }
 
@@ -46,6 +46,18 @@ b-container-fluid {
   width: 15%;
   margin-left: 1vw;
   margin-right: 1vw;
+}
+
+.table {
+  line-height: 1;
+  font-weight: 200;
+  border-collapse: initial;
+}
+
+.table td {
+  padding: 0.3rem 0 0.3rem 0;
+  border-top: 1px dotted #dee2e6;
+  cursor: cell;
 }
 
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
