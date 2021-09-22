@@ -23,6 +23,7 @@ import axios from "axios";
 import SocketIO from "socket.io-client";
 import VueSocketIO from "vue-socket.io";
 import moment from "moment";
+import './registerServiceWorker'
 
 
 
