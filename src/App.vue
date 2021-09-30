@@ -7,7 +7,6 @@
 
 
 <template>
-
   <b-container fluid class="min-vh-100 m-0 p-0">
     <EnTete v-if=this.$store.state.utilisateur v-bind:UtilisateurCourant=this.$store.state.utilisateur></EnTete>
     <router-view/>

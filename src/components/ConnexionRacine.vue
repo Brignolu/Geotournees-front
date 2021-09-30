@@ -97,6 +97,7 @@ export default {
     this.$store.dispatch('loadAgents')
     this.$store.dispatch('loadTypes')
     this.$store.dispatch("loadEvents")
+    this.$store.dispatch("loadAgentsCalendar")
   }
 }
 </script>

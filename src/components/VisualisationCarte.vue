@@ -7,7 +7,7 @@
         <v-tilelayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"></v-tilelayer>
         <v-geojson :geojson="cantons"></v-geojson>
-        <v-marker-cluster :options="clusterOptions" ref="markercluster" @ready="ready()">
+        <v-marker-cluster :options="clusterOptions" ref="markercluster">
           <template v-for="l in this.$store.state.interventionsfiltered">
             <v-marker v-if="l['type.type'] === 'Dépannage'" :key="l['id']"
                       :lat-lng="[l['abonne.personne.adresses.coordonne.lat'],l['abonne.personne.adresses.coordonne.long']]"
@@ -64,8 +64,7 @@ export default {
       this.$store.commit("setMarkerClicked", item)
       this.$store.dispatch('loadCenter', [item['abonne.personne.adresses.coordonne.lat'],item['abonne.personne.adresses.coordonne.long']])
       this.$store.dispatch('loadZoom',15)
-    },
-    ready: (e) => console.log('ready', e),
+    }
   },
   computed:{
     center(){

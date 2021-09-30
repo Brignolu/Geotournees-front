@@ -26,7 +26,6 @@ import moment from "moment";
 import './registerServiceWorker'
 
 
-
 Vue.use(Vuetify)
 const vuetify = new Vuetify({});
 Vue.use(BootstrapVue);
@@ -35,7 +34,10 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
+Vue.config.devtools = true;
+Vue.config.debug = true;
+Vue.config.silent = false;
 let hostname = 'http://10.248.5.14:8083'
 Vue.prototype.$hostname = hostname
 
@@ -82,7 +84,7 @@ const routes = [
         component: NouvelUtilisateur,
         beforeEnter: (to, from, next) => {
             if (store.state.utilisateur === null || store.state.utilisateur.roleId < 3) {
-                next(false);so
+                next(false);
             } else {
                 next();
             }
@@ -126,9 +128,10 @@ const routes = [
             }
         }
     },
-    {path: '/calculitineraires',
-    name:'itineraires',
-    component: CalculItineraires
+    {
+        path: '/calculitineraires',
+        name: 'itineraires',
+        component: CalculItineraires
     }
 ]
 
@@ -138,16 +141,29 @@ const store = new Vuex.Store({
         utilisateur: null,
         abonnes: null,
         utilisateurs: null,
-        agents:null,
+        agents: null,
         type: null,
         message: null,
         mapcenter: null,
         zoom: 9,
         interventions: null,
         itemselected: null,
-        events: null,
+        events:
+           [ {
+                start: new Date(2001, 9, 11),
+                end: new Date(2001, 9, 11).addHours(2),
+                title: "NEPASPRENDREENCOMPTE",
+                content: "NEPASPRENDREENCOMPTE",
+                class: 'blue-event',
+                deletable: false,
+                resizable: false,
+                draggable: true,
+                split: 1
+            }],
+        unplanevents: null,
         selectedDate: null,
-        interventionsfiltered:null,
+        interventionsfiltered: null,
+        agentsCalendar: {id: 1, class: 'oui', label: 'chargement'},
     },
     mutations: {
         setUtilisateur(state, utilisateur) {
@@ -177,17 +193,23 @@ const store = new Vuex.Store({
         setInterventionsFiltered(state, interventionsfiltered) {
             state.interventionsfiltered = interventionsfiltered;
         },
-        setAgents(state, agents){
+        setAgents(state, agents) {
             state.agents = agents;
         },
-        setTypes(state, type){
+        setTypes(state, type) {
             state.type = type
         },
-        setEvents(state, events){
+        setEvents(state, events) {
             state.events = events
         },
-        setSelectedDate(state, selectedDate){
+        setUnplanEvents(state, unplanevents) {
+            state.unplanevents = unplanevents
+        },
+        setSelectedDate(state, selectedDate) {
             state.selectedDate = selectedDate
+        },
+        setAgentsCalendar(state, agentsCalendar) {
+            state.agentsCalendar = agentsCalendar
         }
     },
     actions: {
@@ -215,6 +237,25 @@ const store = new Vuex.Store({
                     commit('setAgents', response.data);
                 }).catch(err => console.log(err))
         },
+        async loadAgentsCalendar({commit}) {
+            let agentsCalendar = await axios.get(hostname + '/agents').catch(err => console.log(err))
+            let agentCalendarList = [];
+            console.log("agentsCalendarData")
+            console.log(agentsCalendar.data)
+            console.log("agentsCalendar")
+            console.log(agentsCalendar)
+
+            for (let i = 0; i < agentsCalendar.data.length; i++) {
+                agentCalendarList.push({
+                    id: agentsCalendar.data[i].id,
+                    class: agentsCalendar.data[i].identifiant_soplanning,
+                    label: agentsCalendar.data[i].nom,
+                })
+            }
+            console.log("resulting AgentsCalendar")
+            console.log(agentCalendarList)
+            commit('setAgentsCalendar', agentCalendarList)
+        },
         loadTypes({commit}) {
             axios.get(hostname + '/types')
                 .then(function (response) {
@@ -231,16 +272,29 @@ const store = new Vuex.Store({
             let interventions = await axios.get('http://10.248.5.14:8083/interventions').catch(err => console.log(err))
             var events = []
             for (let i = 0; i < interventions.data.length; i++) {
+                /*
+                let startdatetmp = new Date(interventions.data[i].date).toString()
+                let enddatetmp = new Date(interventions.data[i].date)
+                enddatetmp.setMinutes(enddatetmp.getMinutes() + 30).toString()
+                 */
                 events.push({
-                    id: interventions.data[i].id,
-                    title: interventions.data[i]['agent.nom'] + " - " + interventions.data[i]['type.type'],
-                    start: moment(interventions.data[i].date).utc().toISOString(),
-                    end: moment(interventions.data[i].date).utc().add(30, 'minutes').toISOString()
+                    /*
+                    start: startdatetmp,
+                    end: enddatetmp,
+                    */
+                    duration: 60,
+                    title: interventions.data[i]['type.type'] + "-" + interventions.data[i]['abonne.personne.nom'],
+                    content: interventions.data[i]['commentaires'],
+                    class: 'blue-event',
+                    deletable: true,
+                    resizable: false,
+                    draggable: true,
+                    split: interventions.data[i]['agent.id'] - 1,
                 })
             }
             console.log('events action')
             console.log(events)
-            commit("setEvents", events)
+            commit("setUnplanEvents", events)
         },
 
 
